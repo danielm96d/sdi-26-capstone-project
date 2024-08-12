@@ -1,1 +1,40 @@
-FUCK MONDAYS
+services:
+  db:
+    container_name: pg-docker
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api:
+    container_name: api
+    build: ./api
+    ports:
+      - '8080:8080'
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: ./api
+        target: /app/api
+    
+  client:
+    container_name: client
+    build: ./client
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    volumes:
+      - type: bind
+        source: ./client
+        target: /app/client
+    
+
+volumes:
+  db-data:
