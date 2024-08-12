@@ -17,6 +17,36 @@ app.get("/", (req, res)=>{
   res.send(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 })
 
+app.get("/users*", ( req, res ) => {
+  const {id} = req.query
+  console.log('id: ', id);
+  
+  if (!id) { 
+    knex("users") 
+    .select('*') // selects all info from users_table
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving users");
+    });
+  } else if (id) {
+    knex('users')
+      .select('*')
+      .where({ id: id })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send("Error retrieving single user");
+      })
+  }
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
