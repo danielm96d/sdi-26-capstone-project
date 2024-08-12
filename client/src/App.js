@@ -13,7 +13,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Login/>}/>
     </Routes>
-      <Profile />
+      {/* <Profile /> */}
     </>
     </ChakraProvider>
   );
