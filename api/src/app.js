@@ -17,6 +17,18 @@ app.get("/", (req, res)=>{
   res.send(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 })
 
+app.get("/users", ( req, res ) => {
+  knex("users") 
+    .select('*') // selects all info from users_table
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving users");
+    });
+});
+
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
