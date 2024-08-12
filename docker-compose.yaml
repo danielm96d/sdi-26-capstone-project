@@ -20,8 +20,8 @@ services:
       - db
     volumes:
       - type: bind
-        source: ./api
-        target: /app/api
+        source: ./api/src
+        target: /app/api/src
     
   client:
     container_name: client
@@ -32,8 +32,8 @@ services:
       - db
     volumes:
       - type: bind
-        source: ./client
-        target: /app/client
+        source: ./client/src
+        target: /app/client/src
     
 
 volumes:
