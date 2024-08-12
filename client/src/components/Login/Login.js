@@ -1,9 +1,12 @@
-import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
     const [login, setLogin] = useState({ username: "", password: "" })
+    const [loading, setLoading] = useState(false);
+    const [response, setResponse] = useState({});
+    const toast = useToast();
 
 
     const handleChange = (e) => {
@@ -15,9 +18,30 @@ export default function Login() {
     }
 
     const submitLogin = () => {
-        console.log("Logging in", login)
         if (login.username.length < 1 || login.password.length < 1) {
             setInvalid(true)
+        } else {
+            setLoading(true)
+            fetch('http://localhost:8080/login', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(login)
+            })
+            .then(res => res.json())
+            .then(json => setResponse(json))
+            .catch(() => {
+                toast({
+                    title: "Error!",
+                    description: "We're sorry an unexpected error has occured!",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom-right"
+                })
+                setLoading(false)
+            })
         }
     }
 
@@ -38,7 +62,7 @@ export default function Login() {
                         <FormErrorMessage>A password is required to login!</FormErrorMessage>
                     </FormControl>
                     <Center>
-                        <Button onClick={submitLogin}>Login</Button>
+                        <Button isLoading={loading} onClick={submitLogin}>Login</Button>
                     </Center>
                 </Stack>
             </Box>
