@@ -2,17 +2,22 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
-import Register from './components/Register/Register';
+import RequestModal from "./components/request.jsx"
+import { ChakraProvider } from '@chakra-ui/react'
+import Register from './components/Register/Register.js';
 
 function App() {
   return (
+    <ChakraProvider>
     <>
     <NavBar/>
     <Routes>
       <Route path='/' element={<Login/>}/>
       <Route path='/sign-up' element={<Register/>}/>
     </Routes>
+      <RequestModal/>
     </>
+    </ChakraProvider>
   );
 }
 
