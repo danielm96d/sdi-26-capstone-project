@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import RequestModal from "./components/request.jsx"
+import Profile from "./components/Profile.jsx"
 import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <ChakraProvider>
     <div className="App">
       <h1>hello world</h1>
-      <RequestModal/>
+      <Profile />
     </div>
     </ChakraProvider>
   );
