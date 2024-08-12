@@ -1,5 +1,5 @@
 import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
@@ -7,6 +7,19 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState({});
     const toast = useToast();
+
+    useEffect(() => {
+        if(!response.success && Object.keys(response).length > 1) {
+            toast({
+                title: response.title,
+                description: response.description,
+                duration: 5000,
+                status: response.status,
+                isClosable: true,
+                position: "bottom-right"
+            })
+        }
+    }, [response])
 
 
     const handleChange = (e) => {
