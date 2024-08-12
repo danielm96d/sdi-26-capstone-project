@@ -3,7 +3,7 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable('events_table', table => {
+  return knex.schema.createTable('events', table => {
     table.increments();
     table.string('name');
     table.datetime('startTime');

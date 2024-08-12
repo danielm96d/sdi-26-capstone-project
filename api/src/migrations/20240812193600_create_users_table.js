@@ -3,11 +3,11 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable('users_table', table => {
+  return knex.schema.createTable('users', table => {
     table.increments();
     table.string('name');
     table.string('rank');
-    table.string('password');
+    table.string("password");
     table.string('username');
     table.boolean('isApprover');
   })
@@ -18,5 +18,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('users_table');
+  return knex.schema.dropTableIfExists('users');
 };
