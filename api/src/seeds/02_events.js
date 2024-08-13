@@ -15,6 +15,8 @@ exports.seed = async function (knex) {
       description: "RIP in Peace",
       type: "Funeral",
       approved: "true",
+      location: "DC",
+      POCinfo: "John"
     },
     {
       name: "Jones Retirement",
@@ -25,6 +27,8 @@ exports.seed = async function (knex) {
       description: "About time",
       type: "Retirement",
       approved: "false",
+      location: "DC",
+      POCinfo: "John"
     },
     {
       name: "Ralph Nader Inaguration",
@@ -35,6 +39,8 @@ exports.seed = async function (knex) {
       description: "long day",
       type: "Inaguration",
       approved: "true",
+      location: "DC",
+      POCinfo: "John"
     },
   ]);
 };
