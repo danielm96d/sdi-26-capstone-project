@@ -4,6 +4,7 @@ import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
 import RequestModal from "./components/request.jsx"
 import Profile from './components/Profile.jsx'
+import Calender from './components/Calender.js'
 import { ChakraProvider } from '@chakra-ui/react'
 import Register from './components/Register/Register.js';
 
