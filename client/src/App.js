@@ -5,6 +5,7 @@ import Profile from './components/Profile.jsx'
 import Calender from './components/Calender.js'
 import Register from './components/Register/Register.js';
 import Scheduler from './components/Scheduler.js'
+import NotFound from './components/NotFound/NotFound.js';
 
 function App() {
       return (
@@ -16,6 +17,7 @@ function App() {
                         <Route path='/sign-up' element={<Register />} />
                         <Route path='/calender' element={<Calender />} />
                         <Route path='/scheduler/:id' element={<Scheduler />} />
+                        <Route path='*' element={<NotFound/>}/>
                   </Routes>
 
             </>

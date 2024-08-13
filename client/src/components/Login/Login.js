@@ -63,7 +63,7 @@ export default function Login() {
     return (
         <>
         <Helmet>
-            <title>PlaceHolder | Login</title>
+            <title>OpSync | Login</title>
         </Helmet>
             <Box margin="0 auto" maxW="30%">
                 <Stack spacing={5}>

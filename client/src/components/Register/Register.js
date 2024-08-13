@@ -95,7 +95,7 @@ export default function Register() {
     return (
         <>
         <Helmet>
-            <title>PlaceHolder | Sign Up</title>
+            <title>OpSync | Sign Up</title>
         </Helmet>
             <Box margin="0 auto" maxW="30%">
                 <Stack spacing={1}>
