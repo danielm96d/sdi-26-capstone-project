@@ -11,7 +11,7 @@ export default function NavBar() {
   return (
     <>
       <Flex padding="1rem" justifyContent="space-between">
-        <Heading><Link to="/">PlaceHolder</Link></Heading>
+        <Heading><Link to="/">OpSync</Link></Heading>
         <Flex>
           <IconButton onClick={onOpen} ref={btnRef} isRound={true} icon={<HamburgerIcon />} />
         </Flex>
