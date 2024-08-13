@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import {useNavigate} from 'react-router-dom'
 import {
   Grid,
   GridItem,
@@ -12,10 +13,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 
 const requestServer = 'http://localhost:8080/'
 
-export default function Calender () {
+export default function Calendar () {
   const [dayEvents, setDayEvents] = useState()
   const [monthEvents, setMonthEvents] = useState()
   const calenderRef = useRef(null);
+
+  const navigate = useNavigate('/')
 
   useEffect(() => {
     monthEventsFetch();
@@ -47,6 +50,7 @@ export default function Calender () {
     calenderRef.current.getApi().gotoDate(selectedDate)
 
   }
+
 
   const calendarDataCalendar = [
     {
@@ -94,7 +98,7 @@ export default function Calender () {
         selectable={true}
         selectMirror={true}
         select={handleDateSelect}
-
+        eventClick={()=>navigate('/scheduler')}
       />
       </GridItem>
       <GridItem colSpan={3}  display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
@@ -106,8 +110,9 @@ export default function Calender () {
         height="90%"
         initialView='timeGridDay'
         events={calendarDataCalendar}
-        selectable={true}
         selectMirror={true}
+        select={handleDateSelect}
+        eventClick={()=>navigate('/scheduler')}
       />
     </GridItem>
       </Grid>

@@ -4,7 +4,7 @@ import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
 import RequestModal from "./components/request.jsx"
 import Profile from './components/Profile.jsx'
-import Calender from './components/Calender.js'
+import Calendar from './components/Calender.js'
 import { ChakraProvider } from '@chakra-ui/react'
 import Register from './components/Register/Register.js';
 
@@ -16,13 +16,9 @@ function App() {
     <Routes>
       <Route path='/' element={<Login/>}/>
       <Route path='/sign-up' element={<Register/>}/>
-{/* <<<<<<< HEAD */}
-      <Route path='/calender' element={<Calender/>}/>
+      <Route path='/calendar' element={<Calendar/>}/>
       <Route path='/profile' element={<Profile/>}/>
-{/* =======
->>>>>>> bd2d893977fdf0a3b4e024ddaa35adb165d2f5f1 */}
     </Routes>
-      {/* <Profile /> */}
     </>
     </ChakraProvider>
   );
