@@ -1,5 +1,6 @@
 import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import {Helmet} from 'react-helmet'
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
@@ -60,6 +61,9 @@ export default function Login() {
 
     return (
         <>
+        <Helmet>
+            <title>PlaceHolder | Login</title>
+        </Helmet>
             <Box margin="0 auto" maxW="30%">
                 <Stack spacing={5}>
                     <FormControl id="username" onChange={handleChange} isInvalid={invalid && login.username.length < 1} isRequired={true}>

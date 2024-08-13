@@ -8,6 +8,7 @@ import {
 } from "@choc-ui/chakra-autocomplete";
 import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
+import { Helmet } from "react-helmet";
 export default function Register() {
     const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", role: "" });
     const [confrimPass, setConfirmPass] = useState("")
@@ -92,6 +93,9 @@ export default function Register() {
     }
     return (
         <>
+        <Helmet>
+            <title>PlaceHolder | Sign Up</title>
+        </Helmet>
             <Box margin="0 auto" maxW="30%">
                 <Stack spacing={1}>
                     <FormControl id="username" onChange={handleChange} isInvalid={invalid && register.username.length < 1} isRequired={true}>
