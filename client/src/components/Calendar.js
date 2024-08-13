@@ -55,7 +55,11 @@ export default function Calendar () {
   const calendarDataCalendar = [
     {
       title: "Cyber Week2",
+<<<<<<< HEAD:client/src/components/Calendar.js
 
+=======
+      id: 1,
+>>>>>>> ff672e24ab3d9dc6844b15f41a60bc1680c38493:client/src/components/Calender.js
       borderColor: "transparent",
       start: "2024-08-13T13:30",
       end: "2024-08-13T14:00",
@@ -64,7 +68,11 @@ export default function Calendar () {
     },
     {
       title: "Cyber Week",
+<<<<<<< HEAD:client/src/components/Calendar.js
 
+=======
+      id: 2,
+>>>>>>> ff672e24ab3d9dc6844b15f41a60bc1680c38493:client/src/components/Calender.js
       borderColor: "transparent",
       start: "2024-08-13T06:30",
       end: "2024-08-13T12:00",
@@ -73,7 +81,11 @@ export default function Calendar () {
     },
     {
       title: "Cyber Week2",
+<<<<<<< HEAD:client/src/components/Calendar.js
 
+=======
+      id: 3,
+>>>>>>> ff672e24ab3d9dc6844b15f41a60bc1680c38493:client/src/components/Calender.js
       borderColor: "transparent",
       start: "2024-08-13",
       end: "2024-08-13",
@@ -98,7 +110,12 @@ export default function Calendar () {
         selectable={true}
         selectMirror={true}
         select={handleDateSelect}
+<<<<<<< HEAD:client/src/components/Calendar.js
         eventClick={()=>navigate('/scheduler')}
+=======
+        eventClick={(info)=>{navigate(`/scheduler/${info.event.id}`)
+        }}
+>>>>>>> ff672e24ab3d9dc6844b15f41a60bc1680c38493:client/src/components/Calender.js
       />
       </GridItem>
       <GridItem colSpan={3}  display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
@@ -112,7 +129,12 @@ export default function Calendar () {
         events={calendarDataCalendar}
         selectMirror={true}
         select={handleDateSelect}
+<<<<<<< HEAD:client/src/components/Calendar.js
         eventClick={()=>navigate('/scheduler')}
+=======
+        eventClick={(info)=>{navigate(`/scheduler/${info.event.id}`)
+      }}
+>>>>>>> ff672e24ab3d9dc6844b15f41a60bc1680c38493:client/src/components/Calender.js
       />
     </GridItem>
       </Grid>
