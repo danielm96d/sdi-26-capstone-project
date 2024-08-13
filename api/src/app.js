@@ -189,8 +189,115 @@ app.delete('/events/:id', (req, res) => {
     });
 });
 
+//======================================POSITIONS CRUD===========================================\\
+//------------------READ (all and by id)-------------------\\
+app.get("/positions*", ( req, res ) => {
+  const {id} = req.query
+  console.log('id: ', id);
+
+  if (!id) {
+    knex("positions")
+    .select('*')
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send(`Error retrieving all positions: ${err}`);
+    });
+  } else if (id) {
+    knex('positions')
+      .select('*')
+      .where({ id: id })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single position: ${err}`);
+      })
+  }
+});
+//------------------CREATE-------------------\\
+app.post("/positions", (req, res) => {
+  const newPosition = req.body;
+
+  knex('positions')
+    .insert(newPosition)
+    .returning('*')
+    .then((insertedPosition) => {
+      res.status(201).json(insertedPosition[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(`Error creating new position: ${err}`);
+    });
+});
+//------------------UPDATE(by id)-------------------\\
+app.patch("/positions/:id", (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  knex('positions')
+    .where({ id: id })
+    .update(updates)
+    .returning("*")
+    .then((updatePositions) => {
+      if (updatePositions.length) {
+        res.status(200).json(updatePositions[0]);
+      } else {
+        res.status(404).send(`Position with id ${id} not found`);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(`Error updating position: ${err}`);
+    });
+});
+
+//------------------DELETE (by id)-------------------\\
+app.delete('/positions/:id', (req, res) => {
+  knex('positions')
+    .where({ id: req.params.id })
+    .del()
+    .then((deletedCount) => {
+      if (deletedCount > 0) {
+        res.json({ message: 'Positon deleted successfully' });
+      } else {
+        res.status(404).json({ error: 'Position not found' });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(400).send(`Error deleting position: ${err}`);
+    });
+});
+
+
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
 
 
+
+//======================Register===========================\\
+// app.post('/users', authenticateUser, async (req, res) => {
+//   const newUser = req.body;
+//   bcrypt.hash(newUser.password, 10, (err, hashedPassword) => {
+//       if (err) {
+//           console.error(err);
+//           return res.status(400).send("Error posting user");
+//       }
+//       newUser.password = hashedPassword;
+//       knex('users')
+//           .insert(newUser)
+//           .returning('id')
+//           .then((id) => {
+//               res.status(201).json({ id: id[0], ...newUser });
+//           })
+//           .catch((err) => {
+//               console.error(err);
+//               res.status(400).send("Error posting user");
+//           });
+//   });
+// });
