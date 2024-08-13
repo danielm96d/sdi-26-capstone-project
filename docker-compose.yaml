@@ -10,6 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - my_network
 
   api:
     container_name: api
@@ -22,7 +24,9 @@ services:
       - type: bind
         source: ./api/src
         target: /app/api/src
-    
+    networks:
+      - my_network
+
   client:
     container_name: client
     build: ./client
@@ -34,7 +38,13 @@ services:
       - type: bind
         source: ./client/src
         target: /app/client/src
-    
+    networks:
+      - my_network
+
 
 volumes:
   db-data:
+
+networks:
+  my_network:
+    driver: bridge
