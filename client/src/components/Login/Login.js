@@ -1,5 +1,6 @@
 import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import {Helmet} from 'react-helmet'
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
@@ -19,6 +20,7 @@ export default function Login() {
                 position: "bottom-right"
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response])
 
 
@@ -60,6 +62,9 @@ export default function Login() {
 
     return (
         <>
+        <Helmet>
+            <title>PlaceHolder | Login</title>
+        </Helmet>
             <Box margin="0 auto" maxW="30%">
                 <Stack spacing={5}>
                     <FormControl id="username" onChange={handleChange} isInvalid={invalid && login.username.length < 1} isRequired={true}>
@@ -77,12 +82,12 @@ export default function Login() {
                     <Center>
                         <Button isLoading={loading} onClick={submitLogin}>Login</Button>
                     </Center>
-                        <Text textAlign="center">
-                            Don&apos;t have an account?{' '}
-                            <Link color='teal.500' href='/sign-up'>
-                                sign up
-                            </Link>
-                        </Text>
+                    <Text textAlign="center">
+                        Don&apos;t have an account?{' '}
+                        <Link color='teal.500' href='/sign-up'>
+                            sign up
+                        </Link>
+                    </Text>
                 </Stack>
             </Box>
         </>
