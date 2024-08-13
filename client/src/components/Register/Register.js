@@ -6,18 +6,33 @@ import {
     AutoCompleteItem,
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 export default function Register() {
     const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", role: "" });
     const [confrimPass, setConfirmPass] = useState("")
     const [invalid, setInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState({});
+    const toast = useToast();
     const ranks = {
         enlisted: Array.from({ length: 9 }, (v, i) => `E-${i + 1}`),
         warrant: Array.from({ length: 5 }, (v, i) => `W-${i + 1}`),
         officer: Array.from({ length: 10 }, (v, i) => `O-${i + 1}`),
     };
+
+    useEffect(() => {
+        if (!result.success && Object.keys(result).length > 1) {
+            toast({
+                title: result.title,
+                description: result.description,
+                duration: 5000,
+                status: result.status,
+                isClosable: true,
+                position: "bottom-right"
+            })
+        }
+    }, [result])
 
 
     const handleChange = (e) => {
@@ -49,10 +64,30 @@ export default function Register() {
     }
 
     const submitRegister = () => {
-        if(register.username.length < 1 || register.password.length < 8 || register.password !== confrimPass || register.firstname.length < 1 || register.lastname.length < 1 || register.rank.length < 2 || register.role !== "user" || "approver") {
+        if (register.username.length < 1 || register.password.length < 7 || register.password !== confrimPass || register.firstname.length < 1 || register.lastname.length < 1 || register.rank.length < 1 || register.role === "") {
             setInvalid(true)
         } else {
             setLoading(true)
+            fetch('http://localhost:8080/signup', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(register)
+            })
+            .then(res => res.json())
+            .then(json => setResult(json))
+            .catch(() => {
+                toast({
+                    title: "Error!",
+                    description: "We're sorry an unexpected error has occured!",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom-right"
+                })
+                setLoading(false)
+            })
         }
     }
     return (
@@ -127,6 +162,12 @@ export default function Register() {
                     <Center>
                         <Button isLoading={loading} onClick={submitRegister}>Register</Button>
                     </Center>
+                    <Text textAlign="center">
+                        Already have an account?{' '}
+                        <Link color='teal.500' href='/'>
+                            sign in
+                        </Link>
+                    </Text>
                 </Stack>
             </Box>
         </>

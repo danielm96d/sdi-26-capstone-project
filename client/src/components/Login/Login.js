@@ -1,4 +1,4 @@
-import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function Login() {
@@ -9,7 +9,7 @@ export default function Login() {
     const toast = useToast();
 
     useEffect(() => {
-        if(!response.success && Object.keys(response).length > 1) {
+        if (!response.success && Object.keys(response).length > 1) {
             toast({
                 title: response.title,
                 description: response.description,
@@ -42,26 +42,26 @@ export default function Login() {
                 },
                 body: JSON.stringify(login)
             })
-            .then(res => res.json())
-            .then(json => setResponse(json))
-            .catch(() => {
-                toast({
-                    title: "Error!",
-                    description: "We're sorry an unexpected error has occured!",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "bottom-right"
+                .then(res => res.json())
+                .then(json => setResponse(json))
+                .catch(() => {
+                    toast({
+                        title: "Error!",
+                        description: "We're sorry an unexpected error has occured!",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom-right"
+                    })
+                    setLoading(false)
                 })
-                setLoading(false)
-            })
         }
     }
 
     return (
         <>
             <Box margin="0 auto" maxW="30%">
-                <Stack spacing={10}>
+                <Stack spacing={5}>
                     <FormControl id="username" onChange={handleChange} isInvalid={invalid && login.username.length < 1} isRequired={true}>
                         <FormLabel>Username</FormLabel>
                         <Input placeholder="@username" />
@@ -77,6 +77,12 @@ export default function Login() {
                     <Center>
                         <Button isLoading={loading} onClick={submitLogin}>Login</Button>
                     </Center>
+                        <Text textAlign="center">
+                            Don&apos;t have an account?{' '}
+                            <Link color='teal.500' href='/sign-up'>
+                                sign up
+                            </Link>
+                        </Text>
                 </Stack>
             </Box>
         </>
