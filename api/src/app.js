@@ -20,7 +20,7 @@ app.get("/", (req, res)=>{
 
 //======================================USERS CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
-app.get("/users*", ( req, res ) => {
+app.get("/users", ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
 
@@ -109,7 +109,7 @@ app.patch("/users/:id", (req, res) => {
 
 //=====================================Events CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
-app.get("/events*", ( req, res ) => {
+app.get("/events", ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
 
@@ -194,6 +194,7 @@ app.delete('/events/:id', (req, res) => {
 app.get("/positions*", ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
+  // console.log('wrong one')
 
   if (!id) {
     knex("positions")
@@ -273,15 +274,54 @@ app.delete('/positions/:id', (req, res) => {
     });
 });
 
+//======================================USERS_EVENTS CRUD===========================================\\
+app.get("/events_users", async (req, res) => {
+  const { users, approver, event } = req.query;
+  // console.log('approver: ', approver)
+
+  //this call should be able to get the event information for all events that a user is a participant of
+  //this functions uses the query users
+  console.log('Received request for events_users. id:', users);
+
+  let query = await knex("events_users")
+    .join('events', 'events_users.events_id', '=', 'events.id')
+    .join('users', 'events_users.users_id', '=', 'users.id')
+    .select('*')
+    .where('users_id', users)
+    .then((data) => {
+      if (data.length !== 0) {
+        console.log('Query results:', JSON.stringify(data, null, 2));
+        res.status(200).send(data);
+      } else {
+        res.status(404).send("Error retrieving data")
+      }
+    })
+    .catch((err) => {
+      console.error('Error executing query:', err);
+      res.status(500).send(`Error retrieving events_users data: ${err}`);
+    });
+
+  //this call should be able to get the event information for all events that a user is an approver of
+  //this functions uses the query approver (this is a user id)
+
+
+  //this call should be able to get the event information for a specific event by event id
+  //this functions uses the query event
+
+  //https://localhost:8080/events_users?id=1
+});
+
 
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
 
-
+// .join('users', 'users.id', 'events.users_id')
+// .select('posts.id', 'users.username', 'posts.contents')
+// .where({user_id: id})
 
 //======================Register===========================\\
-// app.post('/users', authenticateUser, async (req, res) => {
+// app.post('/register', authenticateUser, async (req, res) => {
 //   const newUser = req.body;
 //   bcrypt.hash(newUser.password, 10, (err, hashedPassword) => {
 //       if (err) {
@@ -293,7 +333,7 @@ app.listen(PORT, () => {
 //           .insert(newUser)
 //           .returning('id')
 //           .then((id) => {
-//               res.status(201).json({ id: id[0], ...newUser });
+//               res.status(201).redirect('/login');//redirect to login route
 //           })
 //           .catch((err) => {
 //               console.error(err);
