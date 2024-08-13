@@ -4,6 +4,7 @@ import NavBar from './components/NavBar/NavBar';
 import Profile from './components/Profile.jsx'
 import Calender from './components/Calender.js'
 import Register from './components/Register/Register.js';
+import NotFound from './components/NotFound/NotFound.js';
 
 function App() {
       return (
@@ -15,6 +16,7 @@ function App() {
                         <Route path='/sign-up' element={<Register />} />
                         <Route path='/calender' element={<Calender />} />
                         <Route path='/profile' element={<Profile />} />
+                        <Route path='*' element={<NotFound/>}/>
                   </Routes>
                   {/* <Profile /> */}
             </>
