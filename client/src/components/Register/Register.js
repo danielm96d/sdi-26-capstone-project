@@ -33,6 +33,7 @@ export default function Register() {
                 position: "bottom-right"
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result])
 
 

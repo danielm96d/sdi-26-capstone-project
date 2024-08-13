@@ -2,7 +2,7 @@ import { Avatar, ButtonGroup, Center, Divider, Flex, Heading, IconButton, Stack 
 import ToggleTheme from "./ToggleTheme";
 import { Link } from 'react-router-dom';
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Input, DrawerFooter, Text } from "@chakra-ui/react";
+import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Text } from "@chakra-ui/react";
 import { useRef } from "react";
 
 export default function NavBar() {
