@@ -4,6 +4,7 @@ import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
 import RequestModal from "./components/request.jsx"
 import { ChakraProvider } from '@chakra-ui/react'
+import Register from './components/Register/Register.js';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
     <NavBar/>
     <Routes>
       <Route path='/' element={<Login/>}/>
+      <Route path='/sign-up' element={<Register/>}/>
     </Routes>
       {/* <Profile /> */}
     </>
