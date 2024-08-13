@@ -6,7 +6,7 @@ import {
     AutoCompleteItem,
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select } from '@chakra-ui/react';
+import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 export default function Register() {
     const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", role: "" });
@@ -127,6 +127,12 @@ export default function Register() {
                     <Center>
                         <Button isLoading={loading} onClick={submitRegister}>Register</Button>
                     </Center>
+                    <Text textAlign="center">
+                            Already have an account?{' '}
+                            <Link color='teal.500' href='/'>
+                                sign in
+                            </Link>
+                        </Text>
                 </Stack>
             </Box>
         </>
