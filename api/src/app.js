@@ -20,16 +20,16 @@ app.get("/", (req, res)=>{
 app.get("/users*", ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
-  
-  if (!id) { 
-    knex("users") 
-    .select('*') // selects all info from users_table
+
+  if (!id) {
+    knex("users")
+    .select('*')
     .then((data) => {
       res.status(200).send(data);
     })
     .catch((err) => {
       console.log(err);
-      res.status(301).send("Error retrieving users");
+      res.status(301).send(`Error retrieving single user: ${err}`);
     });
   } else if (id) {
     knex('users')
@@ -40,13 +40,58 @@ app.get("/users*", ( req, res ) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(301).send("Error retrieving single user");
+        res.status(301).send(`Error retrieving single user: ${err}`);
       })
   }
 });
+
+app.post("/users", (req, res) => {
+  const newUser = req.body;
+
+  knex('users')
+    .insert(newUser)
+    .returning('*')
+    .then((insertedUser) => {
+      res.status(201).json(insertedUser[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(`Error creating new user: ${err}`);
+    });
+});
+
 
 
 
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
+
+
+// app.get("/events*", ( req, res ) => {
+//   const {id} = req.query
+//   console.log('id: ', id);
+
+//   if (!id) {
+//     knex("events")
+//     .select('*') // selects all info from events_table
+//     .then((data) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(301).send("Error retrieving events");
+//     });
+//   } else if (id) {
+//     knex('events')
+//       .select('*')
+//       .where({ id: id })
+//       .then((data) => {
+//         res.status(200).send(data);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         res.status(301).send("Error retrieving single event");
+//       })
+//   }
+// });
