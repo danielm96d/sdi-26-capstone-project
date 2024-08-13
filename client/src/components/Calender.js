@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   GridItem,
-  Button,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Card
 } from '@chakra-ui/react'
 import { useDisclosure, Lorem, Select, Input} from '@chakra-ui/react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
 import interactionPlugin from '@fullcalendar/interaction';
 
@@ -20,6 +15,7 @@ const requestServer = 'http://localhost:8080/'
 export default function Calender () {
   const [dayEvents, setDayEvents] = useState()
   const [monthEvents, setMonthEvents] = useState()
+  const calenderRef = useRef(null);
 
   useEffect(() => {
     monthEventsFetch();
@@ -35,7 +31,7 @@ export default function Calender () {
       console.log(error)
     }
   }
-  const dayEventsFetch = async () => {
+  const dayEventsFetch = async (selectedDate) => {
     try{
       const response = await fetch(requestServer);
       const data = await response.json();
@@ -46,10 +42,41 @@ export default function Calender () {
   }
 
   function handleDateSelect(selectInfo) {
-    let calendarApi = selectInfo.view.calendar;
-    console.log("clicked date")
+    let selectedDate =selectInfo.startStr;
+    console.log(selectInfo.startStr)
+    calenderRef.current.getApi().gotoDate(selectedDate)
+
   }
 
+  const calendarDataCalendar = [
+    {
+      title: "Cyber Week2",
+
+      borderColor: "transparent",
+      start: "2024-08-13T13:30",
+      end: "2024-08-13T14:00",
+      backgroundColor: "#805AD5",
+      className: "warning"
+    },
+    {
+      title: "Cyber Week",
+
+      borderColor: "transparent",
+      start: "2024-08-13T06:30",
+      end: "2024-08-13T12:00",
+      backgroundColor: "#805AD5",
+      className: "warning"
+    },
+    {
+      title: "Cyber Week2",
+
+      borderColor: "transparent",
+      start: "2024-08-13",
+      end: "2024-08-13",
+      backgroundColor: "#805AD5",
+      className: "warning"
+    }
+  ];
   return (
     <Grid
   h='800px'
@@ -63,14 +90,26 @@ export default function Calender () {
         plugins={[dayGridPlugin, interactionPlugin]}
         height="90%"
         initialView='dayGridMonth'
+        events={calendarDataCalendar}
         selectable={true}
         selectMirror={true}
         select={handleDateSelect}
+
       />
       </GridItem>
       <GridItem colSpan={3}  display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
     borderColor='black'
-    rounded='md'></GridItem>
+    rounded='md'>
+      <FullCalendar
+        ref={calenderRef}
+        plugins={[timeGridPlugin, interactionPlugin]}
+        height="90%"
+        initialView='timeGridDay'
+        events={calendarDataCalendar}
+        selectable={true}
+        selectMirror={true}
+      />
+    </GridItem>
       </Grid>
     )
 }

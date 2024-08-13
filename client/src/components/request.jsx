@@ -32,11 +32,10 @@ function RequestModal() {
     e.preventDefault();
     onClose();
     console.log("Type: " + type + "\n")
-    console.log("Start Date: " + startDate + "\n")
-    console.log("End Date: " + endDate + "\n")
-    console.log("start Time: " + startTime + "\n")
-    console.log("end Time: " + endTime + "\n")
+    console.log("Start Date/Time: " + `${startDate}T${startTime}` +"\n")
+    console.log("End Date: " + `${endDate}T${endTime}` +"\n")
     console.log("desc: " + desc + "\n")
+    //T00:00
     try{
       await fetch(requestServer, {
         method: 'POST',
@@ -47,10 +46,8 @@ function RequestModal() {
         },
         body: JSON.stringify({
           type: type,
-          startDate:startDate,
-          endDate: endDate,
-          startTime: startTime,
-          endTime: endTime,
+          start:`${startDate}T${startTime}`,
+          end: `${endDate}T${endTime}`,
           desc: desc
         })
       })
