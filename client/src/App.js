@@ -5,12 +5,10 @@ import NavBar from './components/NavBar/NavBar';
 import RequestModal from "./components/request.jsx"
 import Profile from './components/Profile.jsx'
 import Calendar from './components/Calender.js'
-import { ChakraProvider } from '@chakra-ui/react'
 import Register from './components/Register/Register.js';
 
 function App() {
   return (
-    <ChakraProvider>
     <>
     <NavBar/>
     <Routes>
@@ -20,7 +18,6 @@ function App() {
       <Route path='/profile' element={<Profile/>}/>
     </Routes>
     </>
-    </ChakraProvider>
   );
 }
 
