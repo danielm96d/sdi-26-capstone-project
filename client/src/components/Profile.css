@@ -1,3 +1,7 @@
 .fc-col-header-cell-cushion{
-font-size: 8;
+  font-size: 12px;
+}
+
+.fc-toolbar-title {
+  font-size:14px;
 }
