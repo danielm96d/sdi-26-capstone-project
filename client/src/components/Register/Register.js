@@ -75,19 +75,19 @@ export default function Register() {
                 },
                 body: JSON.stringify(register)
             })
-            .then(res => res.json())
-            .then(json => setResult(json))
-            .catch(() => {
-                toast({
-                    title: "Error!",
-                    description: "We're sorry an unexpected error has occured!",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "bottom-right"
+                .then(res => res.json())
+                .then(json => setResult(json))
+                .catch(() => {
+                    toast({
+                        title: "Error!",
+                        description: "We're sorry an unexpected error has occured!",
+                        status: "error",
+                        duration: 5000,
+                        isClosable: true,
+                        position: "bottom-right"
+                    })
+                    setLoading(false)
                 })
-                setLoading(false)
-            })
         }
     }
     return (

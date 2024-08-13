@@ -77,12 +77,12 @@ export default function Login() {
                     <Center>
                         <Button isLoading={loading} onClick={submitLogin}>Login</Button>
                     </Center>
-                        <Text textAlign="center">
-                            Don&apos;t have an account?{' '}
-                            <Link color='teal.500' href='/sign-up'>
-                                sign up
-                            </Link>
-                        </Text>
+                    <Text textAlign="center">
+                        Don&apos;t have an account?{' '}
+                        <Link color='teal.500' href='/sign-up'>
+                            sign up
+                        </Link>
+                    </Text>
                 </Stack>
             </Box>
         </>

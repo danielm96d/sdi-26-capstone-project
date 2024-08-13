@@ -7,19 +7,19 @@ import Calender from './components/Calender.js'
 import Register from './components/Register/Register.js';
 
 function App() {
-  return (
-    <>
-      <NavBar />
-    <Routes>
-      <Route path='/' element={<Login/>}/>
-      <Route path='/profile' element={<Profile />}/>
-      <Route path='/sign-up' element={<Register/>}/>
-      <Route path='/calender' element={<Calender/>}/>
-      <Route path='/profile' element={<Profile/>}/>
-    </Routes>
-      {/* <Profile /> */}
-    </>
-  );
+      return (
+            <>
+                  <NavBar />
+                  <Routes>
+                        <Route path='/' element={<Login />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/sign-up' element={<Register />} />
+                        <Route path='/calender' element={<Calender />} />
+                        <Route path='/profile' element={<Profile />} />
+                  </Routes>
+                  {/* <Profile /> */}
+            </>
+      );
 }
 
 export default App;

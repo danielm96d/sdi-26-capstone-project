@@ -32,16 +32,16 @@ export default function NavBar() {
           </DrawerHeader>
 
           <DrawerBody>
-            <Divider marginBottom="1em"/>
+            <Divider marginBottom="1em" />
             <Center>
               <ButtonGroup variant="ghost">
-                <Stack spacing={10}> 
+                <Stack spacing={10}>
                   <Button>Home</Button>
                   <Button>Calender</Button>
                   <Button>Approval</Button>
                   <Button>Create Event</Button>
                   <Button>Logout</Button>
-                  <ToggleTheme/>
+                  <ToggleTheme />
                 </Stack>
               </ButtonGroup>
             </Center>
