@@ -1,8 +1,12 @@
 import { Heading, Text, Avatar, Center, Stack, Link, Box } from "@chakra-ui/react";
+import { Helmet } from "react-helmet";
 
 export default function NotFound() {
     return (
         <>
+        <Helmet>
+            <title>OpSync | Not Found</title>
+        </Helmet>
             <Box textAlign="center">
 
                 <Stack>
