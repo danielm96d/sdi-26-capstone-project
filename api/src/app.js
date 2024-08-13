@@ -106,87 +106,91 @@ app.patch("/users/:id", (req, res) => {
     });
 });
 
+
 //=====================================Events CRUD===========================================\\
+//------------------READ (all and by id)-------------------\\
+app.get("/events*", ( req, res ) => {
+  const {id} = req.query
+  console.log('id: ', id);
+
+  if (!id) {
+    knex("events")
+    .select('*') // selects all info from events_table
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving events");
+    });
+  } else if (id) {
+    knex('events')
+      .select('*')
+      .where({ id: id })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send("Error retrieving single event");
+      })
+  }
+});
+//------------------CREATE-------------------\\
+app.post("/events", (req, res) => {
+  const newEvent = req.body;
+
+  knex('events')
+    .insert(newEvent)
+    .returning('*')
+    .then((insertedEvent) => {
+      res.status(201).json(insertedEvent[0]);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(`Error creating new event: ${err}`);
+    });
+});
+//------------------UPDATE(by id)-------------------\\
+app.patch('/events/:id', (req, res) => {
+  const updatedEvent = req.body;
+  console.log('updatedEvent: ', updatedEvent)
+
+  knex('events')
+    .where({ id: req.params.id })
+    .update(updatedEvent)
+    .then((updatedCount) => {
+      if (updatedCount) {
+        res.json({ message: 'Event updated successfully' });
+      } else {
+        res.status(404).json({ error: 'Event not found' });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(400).send(`Error updating Event: ${err}`);
+    });
+});
+//------------------DELETE (by id)-------------------\\
+app.delete('/events/:id', (req, res) => {
+  knex('events')
+    .where({ id: req.params.id })
+    .del()
+    .then((deletedCount) => {
+      if (deletedCount > 0) {
+        res.json({ message: 'Event deleted successfully' });
+      } else {
+        res.status(404).json({ error: 'Event not found' });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(400).send(`Error deleting event: ${err}`);
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
 
 
-// app.get("/events*", ( req, res ) => {
-//   const {id} = req.query
-//   console.log('id: ', id);
-
-//   if (!id) {
-//     knex("events")
-//     .select('*') // selects all info from events_table
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(301).send("Error retrieving events");
-//     });
-//   } else if (id) {
-//     knex('events')
-//       .select('*')
-//       .where({ id: id })
-//       .then((data) => {
-//         res.status(200).send(data);
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         res.status(301).send("Error retrieving single event");
-//       })
-//   }
-// });
-
-// app.post("/events", (req, res) => {
-//   const newUser = req.body;
-
-//   knex('events')
-//     .insert(newEvent)
-//     .returning('*')
-//     .then((insertedEvent) => {
-//       res.status(201).json(insertedEvent[0]);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(500).send(`Error creating new event: ${err}`);
-//     });
-// });
-
-// app.put('/events/:id', (req, res) => {
-//   const updatedEvent = req.body;
-//   knex('events')
-//     .where({ id: req.params.id })
-//     .update(updatedEvent)
-//     .then((updatedCount) => {
-//       if (updatedCount) {
-//         res.json({ message: 'Event updated successfully' });
-//       } else {
-//         res.status(404).json({ error: 'Event not found' });
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(400).send(`Error updating Event: ${err}`);
-//     });
-// });
-
-// app.delete('/events/:id', (req, res) => {
-//   knex('events')
-//     .where({ id: req.params.id })
-//     .del()
-//     .then((deletedCount) => {
-//       if (deletedCount > 0) {
-//         res.json({ message: 'Event deleted successfully' });
-//       } else {
-//         res.status(404).json({ error: 'Event not found' });
-//       }
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(400).send(`Error deleting event: ${err}`);
-//     });
-// });
