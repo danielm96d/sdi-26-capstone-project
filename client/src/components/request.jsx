@@ -19,7 +19,7 @@ const requestServer = 'http://localhost:8080/'
 
 function RequestModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [type, setType] = useState(null);
+  const [type, setType] = useState("apt");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [startTime, setStartTime] = useState(null);
@@ -31,6 +31,12 @@ function RequestModal() {
   const submitFunction = async (e) => {
     e.preventDefault();
     onClose();
+    console.log("Type: " + type + "\n")
+    console.log("Start Date: " + startDate + "\n")
+    console.log("End Date: " + endDate + "\n")
+    console.log("start Time: " + startTime + "\n")
+    console.log("end Time: " + endTime + "\n")
+    console.log("desc: " + desc + "\n")
     try{
       await fetch(requestServer, {
         method: 'POST',
@@ -73,7 +79,7 @@ function RequestModal() {
               </Select><br />
               <Card>
                 <FormLabel>Start Date</FormLabel>
-                <Input type="date" onChange={(e)=> setType(e.target.value)}/><br />
+                <Input type="date" onChange={(e)=> setStartDate(e.target.value)}/><br />
                 <FormLabel>Start Time</FormLabel>
                 <Input type="time" onChange={(e)=> setStartTime(e.target.value)}/><br />
               </Card>
