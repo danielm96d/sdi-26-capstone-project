@@ -303,7 +303,23 @@ app.get("/events_users", async (req, res) => {
 
   //this call should be able to get the event information for all events that a user is an approver of
   //this functions uses the query approver (this is a user id)
-
+  // let query1 = await knex("events_users")
+  //   .join('events', 'events_users.events_id', '=', 'events.id')
+  //   .join('users', 'events_users.users_id', '=', 'users.id')
+  //   .select('*')
+  //   .where('approver_id', approver)
+  //   .then((data) => {
+  //     if (data.length !== 0 && data.isApprover) {
+  //       console.log('Query results:', JSON.stringify(data, null, 2));
+  //       res.status(200).send(data);
+  //     } else {
+  //       res.status(404).send("Error retrieving approver data")
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.error('Error executing query:', err);
+  //     res.status(500).send(`Error retrieving events_users data: ${err}`);
+  //   });
 
   //this call should be able to get the event information for a specific event by event id
   //this functions uses the query event
