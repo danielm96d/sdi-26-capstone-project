@@ -111,7 +111,7 @@ app.patch("/users/:id", (req, res) => {
 //=====================================Events CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
 app.get("/events", async ( req, res ) => {
-  const {id, request} = req.query
+  const {id} = req.query
   console.log('id: ', id);
 
   if (!id) {
