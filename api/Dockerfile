@@ -1,4 +1,4 @@
-FROM node:alpine 
+FROM node:alpine
 
 WORKDIR /app/api
 
@@ -9,4 +9,4 @@ RUN npm install nodemon
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

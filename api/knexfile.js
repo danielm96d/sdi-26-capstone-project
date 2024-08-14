@@ -4,18 +4,6 @@ require("dotenv").config();
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
-
-  compose: {
-    client: "pg",
-    connection: {
-      host: "db",
-      port: "5432",
-      user: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB
-    }
-  },
-
   development: {
     client: 'pg',
     connection: {
