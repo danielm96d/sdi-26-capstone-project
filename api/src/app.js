@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require('bcryptjs')
 const app = express();
+const util = require('util')
 // **NOTE: process.env.NODE_ENV is keyed to use compose as opposed to development, may need altering for deployment
 const knex = require("knex")(
   require("../knexfile.js")[process.env.NODE_ENV || "development"]
@@ -109,8 +110,8 @@ app.patch("/users/:id", (req, res) => {
 
 //=====================================Events CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
-app.get("/events", ( req, res ) => {
-  const {id} = req.query
+app.get("/events", async ( req, res ) => {
+  const {id, request} = req.query
   console.log('id: ', id);
 
   if (!id) {
@@ -124,18 +125,84 @@ app.get("/events", ( req, res ) => {
       res.status(301).send("Error retrieving events");
     });
   } else if (id) {
-    knex('events')
+    let responseData = []
+    let eventData = await knex('events')
       .select('*')
       .where({ id: id })
-      .then((data) => {
-        res.status(200).send(data);
-      })
       .catch((err) => {
         console.log(err);
         res.status(301).send("Error retrieving single event");
       })
+
+    responseData.push(...eventData)
+    let approverData = await knex("events_users")
+      .join('users', 'events_users.users_id', '=', 'users.id')
+      .select('users_id as id', 'name', 'rank')
+      .where({
+        'events_users.events_id': id,
+        'users.isApprover': true
+      })
+
+    responseData[0].approver = approverData;
+
+    let positionData = await knex('positions')
+      .join('users', 'positions.users_id', '=', 'users.id')
+      .join('events', 'positions.events_id', '=', 'events.id')
+      .select(
+        'positions.id',
+        'positions.name as position_name',
+        'positions.events_id',
+        'positions.users_id as user_id',
+        'users.name as victim',
+        'users.rank',
+      )
+      .where({
+        'positions.events_id': id
+      })
+
+    responseData[0].position = positionData;
+    res.status(200).send(responseData)
+
+
   }
 });
+
+app.get('/events/requests', (req,res) => {
+  const {id} = req.query;
+  // console.log('event request ID: ', id)
+
+  if (!id) {
+    knex("events")
+    .select('*') // selects all info from events_table
+    .where({
+      'type': 'Request'
+    })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving events");
+    });
+  } else if(id){
+    knex("events")
+    .select('*') // selects all info from events_table
+    .where({
+      'type': 'Request',
+      "id": id
+    })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving events");
+    });
+  } else {
+    res.status(301).send("Error retrieving events");
+  }
+})
+
 //------------------CREATE-------------------\\
 app.post("/events", (req, res) => {
   const newEvent = req.body;
@@ -151,6 +218,7 @@ app.post("/events", (req, res) => {
       res.status(500).send(`Error creating new event: ${err}`);
     });
 });
+
 //------------------UPDATE(by id)-------------------\\
 app.patch('/events/:id', (req, res) => {
   const updatedEvent = req.body;
@@ -301,12 +369,14 @@ app.get("/events_users", async (req, res) => {
       console.error('Error executing query:', err);
       res.status(500).send(`Error retrieving events_users data: ${err}`);
     });
+    //this call should be able to get the event information for all events that a user is an approver of
+    //this functions uses the query approver (this is a user id)
   } else if (approver){
       await knex("events_users")
         .join('events', 'events_users.events_id', '=', 'events.id')
         .join('users', 'events_users.users_id', '=', 'users.id')
         .select('*')
-        .where('users_id', approver)
+        .where('approver_id', approver)
         .andWhere({
           isApprover: 'true'
         })
@@ -319,19 +389,31 @@ app.get("/events_users", async (req, res) => {
         })
         .catch((err) => {
           console.error('Error executing query:', err);
-          res.status(500).send(`Error retrieving events_users data: ${err}`);
+          res.status(500).send(`Error retrieving approver data: ${err}`);
         });
+        //this call should be able to get the event information for a specific event by event id
+        //this functions uses the query event
+  } else if (event) {
+      await knex('events_users')
+      .join('events', 'events_users.events_id', '=', 'events.id')
+      .join('users', 'events_users.users_id', '=', 'users.id')
+      .select('*')
+      .where('events_id', event)
+      .then((data) => {
+        if (data.length !== 0) {
+          res.status(200).send(data);
+        } else {
+          res.status(404).send("No event data found")
+        }
+      })
+      .catch((err) => {
+        console.error('Error executing query:', err);
+        res.status(500).send(`Error retrieving event data: ${err}`);
+      });
   }
-
-
-  //this call should be able to get the event information for all events that a user is an approver of
-  //this functions uses the query approver (this is a user id)
-
-  //this call should be able to get the event information for a specific event by event id
-  //this functions uses the query event
-
-  //https://localhost:8080/events_users?id=1
 });
+
+
 
 
 app.listen(PORT, () => {

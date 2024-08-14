@@ -42,5 +42,17 @@ exports.seed = async function (knex) {
       location: "DC",
       POCinfo: "John"
     },
+    {
+      name: "Surgery Recovery",
+      startTime: "07:00:00",
+      endTime: "16:00:00",
+      startDate: "2025-01-20",
+      endDate: "2025-01-20",
+      description: "long day",
+      type: "Request",
+      approved: "true",
+      location: "DC",
+      POCinfo: "John"
+    }
   ]);
 };
