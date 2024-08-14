@@ -1,26 +1,18 @@
 // Update with your config settings.
 require("dotenv").config();
-
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
-
-  compose: {
-    client: "pg",
+  development: {
+    client: 'pg',
     connection: {
       host: "db",
       port: "5432",
       user: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB
-    }
-  },
-
-  development: {
-    client: 'pg',
-    connection: process.env.DB_CONNECTION_STRING
-//DB_CONNECTION_STRING=postgresql://postgres:docker@db:5432/db
+    },
   },
 
   staging: {

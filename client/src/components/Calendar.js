@@ -27,9 +27,36 @@ export default function Calendar () {
 
   const monthEventsFetch = async () => {
     try{
-      const response = await fetch(requestServer);
+      const response = await fetch(`${requestServer}events`);
       const data = await response.json();
-      setMonthEvents(data);
+      let copiedData = data;
+      data.map((event, index)=>{
+        let indexOfT = event.startDate.indexOf("T");
+        copiedData[index].start = `${event.startDate.slice(0, indexOfT)}T${event.startTime}`
+        copiedData[index].end = `${event.endDate.slice(0, indexOfT)}T${event.endTime}`
+        copiedData[index].title = `${event.name}`
+        let bg = 'blue'
+        let textColor = 'white'
+          if (event.type === 'Retirement'){
+              bg = 'green'
+          }
+          if (event.type === 'Funeral'){
+            bg = 'tomato'
+          }
+          if (event.type === 'Inauguration'){
+            bg = 'papayawhip'
+            textColor = 'black'
+          }
+        copiedData[index].backgroundColor = bg;
+        copiedData[index].textColor = textColor
+        // copiedData[index].allDay = `${event.endDate.slice(0, indexOfT)}T${event.endTime}`
+        delete copiedData[index].endDate;
+        delete copiedData[index].endTime;
+        delete copiedData[index].startDate;
+        delete copiedData[index].startTime;
+      })
+      setMonthEvents(copiedData);
+      console.log(copiedData)
     } catch (error){
       console.log(error)
     }
@@ -61,26 +88,9 @@ export default function Calendar () {
       end: "2024-08-13T14:00",
       backgroundColor: "#805AD5",
       className: "warning"
-    },
-    {
-      title: "Cyber Week",
-      id: 2,
-      borderColor: "transparent",
-      start: "2024-08-13T06:30",
-      end: "2024-08-13T12:00",
-      backgroundColor: "#805AD5",
-      className: "warning"
-    },
-    {
-      title: "Cyber Week2",
-      id: 3,
-      borderColor: "transparent",
-      start: "2024-08-13",
-      end: "2024-08-13",
-      backgroundColor: "#805AD5",
-      className: "warning"
     }
   ];
+
   return (
     <Grid
   h='800px'
@@ -94,7 +104,7 @@ export default function Calendar () {
         plugins={[dayGridPlugin, interactionPlugin]}
         height="90%"
         initialView='dayGridMonth'
-        events={calendarDataCalendar}
+        events={monthEvents}
         selectable={true}
         selectMirror={true}
         select={handleDateSelect}
@@ -110,7 +120,7 @@ export default function Calendar () {
         plugins={[timeGridPlugin, interactionPlugin]}
         height="90%"
         initialView='timeGridDay'
-        events={calendarDataCalendar}
+        events={monthEvents}
         selectMirror={true}
         select={handleDateSelect}
         eventClick={(info)=>{navigate(`/scheduler/${info.event.id}`)

@@ -13,6 +13,8 @@ exports.up = function(knex) {
     table.text('description');
     table.string('type').notNullable();
     table.boolean('approved').defaultTo(false);
+    table.string('location');
+    table.string('POCinfo');
     table.timestamps(true, true);
   })
 };
