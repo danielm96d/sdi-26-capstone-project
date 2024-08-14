@@ -7,6 +7,8 @@ exports.up = function(knex) {
     table.increments();// table.increments('id').primary();
 
     table.string('name').notNullable();
+    table.integer('users_id').unsigned();
+    table.foreign("users_id").references("id").inTable('users').onDelete("CASCADE");
     table.integer('events_id').unsigned();
     table.foreign("events_id").references("id").inTable('events').onDelete("CASCADE");
   })
@@ -19,9 +21,9 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema
   .alterTable("positions", (table) => {
-    return knex.schema.hasColumn("positions", "events_id").then((exists) => {
+    return knex.schema.hasColumn("positions", "users_id", "events_id").then((exists) => {
       if (exists) {
-        table.dropForeign("events_id");
+        table.dropForeign("users_id", "events_id");
       }
     });
   })
