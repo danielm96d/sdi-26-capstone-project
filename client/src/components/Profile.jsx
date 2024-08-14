@@ -8,6 +8,7 @@ import {
 import { useDisclosure, Lorem, Select, Input, Flex} from '@chakra-ui/react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import listPlugin from '@fullcalendar/list';
 
 import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
@@ -19,9 +20,30 @@ function Profile() {
   const [notifications, setNotifications] = useState()
   const [dayEvents, setDayEvents] = useState()
   const [weekEvents, setWeekEvents] = useState()
+  const views = {dayGridFourWeek:{
+    type: 'dayGrid',
+    duration: { weeks: 1},
+    titleFormat: {
+      month: 'short',
+      year: '2-digit',
+    },
+    dayHeaderFormat: {
+      weekday: 'narrow',
+      day: 'numeric',
+    }
 
 
+  },
+      listGridDay:{
 
+          start: 'title',
+          center: '',
+          end: 'today prev,next'
+        }
+      }
+}
+
+const eventClickHander =
   useEffect(() => {
     userInfoFetch();
     notificationsFetch();
@@ -76,7 +98,7 @@ function Profile() {
   h='800px'
   templateColumns='repeat(8, minmax(120px, 1fr))'
   gap={4}
->
+    >
   <GridItem colSpan={2}  display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
     borderColor='black'
     rounded='md'>
@@ -108,7 +130,19 @@ function Profile() {
     <div >
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
-        initialView='dayGridWeek'
+        initialView='dayGridFourWeek'
+        views={views}
+        height = '200px'
+        selectable={true}
+        selectMirror={true}
+        select={handleDateSelect}
+      />
+    </div>
+    <div >
+      <FullCalendar
+        plugins={[ listPlugin]}
+        initialView='listDay'
+        views={viewsList}
         height = '200px'
         selectable={true}
         selectMirror={true}
@@ -140,3 +174,16 @@ function Profile() {
 }
 
 export default Profile;
+
+
+  // <FullCalendar
+  //       plugins={[dayGridPlugin, interactionPlugin]}
+  //       height="90%"
+  //       initialView='dayGridMonth'
+  //       events={monthEvents}
+  //       selectable={true}
+  //       selectMirror={true}
+  //       select={handleDateSelect}
+  //       eventClick={(info)=>{navigate(`/scheduler/${info.event.id}`)
+  //       }}
+  //     />
