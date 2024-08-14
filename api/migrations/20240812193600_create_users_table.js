@@ -5,11 +5,11 @@
 exports.up = function(knex) {
   return knex.schema.createTable('users', table => {
     table.increments();
-    table.string('name');
-    table.string('rank');
-    table.string("password");
-    table.string('username');
-    table.boolean('isApprover');
+    table.string('name').notNullable();
+    table.string('rank').notNullable();
+    table.string("password").notNullable();
+    table.string('username').notNullable();
+    table.boolean('isApprover').notNullable();
   })
 };
 
@@ -20,3 +20,4 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema.dropTableIfExists('users');
 };
+

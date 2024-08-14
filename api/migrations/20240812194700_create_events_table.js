@@ -5,14 +5,17 @@
 exports.up = function(knex) {
   return knex.schema.createTable('events', table => {
     table.increments();
-    table.string('name');
-    table.datetime('startTime');
-    table.datetime('endTime');
-    table.date('startDate');
-    table.date('endDate');
+    table.string('name').notNullable();
+    table.time('startTime').notNullable();
+    table.time('endTime').notNullable();
+    table.date('startDate').notNullable();
+    table.date('endDate').notNullable();
     table.text('description');
-    table.string('type');
-    table.boolean('approved');
+    table.string('type').notNullable();
+    table.boolean('approved').defaultTo(false);
+    table.string('location');
+    table.string('POCinfo');
+    table.timestamps(true, true);
   })
 };
 
@@ -21,5 +24,8 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('events_table');
+  return knex.schema.dropTableIfExists('events');
 };
+
+// table.increments('id').primary();
+
