@@ -10,7 +10,7 @@ exports.up = function(knex) {
     table.integer('approver_id').unsigned();
     table.foreign('events_id').references('id').inTable('events').onDelete('CASCADE');//references("id").inTable('events').
     table.foreign('users_id').references('id').inTable('users').onDelete('CASCADE');//references("id").inTable('users').
-    table.foreign('approver_id').references('id').inTable('users').onDelete('SET NULL');//references("id").inTable('users').
+    table.foreign('approver_id').references('id').inTable('users').onDelete('CASCADE');//references("id").inTable('users').
     // table.unique(['events_id', 'users_id']);
   })
 };

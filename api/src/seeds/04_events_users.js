@@ -10,12 +10,12 @@ exports.seed = async function(knex) {
   const events = await knex('events').select('id');
 
   await knex('events_users').insert([
+    {events_id: events[1].id, users_id: users[2].id, approver_id: users[1].id},
     {events_id: events[1].id, users_id: users[1].id, approver_id: users[1].id},
-    {events_id: events[1].id, users_id: users[1].id, approver_id: users[1].id},
-    {events_id: events[2].id, users_id: users[2].id, approver_id: users[2].id}
-      // {events_id: 1, users_id: 2, approver_id: 2},
-      // {events_id: 2, users_id: 1, approver_id: 1},
-      // {events_id: 3, users_id: 3, approver_id: 3}
+    {events_id: events[1].id, users_id: users[3].id, approver_id: users[1].id},
+    {events_id: events[2].id, users_id: users[2].id, approver_id: users[3].id},
+    {events_id: events[2].id, users_id: users[1].id, approver_id: users[3].id},
+    {events_id: events[2].id, users_id: users[3].id, approver_id: users[3].id}
   ]);
 };
 
