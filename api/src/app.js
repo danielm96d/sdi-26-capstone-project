@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require('bcryptjs')
 const app = express();
+const util = require('util')
 // **NOTE: process.env.NODE_ENV is keyed to use compose as opposed to development, may need altering for deployment
 const knex = require("knex")(
   require("./knexfile.js")[process.env.NODE_ENV || "development"]
@@ -110,7 +111,7 @@ app.patch("/users/:id", (req, res) => {
 //=====================================Events CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
 app.get("/events", async ( req, res ) => {
-  const {id} = req.query
+  const {id, request} = req.query
   console.log('id: ', id);
 
   if (!id) {
@@ -124,50 +125,10 @@ app.get("/events", async ( req, res ) => {
       res.status(301).send("Error retrieving events");
     });
   } else if (id) {
-    /*
-    {
-      "id": 1,
-      "name": "Smith Funeral",
-      "startTime": "12:00:00",
-      "endTime": "12:00:00",
-      "startDate": "2024-08-26T00:00:00.000Z",
-      "endDate": "2024-08-26T00:00:00.000Z",
-      "description": "RIP in Peace",
-      "type": "Funeral",
-      "approved": true,
-      "location": "DC",
-      "POCinfo": "John",
-      "created_at": "2024-08-14T16:22:48.634Z",
-      "updated_at": "2024-08-14T16:22:48.634Z",
-
-      approver: {
-        "id": 1,
-        "name": "John",
-        "rank": "E1",
-      }
-      postions: [
-        {
-          "id": 2,
-          "name": "Firing Party",
-          "events_id": 1,
-          "victim": [
-            {
-              "id": 1,
-              "name": "John",
-              "rank": "E1"
-            }
-          ]
-        }
-      ]
-    }
-      */
     let responseData = []
     let eventData = await knex('events')
       .select('*')
       .where({ id: id })
-      // .then((data) => {
-      //   res.status(200).send(data);
-      // })
       .catch((err) => {
         console.log(err);
         res.status(301).send("Error retrieving single event");
@@ -175,84 +136,72 @@ app.get("/events", async ( req, res ) => {
 
     responseData.push(...eventData)
     let approverData = await knex("events_users")
-      // .join('events', 'events_users.events_id', '=', 'events.id')
       .join('users', 'events_users.users_id', '=', 'users.id')
       .select('users_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
         'users.isApprover': true
       })
+
     responseData[0].approver = approverData;
-    // console.log('responseData: ', responseData)
-    // res.status(200).send(responseData)
 
-    /* positions data should look like
-    [
-      {
-        "id": 1,
-        "name": "Firing Party",
-        "events_id": 1,
-        "victim": [
-          {
-            "id": 1,
-            "name": "John",
-            "rank": "E1"
-          }
-        ]
-      },
-      {
-        "id": 2,
-        "name": "Flag Bearer",
-        "events_id": 1,
-
-        "victim": [
-          {
-            "id": 1,
-            "name": "Frank",
-            "rank": "E2"
-          }
-        ]
-      }
-    ]
-    */
     let positionData = await knex('positions')
       .join('users', 'positions.users_id', '=', 'users.id')
       .join('events', 'positions.events_id', '=', 'events.id')
-      .select('positions.id', 'positions.name', 'positions.events_id', 'positions.users_id')
+      .select(
+        'positions.id',
+        'positions.name as position_name',
+        'positions.events_id',
+        'positions.users_id as user_id',
+        'users.name as victim',
+        'users.rank',
+      )
       .where({
         'positions.events_id': id
       })
-      // .then(async(data) => {
-      //   return data.map( async (position) => {
-      //     let victimData = await knex('positions')
-      //       .join('users', 'positions.users_id', '=', 'users.id')
-      //       .select('users.id', 'users.name', 'users.rank')
-      //       .where({
-      //         'events_id': id,
-      //         'users.id': position.users_id
-      //       })
-      //     // console.log('victim data: ', victimData)
-      //     // return position.users_id
-      //     position.victim = victimData
-      //     console.log('position: ', position)
-      //     return position;
-      //   })
-        // console.log('test: ', test)
-
-      // })
 
     responseData[0].position = positionData;
-
-    // .whereIn('users.id', positionUserIds)
-
-    // console.log('position user id: ', positionUserIds)
-    // console.log('position data: ', positionData)
+    res.status(200).send(responseData)
 
 
-      // responseData[0].position[0].victim = victimData;
-      res.status(200).send(responseData)
   }
 });
+
+app.get('/events/requests', (req,res) => {
+  const {id} = req.query;
+  // console.log('event request ID: ', id)
+
+  if (!id) {
+    knex("events")
+    .select('*') // selects all info from events_table
+    .where({
+      'type': 'Request'
+    })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving events");
+    });
+  } else if(id){
+    knex("events")
+    .select('*') // selects all info from events_table
+    .where({
+      'type': 'Request',
+      "id": id
+    })
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send("Error retrieving events");
+    });
+  } else {
+    res.status(301).send("Error retrieving events");
+  }
+})
 
 //------------------CREATE-------------------\\
 app.post("/events", (req, res) => {
@@ -269,6 +218,7 @@ app.post("/events", (req, res) => {
       res.status(500).send(`Error creating new event: ${err}`);
     });
 });
+
 //------------------UPDATE(by id)-------------------\\
 app.patch('/events/:id', (req, res) => {
   const updatedEvent = req.body;
