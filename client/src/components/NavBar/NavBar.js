@@ -1,6 +1,6 @@
 import { Avatar, ButtonGroup, Center, Divider, Flex, Heading, IconButton, Stack } from "@chakra-ui/react";
 import ToggleTheme from "./ToggleTheme";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Text } from "@chakra-ui/react";
 import { useRef } from "react";
@@ -8,6 +8,7 @@ import { useRef } from "react";
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
+  const navigate = useNavigate()
   return (
     <>
       <Flex padding="1rem" justifyContent="space-between">
@@ -36,10 +37,16 @@ export default function NavBar() {
             <Center>
               <ButtonGroup variant="ghost">
                 <Stack spacing={10}>
-                  <Button>Home</Button>
-                  <Button>Calender</Button>
+                  <Button onClick={()=>{
+                    onClose();
+                    navigate("/profile")}}>Home</Button>
+                  <Button onClick={()=>{
+                    onClose();
+                    navigate("/calendar")}}>Calendar</Button>
                   <Button>Approval</Button>
-                  <Button>Create Event</Button>
+                  <Button onClick={()=>{
+                    onClose();
+                    navigate("/event-entry")}}>Create Event</Button>
                   <Button>Logout</Button>
                   <ToggleTheme />
                 </Stack>
