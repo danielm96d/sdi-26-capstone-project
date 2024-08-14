@@ -1,84 +1,69 @@
-import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Stack, FormControl, FormLabel, Input, Button, useToast } from '@chakra-ui/react';
 
 export default function Login() {
-    const [invalid, setInvalid] = useState(false);
-    const [login, setLogin] = useState({ username: "", password: "" })
+    const [credentials, setCredentials] = useState({ username: '', password: '' });
     const [loading, setLoading] = useState(false);
-    const [response, setResponse] = useState({});
     const toast = useToast();
-
-    useEffect(() => {
-        if(!response.success && Object.keys(response).length > 1) {
-            toast({
-                title: response.title,
-                description: response.description,
-                duration: 5000,
-                status: response.status,
-                isClosable: true,
-                position: "bottom-right"
-            })
-        }
-    }, [response])
-
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
-        if (e.target.id === "username") {
-            setLogin({ ...login, username: e.target.value })
-        } else if (e.target.id === "password") {
-            setLogin({ ...login, password: e.target.value })
-        }
-    }
+        const { name, value } = e.target;
+        setCredentials(prev => ({ ...prev, [name]: value }));
+    };
 
-    const submitLogin = () => {
-        if (login.username.length < 1 || login.password.length < 1) {
-            setInvalid(true)
-        } else {
-            setLoading(true)
-            fetch('http://localhost:8080/login', {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await fetch('http://localhost:8080/login', {
                 method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(login)
-            })
-            .then(res => res.json())
-            .then(json => setResponse(json))
-            .catch(() => {
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(credentials),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
                 toast({
-                    title: "Error!",
-                    description: "We're sorry an unexpected error has occured!",
-                    status: "error",
-                    duration: 5000,
+                    title: "Login successful",
+                    status: "success",
+                    duration: 3000,
                     isClosable: true,
-                    position: "bottom-right"
-                })
-                setLoading(false)
-            })
+                });
+                navigate('/dashboard');
+            } else {
+                throw new Error(data.message || 'Login failed');
+            }
+        } catch (error) {
+            toast({
+                title: "Login failed",
+                description: error.message,
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+            });
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     return (
-        <>
-            <Box margin="0 auto" maxW="30%">
-                <Stack spacing={10}>
-                    <FormControl id="username" onChange={handleChange} isInvalid={invalid && login.username.length < 1} isRequired={true}>
-                        <FormLabel>Username</FormLabel>
-                        <Input placeholder="@username" />
-                        <FormHelperText>Enter the username you used to sign up!</FormHelperText>
-                        <FormErrorMessage>A username is required to login!</FormErrorMessage>
-                    </FormControl>
-                    <FormControl id="password" onChange={handleChange} isInvalid={invalid && login.password.length < 1} isRequired={true}>
-                        <FormLabel>Password</FormLabel>
-                        <Input type="password" placeholder="password" />
-                        <FormHelperText>Enter the password you used to sign up!</FormHelperText>
-                        <FormErrorMessage>A password is required to login!</FormErrorMessage>
-                    </FormControl>
-                    <Center>
-                        <Button isLoading={loading} onClick={submitLogin}>Login</Button>
-                    </Center>
-                </Stack>
-            </Box>
-        </>
-    )
+        <Box as="form" onSubmit={handleSubmit} maxWidth="400px" margin="auto">
+            <Stack spacing={4}>
+                <FormControl isRequired>
+                    <FormLabel>Username</FormLabel>
+                    <Input name="username" onChange={handleChange} />
+                </FormControl>
+                <FormControl isRequired>
+                    <FormLabel>Password</FormLabel>
+                    <Input name="password" type="password" onChange={handleChange} />
+                </FormControl>
+                <Button type="submit" colorScheme="blue" isLoading={loading}>
+                    Login
+                </Button>
+            </Stack>
+        </Box>
+    );
 }
