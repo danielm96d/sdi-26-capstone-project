@@ -136,8 +136,8 @@ app.get("/events", async ( req, res ) => {
 
     responseData.push(...eventData)
     let approverData = await knex("events_users")
-      .join('users', 'events_users.users_id', '=', 'users.id')
-      .select('users_id as id', 'name', 'rank')
+      .join('users', 'events_users.approver_id', '=', 'users.id')
+      .select('approver_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
         'users.isApprover': true
