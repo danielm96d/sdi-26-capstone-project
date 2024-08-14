@@ -34,6 +34,22 @@ export default function Calendar () {
         let indexOfT = event.startDate.indexOf("T");
         copiedData[index].start = `${event.startDate.slice(0, indexOfT)}T${event.startTime}`
         copiedData[index].end = `${event.endDate.slice(0, indexOfT)}T${event.endTime}`
+        copiedData[index].title = `${event.name}`
+        let bg = 'blue'
+        let textColor = 'white'
+          if (event.type === 'Retirement'){
+              bg = 'green'
+          }
+          if (event.type === 'Funeral'){
+            bg = 'tomato'
+          }
+          if (event.type === 'Inauguration'){
+            bg = 'papayawhip'
+            textColor = 'black'
+          }
+        copiedData[index].backgroundColor = bg;
+        copiedData[index].textColor = textColor
+        // copiedData[index].allDay = `${event.endDate.slice(0, indexOfT)}T${event.endTime}`
         delete copiedData[index].endDate;
         delete copiedData[index].endTime;
         delete copiedData[index].startDate;
@@ -104,7 +120,7 @@ export default function Calendar () {
         plugins={[timeGridPlugin, interactionPlugin]}
         height="90%"
         initialView='timeGridDay'
-        events={calendarDataCalendar}
+        events={monthEvents}
         selectMirror={true}
         select={handleDateSelect}
         eventClick={(info)=>{navigate(`/scheduler/${info.event.id}`)
