@@ -173,6 +173,7 @@ app.patch('/events/:id', (req, res) => {
 });
 //------------------DELETE (by id)-------------------\\
 app.delete('/events/:id', (req, res) => {
+console.log(req.params.id)
   knex('events')
     .where({ id: req.params.id })
     .del()
@@ -197,7 +198,7 @@ app.get("/positions*", ( req, res ) => {
   // console.log('wrong one')
 
   if (!id) {
-    knex("positions")
+    knex('positions')
     .select('*')
     .then((data) => {
       res.status(200).send(data);
@@ -209,7 +210,7 @@ app.get("/positions*", ( req, res ) => {
   } else if (id) {
     knex('positions')
       .select('*')
-      .where({ id: id })
+      .where({ events_id: id })
       .then((data) => {
         res.status(200).send(data);
       })
@@ -240,7 +241,7 @@ app.patch("/positions/:id", (req, res) => {
   const updates = req.body;
 
   knex('positions')
-    .where({ id: id })
+    .where({ events_id: id })
     .update(updates)
     .returning("*")
     .then((updatePositions) => {

@@ -33,7 +33,7 @@ services:
         target: /app/api/src
     networks:
       - my_network
-    
+
   client:
     container_name: client
     build: ./client
@@ -48,8 +48,13 @@ services:
     networks:
       - my_network
 
+
 volumes:
   db-data:
+
+networks:
+  my_network:
+    driver: bridge
 
 networks:
   my_network:
