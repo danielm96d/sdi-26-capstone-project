@@ -10,6 +10,13 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+    networks:
+      - my_network
+    # healthcheck:
+    #   test: [“CMD-SHELL”, “pg_isready -U postgres”]
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 5
 
   api:
     container_name: api
@@ -18,10 +25,14 @@ services:
       - '8080:8080'
     depends_on:
       - db
+      # db:
+      #   condition: service_healthy
     volumes:
       - type: bind
         source: ./api/src
         target: /app/api/src
+    networks:
+      - my_network
     
   client:
     container_name: client
@@ -34,7 +45,12 @@ services:
       - type: bind
         source: ./client/src
         target: /app/client/src
-    
+    networks:
+      - my_network
 
 volumes:
   db-data:
+
+networks:
+  my_network:
+    driver: bridge

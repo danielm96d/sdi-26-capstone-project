@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const app = express();
 // **NOTE: process.env.NODE_ENV is keyed to use compose as opposed to development, may need altering for deployment
 const knex = require("knex")(
-  require("./knexfile.js")[process.env.NODE_ENV || "development"]
+  require("../knexfile.js")[process.env.NODE_ENV || "development"]
 );
 const PORT = 8080;
 
