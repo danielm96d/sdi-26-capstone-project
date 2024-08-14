@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   GridItem,
   Image,
-  Box
+  Box,
+  Avatar
 } from '@chakra-ui/react'
 import { useDisclosure, Lorem, Select, Input, Flex} from '@chakra-ui/react';
 import FullCalendar from '@fullcalendar/react';
@@ -20,6 +21,9 @@ function Profile() {
   const [notifications, setNotifications] = useState()
   const [dayEvents, setDayEvents] = useState()
   const [weekEvents, setWeekEvents] = useState()
+  const [listDayVar, setListDayVar] = useState();
+  const calenderRef = useRef(null);
+
   const views = {dayGridFourWeek:{
     type: 'dayGrid',
     duration: { weeks: 1},
@@ -31,19 +35,12 @@ function Profile() {
       weekday: 'narrow',
       day: 'numeric',
     }
+  }}
 
 
-  },
-      listGridDay:{
-
-          start: 'title',
-          center: '',
-          end: 'today prev,next'
-        }
-      }
-}
-
-const eventClickHander =
+  const eventClickHander = () =>  {
+    let new3;
+  }
   useEffect(() => {
     userInfoFetch();
     notificationsFetch();
@@ -89,9 +86,19 @@ const eventClickHander =
   }
 
   function handleDateSelect(selectInfo) {
-    let calendarApi = selectInfo.view.calendar;
-    console.log("clicked date")
+    let selectedDate =selectInfo.startStr;
+    console.log(selectInfo.startStr)
+    calenderRef.current.getApi().gotoDate(selectedDate)
+
   }
+
+{/* <Image
+     borderRadius='full'
+     boxSize='150px'
+     src={process.env.PUBLIC_URL + '/elonez.jpg'}
+     alt='Dan Abramov'
+     mt='50px'
+     /> */}
 
   return(
     <Grid
@@ -102,13 +109,8 @@ const eventClickHander =
   <GridItem colSpan={2}  display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
     borderColor='black'
     rounded='md'>
-    <Image
-     borderRadius='full'
-     boxSize='150px'
-     src={process.env.PUBLIC_URL + '/elonez.jpg'}
-     alt='Dan Abramov'
-     mt='50px'
-     />
+      <br/ >
+   <Avatar name='User Name' size='2xl'/>
     <Box
     width='90%'
     height='60%'
@@ -135,25 +137,25 @@ const eventClickHander =
         height = '200px'
         selectable={true}
         selectMirror={true}
-        select={handleDateSelect}
+        select={(selectInfo)=>handleDateSelect(selectInfo)}
       />
     </div>
     <div >
       <FullCalendar
+        ref={calenderRef}
         plugins={[ listPlugin]}
         initialView='listDay'
-        views={viewsList}
+        headerToolbar = {false}
         height = '200px'
         selectable={true}
         selectMirror={true}
-        select={handleDateSelect}
+        initialDate={listDayVar?(listDayVar):null}
       />
     </div>
   </GridItem>
   <GridItem colSpan={3}  display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
     borderColor='black'
     rounded='md'>
-    Hamburger
     <Box
     width='90%'
     height='60%'
