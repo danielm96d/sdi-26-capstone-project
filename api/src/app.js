@@ -134,7 +134,7 @@ app.get("/events", async ( req, res ) => {
         res.status(301).send("Error retrieving single event");
       })
 
-    responseData.push(...eventData)
+    responseData.push(...eventData) // needs update, approver is currently showing users id from positions?
     let approverData = await knex("events_users")
       .join('users', 'events_users.users_id', '=', 'users.id')
       .select('users_id as id', 'name', 'rank')
@@ -418,29 +418,3 @@ app.get("/events_users", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 });
-
-// .join('users', 'users.id', 'events.users_id')
-// .select('posts.id', 'users.username', 'posts.contents')
-// .where({user_id: id})
-
-//======================Register===========================\\
-// app.post('/register', authenticateUser, async (req, res) => {
-//   const newUser = req.body;
-//   bcrypt.hash(newUser.password, 10, (err, hashedPassword) => {
-//       if (err) {
-//           console.error(err);
-//           return res.status(400).send("Error posting user");
-//       }
-//       newUser.password = hashedPassword;
-//       knex('users')
-//           .insert(newUser)
-//           .returning('id')
-//           .then((id) => {
-//               res.status(201).redirect('/login');//redirect to login route
-//           })
-//           .catch((err) => {
-//               console.error(err);
-//               res.status(400).send("Error posting user");
-//           });
-//   });
-// });
