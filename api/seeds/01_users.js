@@ -11,6 +11,10 @@ exports.seed = async function(knex) {
     {name: 'Frank', rank: 'E2', password: '1234', username: 'A3', isApprover:false},
     {name: 'Bob', rank: 'E3', password: '1234', username: 'A4', isApprover:true},
     {name: 'Dan', rank: 'O1', password: '1234', username: 'A5', isApprover:true},
+    {name: 'Billy', rank: 'O1', password: '1234', username: 'A6', isApprover:true},
+    {name: 'Shawn', rank: 'O1', password: '1234', username: 'A7', isApprover:true},
+    {name: 'Yogi', rank: 'O1', password: '1234', username: 'A8', isApprover:true},
+    {name: 'Peterson', rank: 'O1', password: '1234', username: 'A9', isApprover:true},
 
   ]).returning('id');
 
