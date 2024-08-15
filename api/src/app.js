@@ -70,12 +70,12 @@ app.post('/login', async (req, res) => {
 
     const user = await knex('users').where({ username }).first();
     if (!user) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({ message: 'Invalid username or password', title: "Login Incorrect", status:"error" });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).json({ message: 'Invalid username or password', title: "Login Incorrect", status:"error" });
     }
 
     const token = jwt.sign(
@@ -86,6 +86,8 @@ app.post('/login', async (req, res) => {
 
     res.json({
       message: 'Logged in successfully',
+      title: `Welcome ${user.rank} ${user.name}`,
+      status: 'success',
       token,
       user: {
         id: user.id,
@@ -97,7 +99,7 @@ app.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error logging in' });
+    res.status(500).json({ message: 'Error logging in', title: "Server Error", status: "error" });
   }
 });
 

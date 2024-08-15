@@ -14,9 +14,10 @@ export default function Login() {
 
     useEffect(() => {
         if (Object.keys(response).length > 1) {
+            setLoading(false)
             toast({
                 title: response.title,
-                description: response.description,
+                description: response.message,
                 duration: 5000,
                 status: response.status,
                 isClosable: true,
