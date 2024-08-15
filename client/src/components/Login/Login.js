@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import {Helmet} from 'react-helmet'
 
 export default function Login() {
-    const [credentials, setCredentials] = useState({ username: '', password: '' });
+    const [invalid, setInvalid] = useState(false);
+    const [login, setLogin] = useState({ username: "", password: "" })
     const [loading, setLoading] = useState(false);
+    const [response, setResponse] = useState({});
     const toast = useToast();
 
     useEffect(() => {
@@ -23,15 +25,19 @@ export default function Login() {
 
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setCredentials(prev => ({ ...prev, [name]: value }));
-    };
+        if (e.target.id === "username") {
+            setLogin({ ...login, username: e.target.value })
+        } else if (e.target.id === "password") {
+            setLogin({ ...login, password: e.target.value })
+        }
+    }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const response = await fetch('http://localhost:8080/login', {
+    const submitLogin = () => {
+        if (login.username.length < 1 || login.password.length < 1) {
+            setInvalid(true)
+        } else {
+            setLoading(true)
+            fetch('http://localhost:8080/login', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
