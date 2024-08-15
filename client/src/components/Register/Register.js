@@ -10,7 +10,7 @@ import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMes
 import { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 export default function Register() {
-    const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", role: "" });
+    const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", isApprover: false });
     const [confrimPass, setConfirmPass] = useState("")
     const [invalid, setInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -55,14 +55,14 @@ export default function Register() {
                 setRegister({ ...register, lastname: e.target.value })
                 break
             case "role":
-                setRegister({ ...register, role: e.target.value })
+                setRegister({ ...register, isApprover: e.target.value === "approver" ? true : false })
                 break
             default:
                 break
         }
     }
     const handleAutocomplete = (e) => {
-        setRegister({ ...register, rank: e })
+        setRegister({ ...register, rank: e.split('-').join('') })
     }
 
     const submitRegister = () => {
