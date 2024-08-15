@@ -1,33 +1,29 @@
 import { Route, Routes } from 'react-router-dom';
-import './App.css';
 import Login from './components/Login/Login';
 import NavBar from './components/NavBar/NavBar';
-import RequestModal from "./components/request.jsx"
 import Profile from './components/Profile.jsx'
-import Calender from './components/Calender.js'
-import { ChakraProvider } from '@chakra-ui/react'
-import Profile from "./components/Profile.jsx"
+import Calendar from './components/Calendar.js'
 import Register from './components/Register/Register.js';
+import Scheduler from './components/Scheduler.js'
+import NotFound from './components/NotFound/NotFound.js';
+import EventEntry from './components/EventEntry.js'
 
 function App() {
-  return (
-    <>
-      <NavBar />
-      <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/sign-up' element={<Register />} />
-      </Routes>
-    <NavBar/>
-    <Routes>
-      <Route path='/' element={<Login/>}/>
-      <Route path='/profile' element={<Profile />}/>
-      <Route path='/sign-up' element={<Register/>}/>
-      <Route path='/calender' element={<Calender/>}/>
-      <Route path='/profile' element={<Profile/>}/>
-    </Routes>
-      {/* <Profile /> */}
-    </>
-  );
+      return (
+            <>
+                  <NavBar />
+                  <Routes>
+                        <Route path='/' element={<Login />} />
+                        <Route path='/profile' element={<Profile />} />
+                        <Route path='/sign-up' element={<Register />} />
+                        <Route path='/calendar' element={<Calendar />} />
+                        <Route path='/scheduler/:id' element={<Scheduler />} />
+                        <Route path='/event-entry' element={<EventEntry />} />
+                        <Route path='*' element={<NotFound/>}/>
+                  </Routes>
+
+            </>
+      );
 }
 
 export default App;

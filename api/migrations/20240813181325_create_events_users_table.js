@@ -22,10 +22,3 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema.dropTableIfExists('events_users');
 };
-
-
-
-
-// table.foreign('events_id').references('events.id').onDelete('CASCADE');//references("id").inTable('events').
-// table.foreign('users_id').references('users.id').onDelete('CASCADE');//references("id").inTable('users').
-// table.foreign('approver_id').references('users.id').onDelete('SET NULL');//references("id").inTable('users').
