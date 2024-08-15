@@ -1,7 +1,8 @@
 import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link, InputGroup, InputRightElement, IconButton } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet';
+import {useNavigate} from 'react-router-dom';
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
@@ -11,8 +12,12 @@ export default function Login() {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
     const toast = useToast();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if(localStorage.getItem('logged')) {
+            return navigate('/profile')
+        }
         if (Object.keys(response).length > 1) {
             setLoading(false)
             toast({
@@ -23,6 +28,9 @@ export default function Login() {
                 isClosable: true,
                 position: "bottom-right"
             })
+        }
+        if (response.status === "success") {
+            navigate('/profile')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response])
@@ -43,13 +51,18 @@ export default function Login() {
             setLoading(true)
             fetch('http://localhost:8080/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(login)
             })
                 .then(res => res.json())
-                .then(json => setResponse(json))
+                .then(json => {
+                    setResponse(json)
+                    localStorage.setItem("id", json.user.id)
+                    localStorage.setItem('logged', 'true')
+                })
                 .catch(() => {
                     toast({
                         title: "Error!",

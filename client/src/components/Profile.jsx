@@ -4,9 +4,15 @@ import {
   GridItem,
   Image,
   Box,
-  Avatar
+  Avatar,
+  useDisclosure, 
+  Lorem, 
+  Select, 
+  Input, 
+  Flex,
+  Heading,
+  Text
 } from '@chakra-ui/react'
-import { useDisclosure, Lorem, Select, Input, Flex} from '@chakra-ui/react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
@@ -17,7 +23,7 @@ import RequestModal from './request'
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
-  const [userInfo, setUserInfo] = useState()
+  const [userInfo, setUserInfo] = useState({})
   const [notifications, setNotifications] = useState()
   const [dayEvents, setDayEvents] = useState()
   const [weekEvents, setWeekEvents] = useState()
@@ -37,26 +43,38 @@ function Profile() {
     }
   }}
 
+  useEffect(() => {
+    fetch(requestServer+`users?id=${localStorage.getItem("id")||0}`, {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+    },
+    })
+    .then(res => res.json())
+    .then(json => setUserInfo(json))
+  }, [])
+
 
   const eventClickHander = () =>  {
     let new3;
   }
   useEffect(() => {
-    userInfoFetch();
+    // userInfoFetch();
     notificationsFetch();
     weekEventsFetch();
     dayEventsFetch();
   }, [])
 
-  const userInfoFetch = async () => {
-    try{
-      const response = await fetch(requestServer);
-      const data = await response.json();
-      setUserInfo(data);
-    } catch (error){
-      console.log(error)
-    }
-  }
+  // const userInfoFetch = async () => {
+  //   try{
+  //     const response = await fetch(requestServer);
+  //     const data = await response.json();
+  //     setUserInfo(data);
+  //   } catch (error){
+  //     console.log(error)
+  //   }
+  // }
   const notificationsFetch = async () => {
     try{
       const response = await fetch(requestServer);
@@ -100,6 +118,13 @@ function Profile() {
      mt='50px'
      /> */}
 
+
+  if (Object.keys(userInfo).length < 1) {
+    return(
+      <Heading>Loading</Heading>
+    )
+  }
+  console.log(userInfo)
   return(
     <Grid
   h='800px'
@@ -110,7 +135,7 @@ function Profile() {
     borderColor='black'
     rounded='md'>
       <br/ >
-   <Avatar name='User Name' size='2xl'/>
+   <Avatar name={userInfo[0].name} size='2xl'/>
     <Box
     width='90%'
     height='60%'
@@ -120,7 +145,9 @@ function Profile() {
     rounded='md'>
 
     User Info
-    {userInfo}
+    <Box>
+      <Text>Hello {userInfo[0].name},</Text>
+    </Box>
     </Box>
 
   </GridItem>

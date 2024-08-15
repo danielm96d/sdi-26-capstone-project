@@ -29,12 +29,12 @@ app.use(express.json());
 // Middleware to verify JWT
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token; // Changed this line
-
   if (!token) {
-    return res.status(401).json({ message: 'Access denied. No token provided.', status: "error", title: "Unauthorized" });
+    return res.status(401).json({ message: 'Access denied. No token provided.', status: "error", title: "Unauthorized", invalid: true });
   }
 
   try {
+    res.header('Access-Control-Allow-Credentials', 'true');
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
     next();
@@ -102,6 +102,7 @@ app.post('/login', async (req, res) => {
     });
     res.json({
       message: 'Logged in successfully',
+      status: "success",
       user: {
         id: user.id,
         username: user.username,
@@ -117,7 +118,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('jwt');
+  res.clearCookie('token');
   res.json({ message: 'Logged out successfully' });
 });
 
@@ -177,13 +178,13 @@ app.get("/", (req, res)=>{
 
 
 //======================================USERS CRUD===========================================\\
-app.use('/users', usersRouter)
+app.use('/users', verifyToken, usersRouter)
 
 //======================================POSITIONS CRUD===========================================\\
 app.use('/positions', positionsRouter)
 
 //======================================EVENTS CRUD===========================================\\
-app.use('/events', eventsRouter)
+app.use('/events',   eventsRouter)
 
 
 app.listen(PORT, () => {

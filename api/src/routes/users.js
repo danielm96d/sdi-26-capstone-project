@@ -8,6 +8,7 @@ router.use(express.json());
 //======================================USERS CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
 router.get("/", async ( req, res ) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const {id} = req.query
   console.log('id: ', id);
 
@@ -76,6 +77,7 @@ router.get("/", async ( req, res ) => {
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const newUser = req.body;
 
   knex('users')
@@ -92,6 +94,7 @@ router.post("/", (req, res) => {
 
 //------------------DELETE (by id)-------------------\\
 router.delete("/:id", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const { id } = req.params;
 
   knex('users')
@@ -112,6 +115,7 @@ router.delete("/:id", (req, res) => {
 
 //------------------UPDATE(by id)-------------------\\
 router.patch("/:id", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const { id } = req.params;
   const updates = req.body;
 
