@@ -15,7 +15,7 @@ exports.seed = async function (knex) {
       description: "RIP in Peace",
       type: "Funeral",
       approved: "true",
-      location: "DC",
+      location: "Denver",
       POCinfo: "John"
     },
     {
@@ -28,7 +28,7 @@ exports.seed = async function (knex) {
       type: "Retirement",
       approved: "false",
       location: "DC",
-      POCinfo: "John"
+      POCinfo: "Jake"
     },
     {
       name: "Ralph Nader Inaguration",
@@ -39,8 +39,8 @@ exports.seed = async function (knex) {
       description: "long day",
       type: "Inaguration",
       approved: "true",
-      location: "DC",
-      POCinfo: "John"
+      location: "Dover",
+      POCinfo: "Ben"
     },
     {
       name: "Surgery Recovery",
@@ -53,6 +53,66 @@ exports.seed = async function (knex) {
       approved: "true",
       location: "DC",
       POCinfo: "John"
+    },
+    {
+      name: "Tech Conference 2024",
+      startTime: "09:00:00",
+      endTime: "17:00:00",
+      startDate: "2024-09-15",
+      endDate: "2024-09-17",
+      description: "Annual technology conference featuring keynote speakers and workshops",
+      type: "Conference",
+      approved: "true",
+      location: "San Francisco",
+      POCinfo: "Sarah Johnson"
+    },
+    {
+      name: "Community Garden Planting Day",
+      startTime: "08:30:00",
+      endTime: "14:00:00",
+      startDate: "2024-04-22",
+      endDate: "2024-04-22",
+      description: "Join us for Earth Day as we plant new vegetables and flowers in the community garden",
+      type: "Community Event",
+      approved: "true",
+      location: "Central Park",
+      POCinfo: "Mike Chen"
+    },
+    {
+      name: "Annual Charity Gala",
+      startTime: "19:00:00",
+      endTime: "23:00:00",
+      startDate: "2024-11-10",
+      endDate: "2024-11-10",
+      description: "Fundraising event for local children's hospital",
+      type: "Fundraiser",
+      approved: "true",
+      location: "Grand Ballroom, Hilton Hotel",
+      POCinfo: "Emily Wright"
+    },
+    {
+      name: "Summer Music Festival",
+      startTime: "12:00:00",
+      endTime: "23:00:00",
+      startDate: "2024-07-20",
+      endDate: "2024-07-22",
+      description: "Three-day outdoor music festival featuring local and international artists",
+      type: "Concert",
+      approved: "true",
+      location: "Riverfront Park",
+      POCinfo: "David Lee"
+    },
+    {
+      name: "Virtual Book Club Meeting",
+      startTime: "19:30:00",
+      endTime: "21:00:00",
+      startDate: "2024-06-05",
+      endDate: "2024-06-05",
+      description: "Online discussion of this month's selected novel",
+      type: "Club Meeting",
+      approved: "true",
+      location: "Zoom",
+      POCinfo: "Lisa Tran"
     }
   ]);
 };
