@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom'
 import {
   Grid,
   GridItem,
   Button,
-  Box,
   Heading,
   Spacer
 } from '@chakra-ui/react'
-import { useDisclosure, Lorem, Select, Input} from '@chakra-ui/react';
 
 const requestServer = 'http://localhost:8080/'
 
@@ -22,6 +20,7 @@ export default function Scheduler () {
     try{
       const response = await fetch(`${requestServer}events/?id=${id}`);
       const data = await response.json();
+
       setEventInfo(data);
 
     } catch (error){
@@ -32,12 +31,30 @@ export default function Scheduler () {
     try{
       const response = await fetch(`${requestServer}positions?id=${id}`);
       const data = await response.json();
-      setPositionsInfo(data);
+      const posArr = [];
+
+      data.map((position) => {
+        console.log(position);
+
+        let positionArr = posArr.filter((positionInfo) => positionInfo.name === position.name);
+        let quantity = 1;
+        console.log(positionArr)
+        if(positionArr.length > 0){
+          quantity = positionArr[0].quantity + 1;
+        }
+        let positionObj = {name:position.name, quantity: quantity}
+        posArr.push(positionObj)
+        console.log(positionObj)
+
+
+      })
+    setPositionsInfo(posArr);
       console.log(data)
     } catch (error){
       console.log(error)
     }
   }
+
   const eventInfoPatch = async () => {
     try{
       const response = await fetch(`${requestServer}events/${id}`, {
@@ -104,7 +121,7 @@ export default function Scheduler () {
             <GridItem  borderWidth='1px'
               borderColor='black'
               rounded='md'
-              display='flex' colSpan={8} rowSpan={1} >
+              display='flex' colSpan={8} rowSpan={1} p="5px">
                 <Heading as='h2' size='2xl'>{eventInfo[0].name}</Heading>
                 <Spacer />
                 <Button bg='darkolivegreen' onClick={() => eventInfoPatch()}>Save</Button>
@@ -115,13 +132,13 @@ export default function Scheduler () {
 
             <GridItem colSpan={8} rowSpan={1}  borderWidth='1px'
               borderColor='black'
-              rounded='md' display="flex" >
+              rounded='md' display="flex" h="50px" p="5px">
             {positionsInfo.length > 0 ? (
             <>{console.log(positionsInfo)}
-              {positionsInfo.map((position, index) => (
+              {positionsInfo.map((pos, index) => (
                 <div key={index}>
-                  {position.events_id}
-                  {position.name}
+
+                  <Button mr='10px' onClick={() => {}} >{pos.name}{pos.quantity}</Button>
                 </div>
               ))}
             </>
