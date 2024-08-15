@@ -15,6 +15,9 @@ export default function Login() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if(localStorage.getItem('logged')) {
+            return navigate('/profile')
+        }
         if (Object.keys(response).length > 1) {
             setLoading(false)
             toast({
@@ -48,13 +51,18 @@ export default function Login() {
             setLoading(true)
             fetch('http://localhost:8080/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(login)
             })
                 .then(res => res.json())
-                .then(json => setResponse(json))
+                .then(json => {
+                    setResponse(json)
+                    localStorage.setItem("id", json.user.id)
+                    localStorage.setItem('logged', 'true')
+                })
                 .catch(() => {
                     toast({
                         title: "Error!",

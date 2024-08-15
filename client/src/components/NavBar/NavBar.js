@@ -1,14 +1,27 @@
-import { Avatar, ButtonGroup, Center, Divider, Flex, Heading, IconButton, Stack } from "@chakra-ui/react";
+import { Avatar, ButtonGroup, Center, Divider, Flex, Heading, IconButton, Skeleton, Stack } from "@chakra-ui/react";
 import ToggleTheme from "./ToggleTheme";
 import { Link, useNavigate } from 'react-router-dom';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Text } from "@chakra-ui/react";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
   const navigate = useNavigate()
+  const [userInfo, setUserInfo] = useState({})
+  useEffect(() => {
+    fetch(`http://localhost:8080/users?id=${localStorage.getItem("id")||0}`, {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+    },
+    })
+    .then(res => res.json())
+    .then(json => setUserInfo(json))
+  }, [])
+
   return (
     <>
       <Flex padding="1rem" justifyContent="space-between">
@@ -28,8 +41,8 @@ export default function NavBar() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            <Avatar />
-            <Heading marginTop="1em" size="xs">Rank Name (role)</Heading>
+            <Avatar name={Object.keys(userInfo).length > 0 ? userInfo[0].name : ""} />
+            <Heading marginTop="1em" size="xs">{Object.keys(userInfo).length > 0 ? `${userInfo[0].rank}  ${userInfo[0].name}` : <Skeleton/>}</Heading>
           </DrawerHeader>
 
           <DrawerBody>
