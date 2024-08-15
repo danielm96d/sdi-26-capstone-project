@@ -15,7 +15,7 @@ router.get("/", async ( req, res ) => {
 
   if (!id) {
     knex("events")
-    .select('*') // selects all info from events_table
+    .select('*') // selects all info from events
     .then((data) => {
       res.status(200).send(data);
     })

@@ -6,10 +6,9 @@ const knex = require("knex")(require("../../knexfile.js")[process.env.NODE_ENV |
 router.use(cors());
 router.use(express.json());
 //======================================USERS CRUD===========================================\\
-//------------------READ (all and by id)-------------------\\
+//------------------READ-------------------\\
 router.get("/", async ( req, res ) => {
   const {id} = req.query
-  console.log('id: ', id);
 
   //get all users:
   if (!id) {
@@ -38,9 +37,6 @@ router.get("/", async ( req, res ) => {
         'isApprover',
       )
       .where({ 'users.id': id })
-      // .then((data) => {
-      //   res.status(200).send(data);
-      // })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single user: ${err}`);
@@ -61,9 +57,6 @@ router.get("/", async ( req, res ) => {
         'events.location',
        )
       .where({ 'events_users.users_id': id })
-      // .then((data) => {
-      //   res.status(200).send(data);
-      // })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single user: ${err}`);
@@ -73,6 +66,22 @@ router.get("/", async ( req, res ) => {
       res.status(200).send(data);
   }
 });
+
+// Get all events that need approval
+// router.get("/approver", async (req, res) => {
+//   const {id} = req.query
+//   console.log('id: ', id);
+
+//   await knex('users')
+//     .select('*')
+//     .then((data) => {
+//       res.status(200).send(data);
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//       res.status(301).send("Error retrieving events");
+//     });
+// })
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
