@@ -260,7 +260,8 @@ app.get("/events", async ( req, res ) => {
       console.log(err);
       res.status(301).send("Error retrieving events");
     });
-  } else if (id) {
+  }
+  else if (id) {
     let responseData = []
     let eventData = await knex('events')
       .select('*')
@@ -273,7 +274,7 @@ app.get("/events", async ( req, res ) => {
     responseData.push(...eventData) // needs update, approver is currently showing users id from positions?
     let approverData = await knex("events_users")
       .join('users', 'events_users.approver_id', '=', 'users.id')
-      .select('approver_id as id', 'name', 'rank')
+      .distinct('approver_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
         'users.isApprover': true
