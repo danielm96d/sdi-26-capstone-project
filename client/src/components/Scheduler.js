@@ -34,9 +34,7 @@ export default function Scheduler () {
       const posArr = [];
 
       data.map((position) => {
-        console.log(position);
-
-        let positionArr = posArr.filter((positionInfo) => positionInfo.name === position.name);
+        const index=
         let quantity = 1;
         console.log(positionArr)
         if(positionArr.length > 0){
