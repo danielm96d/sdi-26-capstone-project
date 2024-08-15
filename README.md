@@ -4,10 +4,11 @@
   2. create a new branch from the github
   3. create a .env file in the root project directory with the following contents:
   ```
-    NODE_ENV = "compose"
+    NODE_ENV = "development"
     POSTGRES_USER="postgres"
     POSTGRES_PASSWORD="docker"
     POSTGRES_DB = "db"
+    JWT_SECRET= 'your_secure_secret_here'
   ```
   4. copy that .env into the client and api folders
   5. navigate back to the root directory and run `npm run docker-run`

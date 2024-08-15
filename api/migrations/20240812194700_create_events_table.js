@@ -6,13 +6,16 @@ exports.up = function(knex) {
   return knex.schema.createTable('events', table => {
     table.increments();
     table.string('name');
-    table.datetime('startTime');
-    table.datetime('endTime');
+    table.time('startTime');
+    table.time('endTime');
     table.date('startDate');
     table.date('endDate');
     table.text('description');
     table.string('type');
     table.boolean('approved');
+    table.string('POCinfo');
+    table.string('location');
+    table.timestamps(true, true);
   })
 };
 
@@ -21,5 +24,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTableIfExists('events_table');
+  return knex.schema.dropTableIfExists('events');
 };
