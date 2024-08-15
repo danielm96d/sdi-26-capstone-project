@@ -7,13 +7,18 @@ router.use(cors());
 router.use(express.json());
 //======================================USERS CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
-router.get("/", ( req, res ) => {
+router.get("/", async ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
 
+  //get all users:
   if (!id) {
     knex("users")
-    .select('*')
+    .select(
+      'name',
+      'rank',
+      'isApprover',
+    )
     .then((data) => {
       res.status(200).send(data);
     })
@@ -21,17 +26,51 @@ router.get("/", ( req, res ) => {
       console.log(err);
       res.status(301).send(`Error retrieving single user: ${err}`);
     });
-  } else if (id) {
-    knex('users')
-      .select('*')
-      .where({ id: id })
-      .then((data) => {
-        res.status(200).send(data);
-      })
+  }
+
+  //Get a single user by ID
+  else if (id) {
+    let data = []
+    let userData = await knex('users')
+      .select(
+        'name',
+        'rank',
+        'isApprover',
+      )
+      .where({ 'users.id': id })
+      // .then((data) => {
+      //   res.status(200).send(data);
+      // })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single user: ${err}`);
       })
+
+    let eventData = await knex('events_users')
+      .join('events', 'events.id', 'events_users.events_id')
+      .select(
+        'events.id',
+        'events.name',
+        'events.startTime',
+        'events.endTime',
+        'events.startDate',
+        'events.endDate',
+        'events.description',
+        'events.type',
+        'events.POCinfo',
+        'events.location',
+       )
+      .where({ 'events_users.users_id': id })
+      // .then((data) => {
+      //   res.status(200).send(data);
+      // })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single user: ${err}`);
+      })
+
+      data.push({...userData[0], events: eventData})
+      res.status(200).send(data);
   }
 });
 
