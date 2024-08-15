@@ -16,6 +16,19 @@ import { Input } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/'
 
+const colors = {
+  'Pallbearer': 'Salmon',
+  'Bearer': 'Olive',
+  'OIC': 'LightSkyBlue',
+  'NCOIC':'LightGreen',
+  'Firing Party': 'Gray',
+  'Drill': 'Tomato',
+  'Color Guard': 'Lavender',
+  'Flag Holder': 'Silver',
+  'Escort': 'Fuchsia',
+  'Bugler': 'Gold'
+}
+
 function EventEntry() {
   const [type, setType] = useState("Retirement");
   const [title, setTitle] = useState(null);
@@ -218,7 +231,7 @@ const handleDelete = (pos) => {
             p="4">
             {positions.map((pos) =>
               <>
-              <Button onClick={() => handleClick(pos)}>{pos}</Button><br/>
+              <Button bg={colors[pos]} onClick={() => handleClick(pos)}>{pos}</Button><br/>
               </>
             )}
             </GridItem>
@@ -228,7 +241,7 @@ const handleDelete = (pos) => {
             p="4">
               {selectedPositions.map((pos, index) =>
               <>
-              <Button key={index} onClick={() => handleDelete(pos)}>{pos}</Button><br/>
+              <Button key={index} bg={colors[pos]} onClick={() => handleDelete(pos)}>{pos}</Button><br/>
               </>
             )}
 

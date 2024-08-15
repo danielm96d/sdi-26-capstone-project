@@ -53,9 +53,10 @@ router.post("/", (req, res) => {
 router.patch("/:id", (req, res) => {
   const { id } = req.params;
   const updates = req.body;
+console.log(updates)
 
   knex('positions')
-    .where({ events_id: id })
+    .where({ id: id })
     .update(updates)
     .returning("*")
     .then((updatePositions) => {

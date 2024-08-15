@@ -42,7 +42,7 @@ router.get("/", async ( req, res ) => {
         'users.isApprover': true
       })
 
-    responseData[0].approver = approverData;
+    // responseData[0].approver = approverData;
 
     let positionData = await knex('positions')
       .join('users', 'positions.users_id', '=', 'users.id')
@@ -59,7 +59,7 @@ router.get("/", async ( req, res ) => {
         'positions.events_id': id
       })
 
-    responseData[0].position = positionData;
+    // responseData[0].position = positionData;
     res.status(200).send(responseData)
 
 
