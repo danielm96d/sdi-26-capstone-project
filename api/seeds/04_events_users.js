@@ -35,9 +35,3 @@ exports.seed = async function(knex) {
     {events_id: events[4].id, users_id: users[8].id, approver_id: users[7].id}
   ]);
 };
-
-
-//  await knex('events_users').insert([
-//    {events_id: 1, users_id: 2, approver_id: 1},
-//    {events_id: 2, users_id: 1, approver_id: 1},
-//    {events_id: 3, users_id: 3, approver_id: 2},
