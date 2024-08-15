@@ -18,7 +18,7 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 app.use(cookieParser());
-app.use(cors({ 
+app.use(cors({
   origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true
 }));
@@ -29,7 +29,6 @@ app.use(express.json());
 // Middleware to verify JWT
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token; // Changed this line
-  console.log(req.cookies)
   if (!token) {
     return res.status(401).json({ message: 'Access denied. No token provided.', status: "error", title: "Unauthorized", invalid: true });
   }
@@ -78,23 +77,23 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     const user = await knex('users').where({ username }).first();
     if (!user) {
       return res.status(400).json({ message: 'Invalid username or password' });
     }
-    
+
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(400).json({ message: 'Invalid username or password' });
     }
-    
+
     const token = jwt.sign(
       { id: user.id, username: user.username, isApprover: user.isApprover },
       JWT_SECRET,
       { expiresIn: '1h' }
     );
-    
+
     // Set the token as an HTTP-only cookie
     res.cookie('token', token, {
       httpOnly: true,
