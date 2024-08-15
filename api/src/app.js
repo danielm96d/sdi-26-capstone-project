@@ -101,52 +101,53 @@ app.post('/login', async (req, res) => {
 });
 
 // Get all events
-app.get('/events', verifyToken, async (req, res) => {
-  try {
-    const events = await knex('events').select('*');
-    res.json(events);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error fetching events' });
-  }
-});
+// app.get('/events', verifyToken, async (req, res) => {
+//   try {
+//     const events = await knex('events').select('*');
+//     res.json(events);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error fetching events' });
+//   }
+// });
 
 // Create a new event
-app.post('/events', verifyToken, async (req, res) => {
-  try {
-    const { name, startTime, endTime, startDate, endDate, description, type } = req.body;
-    const [eventId] = await knex('events').insert({
-      name,
-      startTime,
-      endTime,
-      startDate,
-      endDate,
-      description,
-      type,
-      approved: false // Default to not approved
-    });
-    res.status(201).json({ message: 'Event created successfully', eventId });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error creating event' });
-  }
-});
+// app.post('/events', verifyToken, async (req, res) => {
+//   try {
+//     const { name, startTime, endTime, startDate, endDate, description, type } = req.body;
+//     const [eventId] = await knex('events').insert({
+//       name,
+//       startTime,
+//       endTime,
+//       startDate,
+//       endDate,
+//       description,
+//       type,
+//       approved: false // Default to not approved
+//     });
+//     res.status(201).json({ message: 'Event created successfully', eventId });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error creating event' });
+//   }
+// });
 
-// Approve an event (only for users with isApprover = true)
-app.put('/events/:id/approve', verifyToken, async (req, res) => {
-  if (!req.user.isApprover) {
-    return res.status(403).json({ message: 'Not authorized to approve events' });
-  }
+// // Approve an event (only for users with isApprover = true)
+// app.put('/events/:id/approve', verifyToken, async (req, res) => {
+//   if (!req.user.isApprover) {
+//     return res.status(403).json({ message: 'Not authorized to approve events' });
+//   }
 
-  try {
-    const { id } = req.params;
-    await knex('events').where({ id }).update({ approved: true });
-    res.json({ message: 'Event approved successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error approving event' });
-    }
-  })
+  // try {
+  //   const { id } = req.params;
+  //   await knex('events').where({ id }).update({ approved: true });
+  //   res.json({ message: 'Event approved successfully' });
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).json({ message: 'Error approving event' });
+  //   }
+  // })
+
 app.get("/", (req, res)=>{
   console.log("test")// this log is used to test live updates within the docker environment
   res.send(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
