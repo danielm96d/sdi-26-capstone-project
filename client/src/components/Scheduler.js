@@ -34,7 +34,7 @@ export default function Scheduler () {
       const posArr = [];
 
       data.map((position) => {
-        const index=
+        const index=posArray.map(e => e. name)
         let quantity = 1;
         console.log(positionArr)
         if(positionArr.length > 0){
