@@ -104,9 +104,9 @@ function EventEntry() {
             duration: 4000,
             isClosable: true,
           })
-          // setTimeout(() => {
-          //   navigate(-1)
-          // }, "1000");
+          setTimeout(() => {
+            navigate(-1)
+          }, "1000");
         }
         catch(error){
           console.log(error)
