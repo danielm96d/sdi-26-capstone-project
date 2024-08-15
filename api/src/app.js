@@ -37,11 +37,12 @@ const verifyToken = (req, res, next) => {
 app.post('/register', async (req, res) => {
   console.log(req.body)
   try {
-    const { username, password, name, rank, isApprover } = req.body;
+    const { username, password, firstname, lastname, rank, isApprover } = req.body;
+    const name = `${firstname} ${lastname}`
 
     const existingUser = await knex('users').where({ username }).first();
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ message: 'Username already exists', title: "Error", status: "error" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -52,13 +53,13 @@ app.post('/register', async (req, res) => {
       password: hashedPassword,
       name,
       rank,
-      isApprover: isApprover || false
+      isApprover: isApprover
     });
 
-    res.status(201).json({ message: 'User registered successfully', userId });
+    res.status(201).json({ message: 'User registered successfully', title: "Success", status: "success", userId });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error registering user' });
+    res.status(500).json({ message: 'Error registering user', title: 'Server Error', status: "error" });
   }
 });
 

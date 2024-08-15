@@ -9,13 +9,15 @@ import {
 import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
+import {useNavigate} from 'react-router-dom';
 export default function Register() {
-    const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", isApprover: false });
+    const [register, setRegister] = useState({ username: "", password: "", firstname: "", lastname: "", rank: "", isApprover: null });
     const [confrimPass, setConfirmPass] = useState("")
     const [invalid, setInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState({});
     const toast = useToast();
+    const navigate = useNavigate();
     const ranks = {
         enlisted: Array.from({ length: 9 }, (v, i) => `E-${i + 1}`),
         warrant: Array.from({ length: 5 }, (v, i) => `W-${i + 1}`),
@@ -23,16 +25,21 @@ export default function Register() {
     };
 
     useEffect(() => {
-        if (!result.success && Object.keys(result).length > 1) {
+        if (Object.keys(result).length > 1) {
+            setLoading(false)
             toast({
                 title: result.title,
-                description: result.description,
+                description: result.message,
                 duration: 5000,
                 status: result.status,
                 isClosable: true,
                 position: "bottom-right"
             })
         }
+        if (result.status === "success") {
+            navigate("/")
+        }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result])
 
@@ -55,8 +62,13 @@ export default function Register() {
                 setRegister({ ...register, lastname: e.target.value })
                 break
             case "role":
-                setRegister({ ...register, isApprover: e.target.value === "approver" ? true : false })
-                break
+                if (e.target.value === "") {
+                    setRegister({ ...register, isApprover: null })
+                    break
+                } else {
+                    setRegister({ ...register, isApprover: e.target.value === "approver" ? true : false })
+                    break
+                }
             default:
                 break
         }
@@ -155,7 +167,7 @@ export default function Register() {
                         <FormHelperText>Select your rank!</FormHelperText>
                         <FormErrorMessage>A rank is required!</FormErrorMessage>
                     </FormControl>
-                    <FormControl id="role" onChange={handleChange} isInvalid={invalid && register.role.length < 1} isRequired={true}>
+                    <FormControl id="role" onChange={handleChange} isInvalid={invalid && register.isApprover === null} isRequired={true}>
                         <FormLabel>Role</FormLabel>
                         <Select placeholder="Role">
                             <option value="user">User</option>
