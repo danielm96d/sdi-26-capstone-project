@@ -5,10 +5,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const app = express();
 const util = require('util')
-const knex = require("knex")(require(".../knexfile.js")[process.env.NODE_ENV || "development"]);
+const knex = require("knex")(require("../knexfile.js")[process.env.NODE_ENV || "development"]);
 
 const PORT = process.env.PORT || 8080;
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 if (!JWT_SECRET) {
   console.error('JWT_SECRET is not set. Please set this environment variable.');
   process.exit(1);

@@ -70,7 +70,7 @@ export default function Register() {
             setInvalid(true)
         } else {
             setLoading(true)
-            fetch('http://localhost:8080/signup', {
+            fetch('http://localhost:8080/register', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
