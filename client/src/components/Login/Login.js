@@ -1,7 +1,8 @@
 import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link, InputGroup, InputRightElement, IconButton } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet';
+import {useNavigate} from 'react-router-dom';
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
@@ -11,6 +12,7 @@ export default function Login() {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
     const toast = useToast();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (Object.keys(response).length > 1) {
@@ -23,6 +25,9 @@ export default function Login() {
                 isClosable: true,
                 position: "bottom-right"
             })
+        }
+        if (response.status === "success") {
+            navigate('/profile')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response])
