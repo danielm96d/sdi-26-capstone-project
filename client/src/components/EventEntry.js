@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {useNavigate, useParams} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   Button,
   FormControl,
   FormLabel,
-  Card,
   useToast,
   Grid,
   GridItem,
   InputGroup,
-  activeLabelStyles,
   Textarea,
   Heading
 
 } from '@chakra-ui/react'
-import { useDisclosure, Select, Input } from '@chakra-ui/react'
+import { Input } from '@chakra-ui/react'
 
-const requestServer = 'http://localhost:8080/events'
+const requestServer = 'http://localhost:8080/'
 
 function EventEntry() {
   const [type, setType] = useState("Retirement");
@@ -34,11 +26,12 @@ function EventEntry() {
   const [desc, setDesc] = useState(null);
   const [location, setLocation] = useState(null);
   const [poc, setPoc] = useState(null);
+  const [selectedPositions, setSelectedPositions] = useState([]);
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
   const navigate = useNavigate();
+  const positions =["Bearer", "Firing Party", "Drill", "Color Guard", 'Bugler', 'Escort', 'Pallbearer', 'Flag Holder', 'OIC', 'NCOIC'];
 
-  let types = ['Funeral', 'Retirement', 'Inauguration', 'Other']
 
 
 
@@ -68,7 +61,7 @@ function EventEntry() {
         })
       } else {
         try{
-          let response = await fetch(requestServer, {
+          let response = await fetch(`${requestServer}events`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json, text/plain, */*',
@@ -76,17 +69,34 @@ function EventEntry() {
             },
             body: JSON.stringify({
               name: title,
-              type: type,
               startTime: startTime,
               endTime: endTime,
               startDate: startDate,
               endDate: endDate,
               description: desc,
-              // poc: poc,
-              // location: location
+              POCinfo: poc,
+              location: location
             })
           })
-          console.log(response.statusText)
+          response.json()
+            .then(res => {
+              console.log(res)
+              selectedPositions.map((pos) => {
+                fetch(`${requestServer}positions`, {
+                  method: 'POST',
+                  headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    name: pos,
+                    events_id: res.id
+                  })})
+                  .then(res => res.json())
+                  .then(res=>console.log(res))
+              })
+            })
+
           toast({
             title: 'info.',
             description: response.statusText,
@@ -94,9 +104,9 @@ function EventEntry() {
             duration: 4000,
             isClosable: true,
           })
-          setTimeout(() => {
-            navigate(-1)
-          }, "1000");
+          // setTimeout(() => {
+          //   navigate(-1)
+          // }, "1000");
         }
         catch(error){
           console.log(error)
@@ -106,6 +116,22 @@ function EventEntry() {
     }
   }
 
+const handleClick = (pos) => {
+setSelectedPositions(selectedPositions => [...selectedPositions, pos])
+}
+
+const handleDelete = (pos) => {
+  setSelectedPositions((prevPositions) => {
+    const index = prevPositions.indexOf(pos);
+    if (index > -1) {
+      // Create a new array with the item removed
+      return [...prevPositions.slice(0, index), ...prevPositions.slice(index + 1)];
+    }
+    return prevPositions; // Return the original array if item is not found
+  });
+
+}
+
   useEffect(() => {
       setType("Retirement")
       setDesc(null)
@@ -114,6 +140,7 @@ function EventEntry() {
       setEndDate(null)
       setStartDate(null)
   }, [submitted])
+
 
   return (
     <>
@@ -189,12 +216,21 @@ function EventEntry() {
             borderColor='black'
             rounded='md'
             p="4">
-              Required Positions
+            {positions.map((pos) =>
+              <>
+              <Button onClick={() => handleClick(pos)}>{pos}</Button><br/>
+              </>
+            )}
             </GridItem>
             <GridItem colSpan={2}   borderWidth='1px'
             borderColor='black'
             rounded='md'
             p="4">
+              {selectedPositions.map((pos, index) =>
+              <>
+              <Button key={index} onClick={() => handleDelete(pos)}>{pos}</Button><br/>
+              </>
+            )}
 
             </GridItem>
 

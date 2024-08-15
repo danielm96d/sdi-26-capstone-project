@@ -346,6 +346,7 @@ app.post("/events", (req, res) => {
     .insert(newEvent)
     .returning('*')
     .then((insertedEvent) => {
+      console.log(insertedEvent[0])
       res.status(201).json(insertedEvent[0]);
     })
     .catch((err) => {
