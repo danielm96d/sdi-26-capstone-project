@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const util = require('util')
 const knex = require("knex")(require("../knexfile.js")[process.env.NODE_ENV || "development"]);
+const cookieParser = require("cookie-parser");
 
 const PORT = process.env.PORT || 8080;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
@@ -13,15 +14,20 @@ if (!JWT_SECRET) {
   console.error('JWT_SECRET is not set. Please set this environment variable.');
   process.exit(1);
 }
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ 
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true 
+}));
+
 app.use(express.json());
 
 // Middleware to verify JWT
 const verifyToken = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-
+  const token = req.cookies.token; // Changed this line
+  
   if (!token) {
-    return res.status(401).json({ message: 'Access denied. No token provided.' });
+    return res.status(401).json({ message: 'Access denied. No token provided.', status: "error", title: "Unauthorized" });
   }
 
   try {
@@ -67,28 +73,31 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-
+    
     const user = await knex('users').where({ username }).first();
     if (!user) {
-      return res.status(400).json({ message: 'Invalid username or password', title: "Login Incorrect", status:"error" });
+      return res.status(400).json({ message: 'Invalid username or password' });
     }
-
+    
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(400).json({ message: 'Invalid username or password', title: "Login Incorrect", status:"error" });
+      return res.status(400).json({ message: 'Invalid username or password' });
     }
-
+    
     const token = jwt.sign(
       { id: user.id, username: user.username, isApprover: user.isApprover },
       JWT_SECRET,
       { expiresIn: '1h' }
     );
-
+    
+    // Set the token as an HTTP-only cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure in production
+      maxAge: 3600000 // 1 hour in milliseconds
+    });
     res.json({
       message: 'Logged in successfully',
-      title: `Welcome ${user.rank} ${user.name}`,
-      status: 'success',
-      token,
       user: {
         id: user.id,
         username: user.username,
@@ -99,9 +108,15 @@ app.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error logging in', title: "Server Error", status: "error" });
+    res.status(500).json({ message: 'Error logging in' });
   }
 });
+
+app.post('/logout', (req, res) => {
+  res.clearCookie('jwt');
+  res.json({ message: 'Logged out successfully' });
+});
+
 
 // Get all events
 // app.get('/events', verifyToken, async (req, res) => {
