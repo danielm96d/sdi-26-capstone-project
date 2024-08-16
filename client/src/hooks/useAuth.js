@@ -7,7 +7,7 @@ export default function useAuth() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname !== "/login") {
+        if (location.pathname !== "/login" && location.pathname !== '/sign-up') {
             fetch('http://localhost:8080/validate', {
                 method: "GET",
                 credentials: 'include',

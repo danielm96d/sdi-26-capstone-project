@@ -180,7 +180,7 @@ app.get("/", (req, res)=>{
 })
 
 app.get('/validate', verifyToken, (req,res) => {
-  res.status(200).send({message: 'User is authenticated'})
+  res.status(200).json({message: 'User is authenticated'})
 })
 
 
