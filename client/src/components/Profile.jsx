@@ -5,10 +5,10 @@ import {
   Image,
   Box,
   Avatar,
-  useDisclosure, 
-  Lorem, 
-  Select, 
-  Input, 
+  useDisclosure,
+  Lorem,
+  Select,
+  Input,
   Flex,
   Heading,
   Text
@@ -135,7 +135,7 @@ function Profile() {
     borderColor='black'
     rounded='md'>
       <br/ >
-   <Avatar name={userInfo[0].name} size='2xl'/>
+   {/* <Avatar name={userInfo[0].name} size='2xl'/> */}
     <Box
     width='90%'
     height='60%'
@@ -146,7 +146,7 @@ function Profile() {
 
     User Info
     <Box>
-      <Text>Hello {userInfo[0].name},</Text>
+      {/* <Text>Hello {userInfo[0].name},</Text> */}
     </Box>
     </Box>
 

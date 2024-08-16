@@ -41,8 +41,8 @@ export default function NavBar() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            <Avatar name={Object.keys(userInfo).length > 0 ? userInfo[0].name : ""} />
-            <Heading marginTop="1em" size="xs">{Object.keys(userInfo).length > 0 ? `${userInfo[0].rank}  ${userInfo[0].name}` : <Skeleton/>}</Heading>
+            {/* <Avatar name={Object.keys(userInfo).length > 0 ? userInfo[0].name : ""} /> */}
+            {/* <Heading marginTop="1em" size="xs">{Object.keys(userInfo).length > 0 ? `${userInfo[0].rank}  ${userInfo[0].name}` : <Skeleton/>}</Heading> */}
           </DrawerHeader>
 
           <DrawerBody>
