@@ -34,7 +34,7 @@ export default function NavBar() {
       <Flex padding="1rem" justifyContent="space-between">
         <Heading><Link to="/">OpSync</Link></Heading>
         <Flex>
-          <IconButton onClick={onOpen} ref={btnRef} isRound={true} icon={<HamburgerIcon />} />
+          {localStorage.getItem('id') ? <IconButton onClick={onOpen} ref={btnRef} isRound={true} icon={<HamburgerIcon />} /> : <></>}
         </Flex>
       </Flex>
       <Divider marginBottom="2em" />
