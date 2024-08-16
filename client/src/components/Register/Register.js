@@ -47,7 +47,7 @@ export default function Register() {
     const handleChange = (e) => {
         switch (e.target.id) {
             case "username":
-                setRegister({ ...register, username: e.target.value })
+                setRegister({ ...register, username: e.target.value.toLowerCase() })
                 break
             case "password":
                 setRegister({ ...register, password: e.target.value })

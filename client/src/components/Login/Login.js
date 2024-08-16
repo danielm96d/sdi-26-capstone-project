@@ -36,7 +36,7 @@ export default function Login() {
 
     const handleChange = (e) => {
         if (e.target.id === "username") {
-            setLogin({ ...login, username: e.target.value })
+            setLogin({ ...login, username: e.target.value.toLowerCase() })
         } else if (e.target.id === "password") {
             setLogin({ ...login, password: e.target.value })
         }
