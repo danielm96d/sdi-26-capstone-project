@@ -61,7 +61,11 @@ export default function NavBar() {
                   <Button onClick={()=>{
                     onClose();
                     navigate("/event-entry")}}>Create Event</Button>
-                  <Button>Logout</Button>
+                  <Button onClick={()=>{
+                    localStorage.setItem('logged','')
+                    localStorage.setItem('id', '')
+                    navigate('/')
+                  }}>Logout</Button>
                   <ToggleTheme />
                 </Stack>
               </ButtonGroup>
