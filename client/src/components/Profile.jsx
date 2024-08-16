@@ -21,6 +21,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
 import RequestModal from './request'
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
@@ -30,7 +31,6 @@ function Profile() {
   const [weekEvents, setWeekEvents] = useState()
   const [listDayVar, setListDayVar] = useState();
   const calenderRef = useRef(null);
-  const navigate = useNavigate();
 
   const views = {
     dayGridFourWeek: {
@@ -129,9 +129,6 @@ function Profile() {
     )
   }
 
-  if (userInfo.invalid) {
-    return navigate("/")
-  }
   console.log(userInfo)
   return (
     <Grid

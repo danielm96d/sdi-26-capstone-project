@@ -2,7 +2,7 @@ import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack,
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 export default function Login() {
     const [invalid, setInvalid] = useState(false);
@@ -13,11 +13,9 @@ export default function Login() {
     const handleClick = () => setShow(!show)
     const toast = useToast();
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        if(localStorage.getItem('logged')) {
-            return navigate('/profile')
-        }
         if (Object.keys(response).length > 1) {
             setLoading(false)
             toast({
@@ -28,9 +26,9 @@ export default function Login() {
                 isClosable: true,
                 position: "bottom-right"
             })
-        }
-        if (response.status === "success") {
-            navigate('/profile')
+            if (response.status === "success") {
+                navigate("/profile")
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [response])
@@ -61,7 +59,6 @@ export default function Login() {
                 .then(json => {
                     setResponse(json)
                     localStorage.setItem("id", json.user.id)
-                    localStorage.setItem('logged', 'true')
                 })
                 .catch(() => {
                     toast({

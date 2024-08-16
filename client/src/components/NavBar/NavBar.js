@@ -1,15 +1,19 @@
 import { Avatar, ButtonGroup, Center, Divider, Flex, Heading, IconButton, Skeleton, Stack } from "@chakra-ui/react";
 import ToggleTheme from "./ToggleTheme";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Text } from "@chakra-ui/react";
 import { useRef, useEffect, useState } from "react";
+import useAuth from "../../hooks/useAuth";
 
 export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({})
+  const location = useLocation();
+  
+  useAuth();
   useEffect(() => {
     fetch(`http://localhost:8080/users?id=${localStorage.getItem("id")||0}`, {
       method: "GET",
@@ -20,7 +24,7 @@ export default function NavBar() {
     })
     .then(res => res.json())
     .then(json => setUserInfo(json))
-  }, [])
+  }, [location, navigate, onOpen])
 
 
   return (
@@ -61,10 +65,17 @@ export default function NavBar() {
                   <Button onClick={()=>{
                     onClose();
                     navigate("/event-entry")}}>Create Event</Button>
-                  <Button onClick={()=>{
-                    localStorage.setItem('logged','')
-                    localStorage.setItem('id', '')
-                    navigate('/')
+                  <Button onClick={() => {
+                    fetch('http://localhost:8080/logout', {
+                      method: 'POST',
+                      credentials: 'include'
+                    })
+                    .then(res => res.json())
+                    .then(json => {
+                      onClose();
+                      localStorage.removeItem('id')
+                      navigate('/login')
+                    })
                   }}>Logout</Button>
                   <ToggleTheme />
                 </Stack>
