@@ -10,6 +10,8 @@ const cookieParser = require("cookie-parser");
 const usersRouter = require('./routes/users')
 const positionsRouter = require('./routes/positions')
 const eventsRouter = require('./routes/events')
+const skillsRouter = require('./routes/skills')
+
 
 const PORT = process.env.PORT || 8080;
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
@@ -192,6 +194,10 @@ app.use('/positions', positionsRouter)
 
 //======================================EVENTS CRUD===========================================\\
 app.use('/events',   eventsRouter)
+
+//======================================SKILLS CRUD===========================================\\
+app.use('/skills',   skillsRouter)
+
 
 
 app.listen(PORT, () => {

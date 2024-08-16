@@ -12,17 +12,17 @@ router.get("/", ( req, res ) => {
   // console.log('wrong one')
 
   if (!id) {
-    knex('positions')
+    knex('skills')
     .select('*')
     .then((data) => {
       res.status(200).send(data);
     })
     .catch((err) => {
       console.log(err);
-      res.status(301).send(`Error retrieving all positions: ${err}`);
+      res.status(301).send(`Error retrieving all skills: ${err}`);
     });
   } else if (id) {
-    knex('positions')
+    knex('skills')
       .select('*')
       .where({ id: id })
       .then((data) => {
@@ -30,23 +30,23 @@ router.get("/", ( req, res ) => {
       })
       .catch((err) => {
         console.log(err);
-        res.status(301).send(`Error retrieving single position: ${err}`);
+        res.status(301).send(`Error retrieving single skill: ${err}`);
       })
   }
 });
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
-  const newPosition = req.body;
+  const newskill = req.body;
   console.log('request body log output:', req.body);
-  knex('positions')
-    .insert(newPosition)
+  knex('skills')
+    .insert(newskill)
     .returning('*')
-    .then((insertedPosition) => {
-      res.status(201).json(insertedPosition[0]);
+    .then((insertedskill) => {
+      res.status(201).json(insertedskill[0]);
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send(`Error creating new position: ${err}`);
+      res.status(500).send(`Error creating new skill: ${err}`);
     });
 });
 //------------------UPDATE(by id)-------------------\\
@@ -55,38 +55,38 @@ router.patch("/:id", (req, res) => {
   const updates = req.body;
 console.log(updates)
 
-  knex('positions')
+  knex('skills')
     .where({ id: id })
     .update(updates)
     .returning("*")
-    .then((updatePositions) => {
-      if (updatePositions.length) {
-        res.status(200).json(updatePositions[0]);
+    .then((updateskills) => {
+      if (updateskills.length) {
+        res.status(200).json(updateskills[0]);
       } else {
-        res.status(404).send(`Position with id ${id} not found`);
+        res.status(404).send(`skill with id ${id} not found`);
       }
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send(`Error updating position: ${err}`);
+      res.status(500).send(`Error updating skill: ${err}`);
     });
 });
 
 //------------------DELETE (by id)-------------------\\
 router.delete('/:id', (req, res) => {
-  knex('positions')
+  knex('skills')
     .where({ id: req.params.id })
     .del()
     .then((deletedCount) => {
       if (deletedCount > 0) {
-        res.json({ message: 'Position deleted successfully' });
+        res.json({ message: 'skill deleted successfully' });
       } else {
-        res.status(404).json({ error: 'Position not found' });
+        res.status(404).json({ error: 'skill not found' });
       }
     })
     .catch((err) => {
       console.error(err);
-      res.status(400).send(`Error deleting position: ${err}`);
+      res.status(400).send(`Error deleting skill: ${err}`);
     });
 });
 
