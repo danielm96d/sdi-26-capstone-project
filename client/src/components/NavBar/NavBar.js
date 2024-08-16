@@ -63,7 +63,7 @@ export default function NavBar() {
                   <Button onClick={()=>{
                     onClose();
                     navigate("/calendar")}}>Calendar</Button>
-                  <Button>Approval</Button>
+                  {Object.keys(userInfo).length > 0 && !userInfo.invalid && userInfo[0].isApprover ? <Button>Approval</Button> : <></>}
                   <Button onClick={()=>{
                     onClose();
                     navigate("/event-entry")}}>Create Event</Button>
