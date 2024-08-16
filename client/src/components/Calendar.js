@@ -10,6 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 import interactionPlugin from '@fullcalendar/interaction';
+import useAuth from '../hooks/useAuth';
 
 const requestServer = 'http://localhost:8080/'
 
@@ -19,6 +20,7 @@ export default function Calendar () {
   const calenderRef = useRef(null);
 
   const navigate = useNavigate('/')
+
 
   useEffect(() => {
     monthEventsFetch();

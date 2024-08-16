@@ -80,7 +80,7 @@ app.post('/login', async (req, res) => {
 
     const user = await knex('users').where({ username }).first();
     if (!user) {
-      return res.status(400).json({ message: 'Invalid username or password' });
+      return res.status(400).send({ message: 'Invalid username or password' });
     }
 
     const validPassword = await bcrypt.compare(password, user.password);
@@ -118,8 +118,11 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
 });
 
 
@@ -176,9 +179,13 @@ app.get("/", (req, res)=>{
   res.send(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 })
 
+app.get('/validate', verifyToken, (req,res) => {
+  res.status(200).send({message: 'User is authenticated'})
+})
+
 
 //======================================USERS CRUD===========================================\\
-app.use('/users', verifyToken, usersRouter)
+app.use('/users', usersRouter)
 
 //======================================POSITIONS CRUD===========================================\\
 app.use('/positions', positionsRouter)
