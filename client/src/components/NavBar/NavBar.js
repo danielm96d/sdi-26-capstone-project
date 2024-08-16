@@ -15,15 +15,17 @@ export default function NavBar() {
   
   useAuth();
   useEffect(() => {
-    fetch(`http://localhost:8080/users?id=${localStorage.getItem("id")||0}`, {
-      method: "GET",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-    },
-    })
-    .then(res => res.json())
-    .then(json => setUserInfo(json))
+    if(localStorage.getItem('id')) {
+      fetch(`http://localhost:8080/users?id=${localStorage.getItem("id")}`, {
+        method: "GET",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+      },
+      })
+      .then(res => res.json())
+      .then(json => setUserInfo(json))
+    }
   }, [location, navigate, onOpen])
 
 
