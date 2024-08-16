@@ -7,6 +7,8 @@ import Register from './components/Register/Register.js';
 import Scheduler from './components/Scheduler.js'
 import NotFound from './components/NotFound/NotFound.js';
 import EventEntry from './components/EventEntry.js'
+import EventsDetailsPage from './components/EventDetails';
+
 
 function App() {
       return (
@@ -20,6 +22,7 @@ function App() {
                         <Route path='/calendar' element={<Calendar />} />
                         <Route path='/scheduler/:id' element={<Scheduler />} />
                         <Route path='/event-entry' element={<EventEntry />} />
+                        <Route path='/event-details/:id' element={<EventsDetailsPage />} />
                         <Route path='*' element={<NotFound/>}/>
                   </Routes>
 
