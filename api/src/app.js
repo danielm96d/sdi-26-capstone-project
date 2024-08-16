@@ -178,7 +178,8 @@ app.get("/", (req, res)=>{
 
 
 //======================================USERS CRUD===========================================\\
-app.use('/users', verifyToken, usersRouter)
+app.use('/users',  usersRouter)
+// verifyToken,///// I took this out for right now to see the users on the client side, plz ignore my change in the merge- Brian
 
 //======================================POSITIONS CRUD===========================================\\
 app.use('/positions', positionsRouter)
