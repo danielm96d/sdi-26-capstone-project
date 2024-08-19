@@ -31,6 +31,8 @@ export default function useAuth() {
 
             }
             
+        } else {
+            navigate('/profile')
         }
     }, [auth]);
 }
