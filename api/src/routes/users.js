@@ -45,7 +45,7 @@ router.get("/", async ( req, res ) => {
 
     let eventData = await knex('events_users')
       .join('events', 'events.id', 'events_users.events_id')
-      .select(
+      .distinct(
         'events.id',
         'events.name',
         'events.startTime',
