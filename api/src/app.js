@@ -166,23 +166,23 @@ app.post('/logout', (req, res) => {
 //     return res.status(403).json({ message: 'Not authorized to approve events' });
 //   }
 
-  // try {
-  //   const { id } = req.params;
-  //   await knex('events').where({ id }).update({ approved: true });
-  //   res.json({ message: 'Event approved successfully' });
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).json({ message: 'Error approving event' });
-  //   }
-  // })
+// try {
+//   const { id } = req.params;
+//   await knex('events').where({ id }).update({ approved: true });
+//   res.json({ message: 'Event approved successfully' });
+// } catch (error) {
+//   console.error(error);
+//   res.status(500).json({ message: 'Error approving event' });
+//   }
+// })
 
-app.get("/", (req, res)=>{
+app.get("/", (req, res) => {
   console.log("test")// this log is used to test live updates within the docker environment
   res.send(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 })
 
-app.get('/validate', verifyToken, (req,res) => {
-  res.status(200).json({message: 'User is authenticated'})
+app.get('/validate', verifyToken, (req, res) => {
+  res.status(200).json({ message: 'User is authenticated' })
 })
 
 

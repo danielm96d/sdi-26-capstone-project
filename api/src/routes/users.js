@@ -7,25 +7,25 @@ router.use(cors());
 router.use(express.json());
 //======================================USERS CRUD===========================================\\
 //------------------READ-------------------\\
-router.get("/", async ( req, res ) => {
+router.get("/", async (req, res) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
-  const {id} = req.query
+  const { id } = req.query
 
   //get all users:
   if (!id) {
     knex("users")
-    .select(
-      'name',
-      'rank',
-      'isApprover',
-    )
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(301).send(`Error retrieving single user: ${err}`);
-    });
+      .select(
+        'name',
+        'rank',
+        'isApprover',
+      )
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single user: ${err}`);
+      });
   }
 
   //Get a single user by ID
@@ -56,19 +56,19 @@ router.get("/", async ( req, res ) => {
         'events.type',
         'events.POCinfo',
         'events.location',
-       )
+      )
       .where({ 'events_users.users_id': id })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single user: ${err}`);
       })
 
-      data.push({...userData[0], events: eventData})
-      res.status(200).send(data);
+    data.push({ ...userData[0], events: eventData })
+    res.status(200).send(data);
   }
 });
 
-router.get('/self' , async(req, res) => {
+router.get('/self', async (req, res) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   let data = []
   let userData = await knex('users')
@@ -96,15 +96,15 @@ router.get('/self' , async(req, res) => {
       'events.type',
       'events.POCinfo',
       'events.location',
-     )
+    )
     .where({ 'events_users.users_id': req.user.id })
     .catch((err) => {
       console.log(err);
       res.status(301).send(`Error retrieving single user: ${err}`);
     })
 
-    data.push({...userData[0], events: eventData})
-    res.status(200).send(data);
+  data.push({ ...userData[0], events: eventData })
+  res.status(200).send(data);
 })
 
 // Get all events that need approval
@@ -146,7 +146,7 @@ router.delete("/:id", (req, res) => {
   const { id } = req.params;
 
   knex('users')
-    .where({ id: id})
+    .where({ id: id })
     .del()
     .then((count) => {
       if (count > 0) {
