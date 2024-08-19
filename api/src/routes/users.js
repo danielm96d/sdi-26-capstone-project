@@ -63,7 +63,16 @@ router.get("/", async ( req, res ) => {
         res.status(301).send(`Error retrieving single user: ${err}`);
       })
 
-      data.push({...userData[0], events: eventData})
+      let positionData = await knex('positions')
+      .join('users', 'users.id', '=', 'positions.users_id')
+      .distinct('positions.*')
+      .where({'positions.users_id': id})
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single user: ${err}`);
+      })
+
+      data.push({...userData[0], events: eventData, positions: positionData})
       res.status(200).send(data);
   }
 });
