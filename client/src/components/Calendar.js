@@ -4,19 +4,16 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react'
-import { useDisclosure, Lorem, Select, Input } from '@chakra-ui/react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 import interactionPlugin from '@fullcalendar/interaction';
-import useAuth from '../hooks/useAuth';
 import { Helmet } from 'react-helmet';
 
 const requestServer = 'http://localhost:8080/'
 
 export default function Calendar() {
-  const [dayEvents, setDayEvents] = useState()
   const [monthEvents, setMonthEvents] = useState()
   const calenderRef = useRef(null);
 
@@ -25,7 +22,6 @@ export default function Calendar() {
 
   useEffect(() => {
     monthEventsFetch();
-    dayEventsFetch();
   }, [])
 
   const monthEventsFetch = async () => {
@@ -64,15 +60,7 @@ export default function Calendar() {
       console.log(error)
     }
   }
-  const dayEventsFetch = async (selectedDate) => {
-    try {
-      const response = await fetch(requestServer);
-      const data = await response.json();
-      setDayEvents(data);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  
 
   function handleDateSelect(selectInfo) {
     let selectedDate = selectInfo.startStr;
@@ -80,19 +68,6 @@ export default function Calendar() {
     calenderRef.current.getApi().gotoDate(selectedDate)
 
   }
-
-
-  const calendarDataCalendar = [
-    {
-      title: "Cyber Week2",
-      id: 1,
-      borderColor: "transparent",
-      start: "2024-08-13T13:30",
-      end: "2024-08-13T14:00",
-      backgroundColor: "#805AD5",
-      className: "warning"
-    }
-  ];
 
   return (
     <>
