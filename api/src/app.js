@@ -197,6 +197,17 @@ app.use('/events', verifyToken, eventsRouter)
 
 //======================================SKILLS CRUD===========================================\\
 app.use('/skills', verifyToken, skillsRouter)
+// //======================================USERS CRUD===========================================\\
+// app.use('/users', usersRouter)
+
+// //======================================POSITIONS CRUD===========================================\\
+// app.use('/positions', positionsRouter)
+
+// //======================================EVENTS CRUD===========================================\\
+// app.use('/events', eventsRouter)
+
+// //======================================SKILLS CRUD===========================================\\
+// app.use('/skills', skillsRouter)
 
 
 
