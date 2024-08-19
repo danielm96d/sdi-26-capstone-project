@@ -20,8 +20,8 @@ import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
 import RequestModal from './request'
-import { useNavigate } from 'react-router-dom';
 import {Helmet} from 'react-helmet'
+import useAuth from '../hooks/useAuth';
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
@@ -123,7 +123,7 @@ function Profile() {
      /> */}
 
 
-  if (Object.keys(userInfo).length < 1) {
+  if (Object.keys(userInfo).length < 1 || userInfo.invalid) {
     return (
       <Heading>Loading</Heading>
     )

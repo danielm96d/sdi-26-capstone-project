@@ -35,4 +35,5 @@ export default function useAuth() {
             navigate('/profile')
         }
     }, [auth]);
+
 }
