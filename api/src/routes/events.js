@@ -10,6 +10,7 @@ router.use(express.json());
 //=====================================Events CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
 router.get("/", async ( req, res ) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const {id} = req.query
   console.log('id: ', id);
 
@@ -35,13 +36,13 @@ router.get("/", async ( req, res ) => {
         res.status(301).send("Error retrieving single event");
       })
 
-    responseData.push(...eventData)
+    responseData.push(...eventData) // needs update, approver is currently showing users id from positions?
     let approverData = await knex("events_users")
       .join('users', 'events_users.approver_id', '=', 'users.id')
       .distinct('approver_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
-        'users.isApprover': true
+        'users.isApprover': true0
       })
 
     responseData[0].approver = approverData;
