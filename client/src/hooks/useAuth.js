@@ -30,9 +30,7 @@ export default function useAuth() {
                 navigate('/login');
 
             }
-            
-        } else {
-            navigate('/profile')
+
         }
     }, [auth]);
 

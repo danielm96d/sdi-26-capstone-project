@@ -10,11 +10,12 @@ import {
   FormControl,
   FormLabel,
   Card,
-  useToast
+  useToast,
 } from '@chakra-ui/react'
 import { useDisclosure, Select, Input } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/events'
+const approverServer = 'http://localhost:8080/users?approver=true'
 
 function RequestModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -26,6 +27,7 @@ function RequestModal() {
   const [desc, setDesc] = useState(null);
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
+  const [approverList, setApproverList] = useState([]);
 
   let types = ['Funeral', 'Retirement', 'Inauguration', 'Other']
 
@@ -88,6 +90,18 @@ function RequestModal() {
     }
   }
 
+  const fetchApprovers = () => {
+    fetch(approverServer)
+      .then((res) => res.json())
+      .then((data) => {
+        setApproverList(data);
+      })
+  }
+
+  useEffect(() => {
+    fetchApprovers();
+  }, []);
+
   useEffect(() => {
       setDesc(null)
       setEndTime(null)
@@ -121,6 +135,13 @@ function RequestModal() {
                 <Input type="date" onChange={(e)=> setEndDate(e.target.value)}/><br />
                 <FormLabel>End time</FormLabel>
                 <Input type="time" onChange={(e)=> setEndTime(e.target.value)}/><br />
+              </Card>
+              <Card>
+                <Select placeholder='Select Approver'>
+                  <option value='fetchApprovers.map(data)'></option>
+                </Select>
+                {/* <FormLabel>Approver</FormLabel>
+                <Input type="title" onChange={(e)=> setTitle(e.target.value)}/><br /> */}
               </Card>
               <Card>
                 <FormLabel>Description</FormLabel>

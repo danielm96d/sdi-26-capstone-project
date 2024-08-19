@@ -181,22 +181,35 @@ app.get("/", (req, res) => {
   res.send(`application running using NODE_ENV: ${process.env.NODE_ENV}`);//this line will need editing for deployment
 })
 
-app.get('/validate', verifyToken, (req, res) => {
-  res.status(200).json({ message: 'User is authenticated' })
-})
+// app.get('/validate', verifyToken, (req, res) => {
+//   res.status(200).json({ message: 'User is authenticated' })
+// })
 
 
 //======================================USERS CRUD===========================================\\
-app.use('/users', verifyToken, usersRouter)
+// app.use('/users', verifyToken, usersRouter)
+
+// //======================================POSITIONS CRUD===========================================\\
+// app.use('/positions', verifyToken, positionsRouter)
+
+// //======================================EVENTS CRUD===========================================\\
+// app.use('/events', verifyToken, eventsRouter)
+
+// //======================================SKILLS CRUD===========================================\\
+// app.use('/skills', verifyToken, skillsRouter)
+
+
+// ======================================USERS CRUD===========================================
+app.use('/users', usersRouter)
 
 //======================================POSITIONS CRUD===========================================\\
-app.use('/positions', verifyToken, positionsRouter)
+app.use('/positions', positionsRouter)
 
 //======================================EVENTS CRUD===========================================\\
-app.use('/events', verifyToken, eventsRouter)
+app.use('/events', eventsRouter)
 
 //======================================SKILLS CRUD===========================================\\
-app.use('/skills', verifyToken, skillsRouter)
+app.use('/skills', skillsRouter)
 
 
 
