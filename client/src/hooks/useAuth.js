@@ -22,9 +22,17 @@ export default function useAuth() {
     }, [location]);
 
     useEffect(() => {
-        if (auth !== null && auth.invalid) {
-            navigate('/login');
+        if (auth !== null) {
+            if (auth.invalid) {
+                if(localStorage.getItem('id')) {
+                    localStorage.removeItem('id')
+                }
+                navigate('/login');
+
+            }
             
+        } else {
+            navigate('/profile')
         }
     }, [auth]);
 }
