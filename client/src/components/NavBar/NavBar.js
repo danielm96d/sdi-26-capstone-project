@@ -15,18 +15,30 @@ export default function NavBar() {
   
   useAuth();
   useEffect(() => {
-    if(localStorage.getItem('id')) {
-      fetch(`http://localhost:8080/users?id=${localStorage.getItem("id")}`, {
-        method: "GET",
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
+    fetch(`http://localhost:8080/users/self`, {
+      method: "GET",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
       },
-      })
+    })
       .then(res => res.json())
       .then(json => setUserInfo(json))
-    }
   }, [location, navigate, onOpen])
+
+  // useEffect(() => {
+  //   if(localStorage.getItem('id')) {
+  //     fetch(`http://localhost:8080/users?id=${localStorage.getItem("id")}`, {
+  //       method: "GET",
+  //       credentials: 'include',
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //     },
+  //     })
+  //     .then(res => res.json())
+  //     .then(json => setUserInfo(json))
+  //   }
+  // }, [location, navigate, onOpen])
 
 
   return (

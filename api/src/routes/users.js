@@ -68,6 +68,45 @@ router.get("/", async ( req, res ) => {
   }
 });
 
+router.get('/self' , async(req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  let data = []
+  let userData = await knex('users')
+    .select(
+      'name',
+      'rank',
+      'isApprover',
+    )
+    .where({ 'users.id': req.user.id })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send(`Error retrieving single user: ${err}`);
+    })
+
+  let eventData = await knex('events_users')
+    .join('events', 'events.id', 'events_users.events_id')
+    .select(
+      'events.id',
+      'events.name',
+      'events.startTime',
+      'events.endTime',
+      'events.startDate',
+      'events.endDate',
+      'events.description',
+      'events.type',
+      'events.POCinfo',
+      'events.location',
+     )
+    .where({ 'events_users.users_id': req.user.id })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send(`Error retrieving single user: ${err}`);
+    })
+
+    data.push({...userData[0], events: eventData})
+    res.status(200).send(data);
+})
+
 // Get all events that need approval
 // router.get("/approver", async (req, res) => {
 //   const {id} = req.query

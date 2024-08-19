@@ -187,16 +187,16 @@ app.get('/validate', verifyToken, (req,res) => {
 
 
 //======================================USERS CRUD===========================================\\
-app.use('/users', usersRouter)
+app.use('/users', verifyToken, usersRouter)
 
 //======================================POSITIONS CRUD===========================================\\
-app.use('/positions', positionsRouter)
+app.use('/positions', verifyToken, positionsRouter)
 
 //======================================EVENTS CRUD===========================================\\
-app.use('/events',   eventsRouter)
+app.use('/events', verifyToken,  eventsRouter)
 
 //======================================SKILLS CRUD===========================================\\
-app.use('/skills',   skillsRouter)
+app.use('/skills', verifyToken,   skillsRouter)
 
 
 

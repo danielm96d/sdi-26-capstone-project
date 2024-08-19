@@ -48,7 +48,7 @@ function Profile() {
   }
 
   useEffect(() => {
-    fetch(requestServer + `users?id=${localStorage.getItem("id") || 0}`, {
+    fetch(requestServer + `users/self`, {
       method: "GET",
       credentials: 'include',
       headers: {
