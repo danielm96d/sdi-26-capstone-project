@@ -65,7 +65,7 @@ router.get("/", async ( req, res ) => {
 
       let positionData = await knex('positions')
       .join('users', 'users.id', '=', 'positions.users_id')
-      .select('*')
+      .distinct('positions.*')
       .where({'positions.users_id': id})
       .catch((err) => {
         console.log(err);
