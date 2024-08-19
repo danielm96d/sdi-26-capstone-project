@@ -22,8 +22,11 @@ export default function useAuth() {
     }, [location]);
 
     useEffect(() => {
-        if (auth !== null && auth.invalid) {
-            navigate('/login');
+        if (auth !== null) {
+            if (auth.invalid) {
+                navigate('/login');
+
+            }
             
         }
     }, [auth]);
