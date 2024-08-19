@@ -27,7 +27,12 @@ router.get("/", async ( req, res ) => {
     console.log('checking id')
     let data = []
     let positionData = await knex('positions')
-      .select('*')
+      .select(
+        'id',
+        'name',
+        'users_id',
+        'events_id'
+      )
       .where({ id: id })
       // .then((data) => {
       //   res.status(200).send(data);
@@ -36,18 +41,6 @@ router.get("/", async ( req, res ) => {
         console.log(err);
         res.status(301).send(`Error retrieving single position: ${err}`);
       })
-  } else if (list) {
-    console.log('working')
-    knex('positions')
-      .distinct('name')
-      .then((data) => {
-        res.status(200).send(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(301).send(`Error retrieving single position: ${err}`);
-      })
-
       console.log(positionData[0].events_id)
 
     let eventData = await knex('positions')
@@ -70,11 +63,23 @@ router.get("/", async ( req, res ) => {
         res.status(301).send(`Error retrieving single user: ${err}`);
       })
 
-    let userData = await knex('positons')
+    // let userData = await knex('positons')
 
 
     data.push({...positionData[0], events: eventData})
     res.status(200).send(data);
+
+  } else if (list) {
+    console.log('working')
+    knex('positions')
+      .distinct('name')
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single position: ${err}`);
+      })
   }
 });
 //------------------CREATE-------------------\\
