@@ -24,6 +24,9 @@ export default function useAuth() {
     useEffect(() => {
         if (auth !== null) {
             if (auth.invalid) {
+                if(localStorage.getItem('id')) {
+                    localStorage.removeItem('id')
+                }
                 navigate('/login');
 
             }
