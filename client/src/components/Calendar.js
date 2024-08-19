@@ -26,8 +26,15 @@ export default function Calendar() {
 
   const monthEventsFetch = async () => {
     try {
-      const response = await fetch(`${requestServer}events`);
+      const response = await fetch(`${requestServer}events`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
       const data = await response.json();
+      console.log(data)
       let copiedData = data;
       data.map((event, index) => {
         let indexOfT = event.startDate.indexOf("T");
