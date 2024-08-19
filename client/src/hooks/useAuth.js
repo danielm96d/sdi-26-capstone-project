@@ -16,7 +16,9 @@ export default function useAuth() {
                 },
             })
                 .then(res => res.json())
-                .then(json => setAuth(json))
+                .then(json => {
+                    setAuth(json)
+                })
                 .catch(() => setAuth({ invalid: true }));
         }
     }, [location]);
@@ -27,10 +29,9 @@ export default function useAuth() {
                 if(localStorage.getItem('id')) {
                     localStorage.removeItem('id')
                 }
-                navigate('/login');
-
+                navigate('/login')
             }
-
+            
         }
     }, [auth]);
 

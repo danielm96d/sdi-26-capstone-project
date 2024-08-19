@@ -59,6 +59,7 @@ export default function Login() {
                 .then(json => {
                     setResponse(json)
                     localStorage.setItem("id", json.user.id)
+                    navigate('/profile')
                 })
                 .catch(() => {
                     toast({
