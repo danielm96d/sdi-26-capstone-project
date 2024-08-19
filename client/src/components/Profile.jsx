@@ -21,7 +21,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
 import RequestModal from './request'
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import {Helmet} from 'react-helmet'
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
@@ -131,79 +131,84 @@ function Profile() {
 
   console.log(userInfo)
   return (
-    <Grid
-      h='800px'
-      templateColumns='repeat(8, minmax(120px, 1fr))'
-      gap={4}
-    >
-      <GridItem colSpan={2} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
-        borderColor='black'
-        rounded='md'>
-        <br />
-        <Avatar name={userInfo[0].name} size='2xl' />
-        <Box
-          width='90%'
-          height='60%'
-          mt='50px'
-          borderWidth='3px'
+    <>
+      <Helmet>
+        <title>OpSync | Profile</title>
+      </Helmet>
+      <Grid
+        h='800px'
+        templateColumns='repeat(8, minmax(120px, 1fr))'
+        gap={4}
+      >
+        <GridItem colSpan={2} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
           borderColor='black'
           rounded='md'>
+          <br />
+          <Avatar name={userInfo[0].name} size='2xl' />
+          <Box
+            width='90%'
+            height='60%'
+            mt='50px'
+            borderWidth='3px'
+            borderColor='black'
+            rounded='md'>
 
-          User Info
-          <Box>
-            <Text>Hello {userInfo[0].name},</Text>
+            User Info
+            <Box>
+              <Text>Hello {userInfo[0].name},</Text>
+            </Box>
           </Box>
-        </Box>
 
-      </GridItem>
-      <GridItem colSpan={3} borderWidth='1px'
-        borderColor='black'
-        rounded='md'
-        p="5px">
+        </GridItem>
+        <GridItem colSpan={3} borderWidth='1px'
+          borderColor='black'
+          rounded='md'
+          p="5px">
 
-        <div >
-          <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin]}
-            initialView='dayGridFourWeek'
-            views={views}
-            height='200px'
-            selectable={true}
-            selectMirror={true}
-            select={(selectInfo) => handleDateSelect(selectInfo)}
-          />
-        </div>
-        <div >
-          <FullCalendar
-            ref={calenderRef}
-            plugins={[listPlugin]}
-            initialView='listDay'
-            headerToolbar={false}
-            height='200px'
-            selectable={true}
-            selectMirror={true}
-            initialDate={listDayVar ? (listDayVar) : null}
-          />
-        </div>
-      </GridItem>
-      <GridItem colSpan={3} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
-        borderColor='black'
-        rounded='md'>
-        <Box
-          width='90%'
-          height='60%'
-          mt='50px'
-          borderWidth='3px'
+          <div >
+            <FullCalendar
+              plugins={[dayGridPlugin, interactionPlugin]}
+              initialView='dayGridFourWeek'
+              views={views}
+              height='200px'
+              selectable={true}
+              selectMirror={true}
+              select={(selectInfo) => handleDateSelect(selectInfo)}
+            />
+          </div>
+          <div >
+            <FullCalendar
+              ref={calenderRef}
+              plugins={[listPlugin]}
+              initialView='listDay'
+              headerToolbar={false}
+              height='200px'
+              selectable={true}
+              selectMirror={true}
+              initialDate={listDayVar ? (listDayVar) : null}
+            />
+          </div>
+        </GridItem>
+        <GridItem colSpan={3} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
           borderColor='black'
           rounded='md'>
-          Notifications
-          {notifications}
-        </Box>
+          <Box
+            width='90%'
+            height='60%'
+            mt='50px'
+            borderWidth='3px'
+            borderColor='black'
+            rounded='md'>
+            Notifications
+            {notifications}
+          </Box>
 
-        <RequestModal />
+          <RequestModal />
 
 
-      </GridItem>
-    </Grid>
+        </GridItem>
+      </Grid>
+    </>
   )
 }
 
