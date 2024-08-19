@@ -6,7 +6,7 @@ const knex = require("knex")(require("../../knexfile.js")[process.env.NODE_ENV |
 router.use(cors());
 router.use(express.json());
 
-router.get("/", ( req, res ) => {
+router.get("/", async ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
   // console.log('wrong one')
@@ -22,16 +22,42 @@ router.get("/", ( req, res ) => {
       res.status(301).send(`Error retrieving all positions: ${err}`);
     });
   } else if (id) {
-    knex('positions')
+    let data = []
+    let positionData = await knex('positions')
       .select('*')
       .where({ id: id })
-      .then((data) => {
-        res.status(200).send(data);
-      })
+      // .then((data) => {
+      //   res.status(200).send(data);
+      // })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single position: ${err}`);
       })
+
+      console.log(positionData[0].events_id)
+
+    let eventData = await knex('positions')
+      .join('events', 'events.id', 'positions.events_id')
+      .distinct(
+        'events.id',
+        'events.name',
+        'events.startTime',
+        'events.endTime',
+        'events.startDate',
+        'events.endDate',
+        'events.description',
+        'events.type',
+        'events.POCinfo',
+        'events.location',
+       )
+      .where({ 'events.id': positionData[0].events_id })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single user: ${err}`);
+      })
+
+    data.push({...positionData[0], events: eventData})
+    res.status(200).send(data);
   }
 });
 //------------------CREATE-------------------\\

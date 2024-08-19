@@ -13,15 +13,15 @@ exports.seed = async function(knex) {
   // Deletes ALL existing entries
   await knex('users').del()
   const users = await knex('users').insert([
-    {name: 'John', rank: 'E1', password: hashedPassword, username: 'A1', isApprover:true},
-    {name: 'Frank', rank: 'E2', password: hashedPassword, username: 'A2', isApprover:false},
-    {name: 'Frank', rank: 'E2', password: hashedPassword, username: 'A3', isApprover:false},
-    {name: 'Bob', rank: 'E3', password: hashedPassword, username: 'A4', isApprover:true},
-    {name: 'Dan', rank: 'O1', password: hashedPassword, username: 'A5', isApprover:true},
-    {name: 'Billy', rank: 'O1', password: hashedPassword, username: 'A6', isApprover:true},
-    {name: 'Shawn', rank: 'O1', password: hashedPassword, username: 'A7', isApprover:true},
-    {name: 'Yogi', rank: 'O1', password: hashedPassword, username: 'A8', isApprover:true},
-    {name: 'Peterson', rank: 'O1', password: hashedPassword, username: 'A9', isApprover:true},
+    {name: 'John', rank: 'E1', password: hashedPassword, username: 'a1', isApprover:true},
+    {name: 'Frank', rank: 'E2', password: hashedPassword, username: 'a2', isApprover:false},
+    {name: 'Frank', rank: 'E2', password: hashedPassword, username: 'a3', isApprover:false},
+    {name: 'Bob', rank: 'E3', password: hashedPassword, username: 'a4', isApprover:true},
+    {name: 'Dan', rank: 'O1', password: hashedPassword, username: 'a5', isApprover:true},
+    {name: 'Billy', rank: 'O1', password: hashedPassword, username: 'a6', isApprover:true},
+    {name: 'Shawn', rank: 'O1', password: hashedPassword, username: 'a7', isApprover:true},
+    {name: 'Yogi', rank: 'O1', password: hashedPassword, username: 'a8', isApprover:true},
+    {name: 'Peterson', rank: 'O1', password: hashedPassword, username: 'a9', isApprover:true},
     {name: 'Daniel Miller', rank: 'O2', password: hashedPassword, username: 'fireball96d@gmail.com', isApprover:false},
 
   ]).returning('id');
