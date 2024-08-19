@@ -77,22 +77,6 @@ router.get("/", async ( req, res ) => {
   }
 });
 
-// Get all events that need approval
-// router.get("/approver", async (req, res) => {
-//   const {id} = req.query
-//   console.log('id: ', id);
-
-//   await knex('users')
-//     .select('*')
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(301).send("Error retrieving events");
-//     });
-// })
-
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
