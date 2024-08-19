@@ -193,10 +193,10 @@ app.use('/users', verifyToken, usersRouter)
 app.use('/positions', verifyToken, positionsRouter)
 
 //======================================EVENTS CRUD===========================================\\
-app.use('/events', verifyToken,  eventsRouter)
+app.use('/events', verifyToken, eventsRouter)
 
 //======================================SKILLS CRUD===========================================\\
-app.use('/skills', verifyToken,   skillsRouter)
+app.use('/skills', verifyToken, skillsRouter)
 
 
 
