@@ -13,9 +13,10 @@ router.get("/", async ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
 
+
   if (!id) {
-    knex("events")
-    .select('*') // selects all info from events
+   knex('events')
+    .select('*')
     .then((data) => {
       res.status(200).send(data);
     })
@@ -23,6 +24,7 @@ router.get("/", async ( req, res ) => {
       console.log(err);
       res.status(301).send("Error retrieving events");
     });
+
   } else if (id) {
     let responseData = []
     let eventData = await knex('events')
@@ -39,7 +41,7 @@ router.get("/", async ( req, res ) => {
       .distinct('approver_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
-        'users.isApprover': true
+        'users.isApprover': true0
       })
 
     responseData[0].approver = approverData;

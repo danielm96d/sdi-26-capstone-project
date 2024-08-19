@@ -17,23 +17,31 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    # healthcheck:
+    #   test: [“CMD-SHELL”, “pg_isready -U postgres”]
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 5
 
   api:
     container_name: api
     build: ./api
     ports:
-      - '8080:8080'
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy
+      # - db
+      # db:
+      #   condition: service_healthy
     volumes:
       - type: bind
         source: ./api/src
         target: /app/api/src
-      - type: bind 
+      - type: bind
         source: ./api/seeds
         target: /app/api/seeds
-      - type: bind 
+      - type: bind
         source: ./api/migrations
         target: /app/api/migrations
     networks:
@@ -43,7 +51,7 @@ services:
     container_name: client
     build: ./client
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
       - db
     volumes:
@@ -52,7 +60,6 @@ services:
         target: /app/client/src
     networks:
       - my_network
-
 
 volumes:
   db-data:
