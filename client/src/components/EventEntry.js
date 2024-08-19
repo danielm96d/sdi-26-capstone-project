@@ -13,6 +13,7 @@ import {
 
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet';
 
 const requestServer = 'http://localhost:8080/'
 
@@ -157,6 +158,9 @@ const handleDelete = (pos) => {
 
   return (
     <>
+    <Helmet>
+      <title>OpSync | New Event</title>
+    </Helmet>
     <Heading size='md'>Event Entry</Heading>
     <Grid
       h='800px'
