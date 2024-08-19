@@ -97,6 +97,7 @@ function RequestModal() {
         setApproverList(data);
       })
   }
+  console.log(approverServer)
 
   useEffect(() => {
     fetchApprovers();
