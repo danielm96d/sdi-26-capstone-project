@@ -45,7 +45,7 @@ router.get("/", async (req, res) => {
 
     let eventData = await knex('events_users')
       .join('events', 'events.id', 'events_users.events_id')
-      .select(
+      .distinct(
         'events.id',
         'events.name',
         'events.startTime',
@@ -115,22 +115,6 @@ router.get('/self', async (req, res) => {
   data.push({ ...userData[0], events: eventData })
   res.status(200).send(data);
 })
-
-// Get all events that need approval
-// router.get("/approver", async (req, res) => {
-//   const {id} = req.query
-//   console.log('id: ', id);
-
-//   await knex('users')
-//     .select('*')
-//     .then((data) => {
-//       res.status(200).send(data);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       res.status(301).send("Error retrieving events");
-//     });
-// })
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
