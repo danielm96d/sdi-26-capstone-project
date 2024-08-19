@@ -18,7 +18,7 @@ const requestServer = 'http://localhost:8080/events'
 
 function RequestModal() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [type, setType] = useState("Retirement");
+  const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [startTime, setStartTime] = useState(null);
@@ -31,8 +31,7 @@ function RequestModal() {
 
   const submitFunction = async (e) => {
     e.preventDefault();
-
-    console.log("Type: " + type + "\n")
+    console.log(`Title: ${title}`)
     console.log("Start Date/Time: " + `${startDate}T${startTime}` +"\n")
     console.log("End Date/Time: " + `${endDate}T${endTime}` +"\n")
     console.log("desc: " + desc + "\n")
@@ -47,7 +46,7 @@ function RequestModal() {
     } else {
       if (startDate > endDate){
         toast({
-          title: 'info.',
+          title: "info",
           description: "start date is after end date",
           status: 'error',
           duration: 4000,
@@ -62,8 +61,8 @@ function RequestModal() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              name: type,
-              type: type,
+              name: title,
+              type: "Request",
               startTime: startTime,
               endTime: endTime,
               startDate: startDate,
@@ -90,7 +89,6 @@ function RequestModal() {
   }
 
   useEffect(() => {
-      setType("Retirement")
       setDesc(null)
       setEndTime(null)
       setStartTime(null)
@@ -108,13 +106,10 @@ function RequestModal() {
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <FormLabel>Type</FormLabel>
-              <Select onChange={(e)=> setType(e.target.value)}>
-                {types.map(x => (
-                  <option key={x} value={x}>{x}</option>
-                ))
-                }
-              </Select><br />
+              <Card>
+                <FormLabel>Title</FormLabel>
+                <Input type="title" onChange={(e)=> setTitle(e.target.value)}/><br />
+              </Card>
               <Card>
                 <FormLabel>Start Date</FormLabel>
                 <Input type="date" onChange={(e)=> setStartDate(e.target.value)}/><br />
