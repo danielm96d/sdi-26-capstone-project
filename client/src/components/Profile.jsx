@@ -2,14 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import {
   Grid,
   GridItem,
-  Image,
   Box,
   Avatar,
-  useDisclosure,
-  Lorem,
-  Select,
-  Input,
-  Flex,
   Heading,
   Text
 } from '@chakra-ui/react'
@@ -21,15 +15,12 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
 import RequestModal from './request'
 import {Helmet} from 'react-helmet'
-import useAuth from '../hooks/useAuth';
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
   const [userInfo, setUserInfo] = useState({})
   const [notifications, setNotifications] = useState()
-  const [dayEvents, setDayEvents] = useState()
-  const [weekEvents, setWeekEvents] = useState()
-  const [listDayVar, setListDayVar] = useState();
+  const [ events, setEvents ] = useState([]);
   const calenderRef = useRef(null);
 
   const views = {
@@ -56,72 +47,30 @@ function Profile() {
       },
     })
       .then(res => res.json())
-      .then(json => setUserInfo(json))
+      .then(json => {
+        if (json[0].events !== undefined){
+          let arrEvents = [];
+          json[0].events.map((event) => {
+            let indexOfT = event.startDate.indexOf("T");
+            arrEvents.push({
+              id: event.id,
+              title: event.name,
+              start: `${event.startDate.slice(0, indexOfT)}T${event.startTime}`,
+              end: `${event.endDate.slice(0, indexOfT)}T${event.endTime}`,
+            })
+          })
+          setEvents(arrEvents);
+          console.log(arrEvents)
+        }
+        setUserInfo(json)
+      })
   }, [])
-
-
-  const eventClickHander = () => {
-    let new3;
-  }
-  useEffect(() => {
-    // userInfoFetch();
-    notificationsFetch();
-    weekEventsFetch();
-    dayEventsFetch();
-  }, [])
-
-  // const userInfoFetch = async () => {
-  //   try{
-  //     const response = await fetch(requestServer);
-  //     const data = await response.json();
-  //     setUserInfo(data);
-  //   } catch (error){
-  //     console.log(error)
-  //   }
-  // }
-  const notificationsFetch = async () => {
-    try {
-      const response = await fetch(requestServer);
-      const data = await response.json();
-      setNotifications(data);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const weekEventsFetch = async () => {
-    try {
-      const response = await fetch(requestServer);
-      const data = await response.json();
-      setWeekEvents(data);
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const dayEventsFetch = async () => {
-    try {
-      const response = await fetch(requestServer);
-      const data = await response.json();
-      setDayEvents(data);
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   function handleDateSelect(selectInfo) {
     let selectedDate = selectInfo.startStr;
     console.log(selectInfo.startStr)
     calenderRef.current.getApi().gotoDate(selectedDate)
-
   }
-
-  {/* <Image
-     borderRadius='full'
-     boxSize='150px'
-     src={process.env.PUBLIC_URL + '/elonez.jpg'}
-     alt='Dan Abramov'
-     mt='50px'
-     /> */}
-
 
   if (Object.keys(userInfo).length < 1 || userInfo.invalid) {
     return (
@@ -174,6 +123,7 @@ function Profile() {
               selectable={true}
               selectMirror={true}
               select={(selectInfo) => handleDateSelect(selectInfo)}
+              events={events}
             />
           </div>
           <div >
@@ -185,7 +135,7 @@ function Profile() {
               height='200px'
               selectable={true}
               selectMirror={true}
-              initialDate={listDayVar ? (listDayVar) : null}
+              events={events}
             />
           </div>
         </GridItem>
@@ -214,15 +164,3 @@ function Profile() {
 
 export default Profile;
 
-
-// <FullCalendar
-//       plugins={[dayGridPlugin, interactionPlugin]}
-//       height="90%"
-//       initialView='dayGridMonth'
-//       events={monthEvents}
-//       selectable={true}
-//       selectMirror={true}
-//       select={handleDateSelect}
-//       eventClick={(info)=>{navigate(`/scheduler/${info.event.id}`)
-//       }}
-//     />
