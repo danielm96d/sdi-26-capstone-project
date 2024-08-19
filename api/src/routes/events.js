@@ -35,7 +35,7 @@ router.get("/", async ( req, res ) => {
         res.status(301).send("Error retrieving single event");
       })
 
-    responseData.push(...eventData) // needs update, approver is currently showing users id from positions?
+    responseData.push(...eventData)
     let approverData = await knex("events_users")
       .join('users', 'events_users.approver_id', '=', 'users.id')
       .distinct('approver_id as id', 'name', 'rank')

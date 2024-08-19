@@ -30,7 +30,7 @@ export default function useAuth() {
                 navigate('/login');
 
             }
-            
+
         }
     }, [auth]);
 
