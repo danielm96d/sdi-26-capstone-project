@@ -26,7 +26,9 @@
       - **POST:** `htpp://localhost:8080/users`
       - **GET:** `htpp://localhost:8080/users`
         - Endpoint uses query functionality the format for which is: `?id=x` *replace x with the id you are searching for*
-          - endpoint accepts query `id`
+          - endpoint accepts query `id`, `approver`
+          - id is formatted for integers
+          - approver is formatted as a boolean
       - **PATCH:** `htpp://localhost:8080/users/:id`
       - **DELETE:** `htpp://localhost:8080/users/:id`
       - standard return without a query will return all events that are classified as requests under the type property
