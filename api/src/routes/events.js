@@ -6,9 +6,7 @@ const knex = require("knex")(require("../../knexfile.js")[process.env.NODE_ENV |
 router.use(cors());
 router.use(express.json());
 
-    // .then((data) => {
-    //   res.status(200).send(data);
-    // })
+
 //=====================================Events CRUD===========================================\\
 //------------------READ (all and by id)-------------------\\
 router.get("/", async ( req, res ) => {
@@ -17,81 +15,15 @@ router.get("/", async ( req, res ) => {
 
 
   if (!id) {
-    let responseData = []
-    let eventData = await knex('events')
-    .join('events_users', 'events_users.events_id', '=', 'events.id')
+   knex('events')
     .select('*')
+    .then((data) => {
+      res.status(200).send(data);
+    })
     .catch((err) => {
       console.log(err);
       res.status(301).send("Error retrieving events");
     });
-
-    // responseData.push(...eventData)
-    // let approverData = await knex("events_users")
-    //   .join('users', 'events_users.approver_id', '=', 'users.id')
-    //   .distinct('approver_id as id', 'name', 'rank')
-    //   .where({
-    //     // 'events_users.events_id': id,
-    //     'users.isApprover': true
-    //   })
-
-    // responseData[0].approver = approverData;
-
-    // let positionData = await knex('positions')
-    //   .join('users', 'positions.users_id', '=', 'users.id')
-    //   .join('events', 'positions.events_id', '=', 'events.id')
-    //   .select(
-    //     'positions.id',
-    //     'positions.name as position_name',
-    //     'positions.events_id',
-    //     'positions.users_id as user_id',
-    //     'users.name as victim',
-    //     'users.rank',
-    //   )
-      // .where({
-      //    'positions.events_id': id
-      // })
-
-    responseData[0].position = positionData;
-    res.status(200).send(eventData)
-
-
-    // let responseData = []
-    // let eventData = await knex('events')
-    // .select('*')
-    // .catch((err) => {
-    //   console.log(err);
-    //   res.status(301).send("Error retrieving events");
-    // });
-
-    // responseData.push(...eventData)
-    // let approverData = await knex("events_users")
-    //   .join('users', 'events_users.approver_id', '=', 'users.id')
-    //   .distinct('approver_id as id', 'name', 'rank')
-    //   .where({
-    //     // 'events_users.events_id': id,
-    //     'users.isApprover': true
-    //   })
-
-    // responseData[0].approver = approverData;
-
-    // let positionData = await knex('positions')
-    //   .join('users', 'positions.users_id', '=', 'users.id')
-    //   .join('events', 'positions.events_id', '=', 'events.id')
-    //   .select(
-    //     'positions.id',
-    //     'positions.name as position_name',
-    //     'positions.events_id',
-    //     'positions.users_id as user_id',
-    //     'users.name as victim',
-    //     'users.rank',
-    //   )
-    //   // .where({
-    //   //    'positions.events_id': id
-    //   // })
-
-    // responseData[0].position = positionData;
-    // res.status(200).send(responseData)
 
   } else if (id) {
     let responseData = []
@@ -109,7 +41,7 @@ router.get("/", async ( req, res ) => {
       .distinct('approver_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
-        'users.isApprover': true
+        'users.isApprover': true0
       })
 
     responseData[0].approver = approverData;
