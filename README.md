@@ -38,9 +38,9 @@
       - **GET:** `htpp://localhost:8080/events`
         - Endpoint uses query functionality the format for which is: `?id=x` *replace x with the id you are searching for*
           - endpoint accepts query `id`
+        - standard request without a query will return all events
       - **PATCH:** `htpp://localhost:8080/events/:id`
       - **DELETE:** `htpp://localhost:8080/events/:id`
-      - standard return without a query will return all events that are classified as requests under the type property
 
   - `htpp://localhost:8080/positions`
     - **FULL CRUD FUNCTIONALITY**
@@ -49,9 +49,9 @@
       - **GET:** `htpp://localhost:8080/positions`
         - Endpoint uses query functionality the format for which is: `?id=x` *replace x with the id you are searching for*
           - endpoint accepts query `id`
+        - standard request without a query will return all positions
       - **PATCH:** `htpp://localhost:8080/positions/:id`
       - **DELETE:** `htpp://localhost:8080/positions/:id`
-      - standard return without a query will return all events that are classified as requests under the type property
 
   - `htpp://localhost:8080/events/requests`
     - **GET FUNCTIONALITY**
@@ -59,7 +59,7 @@
       - **GET:** `htpp://localhost:8080/events/requests`
         - Endpoint uses query functionality the format for which is: `?id=x` *replace x with the id you are searching for*
           - endpoint accepts query `id`
-      - standard return without a query will return all events that are classified as requests under the type property
+      - standard request without a query will return all events that are classified as requests under the type property
         - *please note that it is case specific and for something to be considered an unavailable request you must set the type property to `"Request"`*
 
   
