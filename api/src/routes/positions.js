@@ -7,11 +7,13 @@ router.use(cors());
 router.use(express.json());
 
 router.get("/", ( req, res ) => {
-  const {id} = req.query
+  const {id, list} = req.query
   console.log('id: ', id);
+  console.log('list: ', list);
   // console.log('wrong one')
 
-  if (!id) {
+  if (!id && !list) {
+    console.log('defaults')
     knex('positions')
     .select('*')
     .then((data) => {
@@ -22,9 +24,21 @@ router.get("/", ( req, res ) => {
       res.status(301).send(`Error retrieving all positions: ${err}`);
     });
   } else if (id) {
+    console.log('checking id')
     knex('positions')
       .select('*')
       .where({ id: id })
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send(`Error retrieving single position: ${err}`);
+      })
+  } else if (list) {
+    console.log('working')
+    knex('positions')
+      .distinct('name')
       .then((data) => {
         res.status(200).send(data);
       })
