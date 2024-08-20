@@ -70,6 +70,7 @@ router.get("/", async ( req, res ) => {
 });
 
 router.get('/requests', (req,res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const {id} = req.query;
   // console.log('event request ID: ', id)
 
@@ -107,6 +108,7 @@ router.get('/requests', (req,res) => {
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const body = req.body;
   const eventData = {
     name: body.name,
@@ -165,7 +167,8 @@ router.patch('/:id', (req, res) => {
 });
 //------------------DELETE (by id)-------------------\\
 router.delete('/:id', (req, res) => {
-console.log(req.params.id)
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  console.log(req.params.id)
   knex('events')
     .where({ id: req.params.id })
     .del()
