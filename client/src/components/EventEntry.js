@@ -31,6 +31,13 @@ const colors = {
 }
 
 function EventEntry() {
+  const fetchHeader = {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
   const [type, setType] = useState("Retirement");
   const [title, setTitle] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -77,6 +84,7 @@ function EventEntry() {
         try{
           let response = await fetch(`${requestServer}events`, {
             method: 'POST',
+
             headers: {
               'Accept': 'application/json, text/plain, */*',
               'Content-Type': 'application/json',
@@ -98,6 +106,7 @@ function EventEntry() {
               selectedPositions.map((pos) => {
                 fetch(`${requestServer}positions`, {
                   method: 'POST',
+                  credentials: 'include',
                   headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': 'application/json',
