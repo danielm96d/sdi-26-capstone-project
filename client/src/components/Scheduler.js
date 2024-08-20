@@ -6,7 +6,9 @@ import {
   Button,
   Heading,
   Spacer,
-  List
+  List,
+  Box,
+  Stack
 } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/'
@@ -153,7 +155,7 @@ export default function Scheduler () {
   }, [])
 
   return (
-    <div>
+    <Box>
       {eventInfo ? (
         <>
           <Grid
@@ -185,9 +187,9 @@ export default function Scheduler () {
                 {positionsInfo.length > 0 ? (
                 <>
                   {positionsInfo.map((pos, index) => (
-                    <div key={index}>
+                    <Box key={index}>
                     <Button mr='10px' bg={colors[pos.name]} onClick={() => showRequiredBodies(pos.name)} >{pos.name}</Button>
-                    </div>
+                    </Box>
                   ))}
                 </>
                   ) : null}
@@ -201,13 +203,13 @@ export default function Scheduler () {
                     {bodies.length > 0 ? (
               <>
                 {bodies.map((pos, index) => (
-                  <div key={index}>
+                  <Box key={index}>
                     <Button mb='10px' bg={colors[pos.position_name]} size='lg' onClick={() => {
                       setPositionId(pos.id)
                       }} >
                         {pos.position_name}  {pos.user_id ? pos.victim : "empty"}
                     </Button>
-                  </div>
+                  </Box>
                 ))}
               </>
                 ) : null}
@@ -221,19 +223,21 @@ export default function Scheduler () {
                 <Heading size='md'>Available Bodies </Heading>
                 {users.length > 0 ? (
                   <>
+                  <Stack direction="row" flexWrap="wrap">
                     {users.map((user, index) => (
                       
-                      <div key={index}>
+                      <>
                         {console.log(user)}
                         <Button mb='10px' bg ={colors[user.name]} size='lg' onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
-                      </div>
+                      </>
                     ))}
+                    </Stack>
                   </>
                 ) : null}
               </List>
             </GridItem>
           </Grid>
     </> ): null}
-  </div>
+  </Box>
   );
 }
