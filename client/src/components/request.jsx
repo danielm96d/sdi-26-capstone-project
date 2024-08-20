@@ -32,6 +32,7 @@ function RequestModal() {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [desc, setDesc] = useState(null);
+  const [approverID, setApproverID] = useState(null);
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
   const [approverList, setApproverList] = useState([]);
@@ -65,6 +66,7 @@ function RequestModal() {
         try{
           let response = await fetch(requestServer, {
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Accept': 'application/json, text/plain, */*',
               'Content-Type': 'application/json',
@@ -77,6 +79,7 @@ function RequestModal() {
               startDate: startDate,
               endDate: endDate,
               description: desc,
+              approver: approverID
             })
           })
           console.log(response.statusText)
@@ -117,6 +120,7 @@ function RequestModal() {
       setStartTime(null)
       setEndDate(null)
       setStartDate(null)
+      setApproverID(null)
   }, [submitted])
 
   return (
@@ -146,7 +150,7 @@ function RequestModal() {
                 <Input type="time" onChange={(e)=> setEndTime(e.target.value)}/><br />
               </Card>
               <Card>
-                <Select placeholder='Select Approver'>
+                <Select placeholder='Select Approver' onChange={(e) => setApproverID(e.target.value)}>
                   {approverList.map(approver => {
                     console.log(approver)
                   return <option key={approver.id} value={approver.id}>

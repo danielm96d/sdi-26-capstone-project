@@ -19,12 +19,20 @@ export default function NavBar() {
   const navigate = useNavigate()
   const [userInfo, setUserInfo] = useState({})
   const location = useLocation();
-  
+
   useAuth();
+  // useEffect(() => {
+  //   fetch(`http://localhost:8080/users/self`, fetchHeader)
+  //     .then(res => res.json())
+  //     .then(json => setUserInfo(json))
+  // }, [location, navigate, onOpen])
   useEffect(() => {
-    fetch(`http://localhost:8080/users/self`, fetchHeader)
-      .then(res => res.json())
-      .then(json => setUserInfo(json))
+    if (location.pathname !== "/login" && location.pathname !== "/sign-up") {
+      fetch(`http://localhost:8080/users/self`, fetchHeader)
+        .then(res => res.json())
+        .then(json => setUserInfo(json))
+        .catch(err => console.log(err))
+    }
   }, [location, navigate, onOpen])
 
   // useEffect(() => {
