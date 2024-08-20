@@ -42,7 +42,7 @@ router.get("/", async ( req, res ) => {
       .distinct('approver_id as id', 'name', 'rank')
       .where({
         'events_users.events_id': id,
-        'users.isApprover': true0
+        'users.isApprover': true
       })
 
     responseData[0].approver = approverData;

@@ -118,7 +118,7 @@ function RequestModal() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
+          <ModalCloseButton style={{zIndex: '10'}}/>
           <ModalBody>
             <FormControl>
               <Card>
