@@ -14,6 +14,13 @@ import { Helmet } from 'react-helmet';
 const requestServer = 'http://localhost:8080/'
 
 export default function Calendar() {
+  const fetchHeader = {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
   const [monthEvents, setMonthEvents] = useState()
   const calenderRef = useRef(null);
 
@@ -26,13 +33,7 @@ export default function Calendar() {
 
   const monthEventsFetch = async () => {
     try {
-      const response = await fetch(`${requestServer}events`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
+      const response = await fetch(`${requestServer}events`, fetchHeader)
       const data = await response.json();
       console.log(data)
       let copiedData = data;

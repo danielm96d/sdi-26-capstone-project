@@ -34,6 +34,13 @@ const colors = {
 
 
 function EventsDetailsPage () {
+  const fetchHeader = {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
   const { id } = useParams();
   const [eventInfo, setEventInfo] = useState([]);
   const [positions, setPositions] = useState([]);
@@ -41,7 +48,7 @@ function EventsDetailsPage () {
 
   const eventInfoFetch = async () => {
     try{
-      const response = await fetch(`${requestServer}events/?id=${id}`);
+      const response = await fetch(`${requestServer}events/?id=${id}`,fetchHeader);
       const data = await response.json();
 
       setEventInfo(data);
@@ -52,7 +59,7 @@ function EventsDetailsPage () {
   }
   const positionsFetch = async () => {
     try{
-      const response = await fetch(`${requestServer}positions/?id=${id}`);
+      const response = await fetch(`${requestServer}positions/?id=${id}`, fetchHeader);
       const data = await response.json();
 
       setPositions(data);
@@ -63,7 +70,7 @@ function EventsDetailsPage () {
 
   const userFetch  = async () => {
     try{
-      const response = await fetch(`${requestServer}users`);
+      const response = await fetch(`${requestServer}users`, fetchHeader);
       const data = await response.json();
       setUsers(data)
 
