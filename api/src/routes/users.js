@@ -75,6 +75,21 @@ router.get("/", async (req, res) => {
 
       data.push({...userData[0], events: eventData, positions: positionData})
       res.status(200).send(data);
+  }  else if (approver) {
+        await knex('users')
+          .select(
+            'name',
+            'rank',
+            'isApprover',
+          )
+          .where({ 'isApprover': true })
+          .then((data) => {
+            res.status(201).json(data);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(301).send(`Error retrieving single user: ${err}`);
+          });
   }
 });
 

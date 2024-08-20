@@ -97,14 +97,6 @@ function RequestModal() {
     }
   }
 
-  const fetchHeader = {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-        "Content-Type": "application/json",
-    }
-  }
-
   const fetchApprovers = () => {
     fetch(approverServer, fetchHeader)
       .then((res) => res.json())
@@ -114,9 +106,9 @@ function RequestModal() {
       })
   }
 
-
   useEffect(() => {
     fetchApprovers();
+    console.log(fetchApprovers)
   }, []);
 
   useEffect(() => {
@@ -155,7 +147,12 @@ function RequestModal() {
               </Card>
               <Card>
                 <Select placeholder='Select Approver'>
-                  {/* <option value={approverList.map(name => approver.name)}></option> */}
+                  {approverList.map(approver => {
+                    console.log(approver)
+                  return <option key={approver.id} value={approver.id}>
+                    {approver.name}
+                  </option>
+                  })}
                 </Select>
               </Card>
               <Card>
