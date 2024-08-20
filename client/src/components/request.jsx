@@ -32,10 +32,10 @@ function RequestModal() {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [desc, setDesc] = useState(null);
+  const [approverList, setApproverList] = useState([]);
   const [approverID, setApproverID] = useState(null);
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
-  const [approverList, setApproverList] = useState([]);
 
   let types = ['Funeral', 'Retirement', 'Inauguration', 'Other']
 
@@ -104,8 +104,8 @@ function RequestModal() {
     fetch(approverServer, fetchHeader)
       .then((res) => res.json())
       .then((data) => {
-        setApproverList(data);
         console.log('fetchApprover data: ', data)
+        setApproverList(data);
       })
   }
 
@@ -122,6 +122,8 @@ function RequestModal() {
       setStartDate(null)
       setApproverID(null)
   }, [submitted])
+
+  if(approverList.length === 0) return <h1>loading</h1>
 
   return (
     <>
@@ -150,7 +152,12 @@ function RequestModal() {
                 <Input type="time" onChange={(e)=> setEndTime(e.target.value)}/><br />
               </Card>
               <Card>
-                <Select placeholder='Select Approver' onChange={(e) => setApproverID(e.target.value)}>
+                <Select placeholder='Select Approver' onChange={(e) => 
+                  {
+                    console.log('value: ',e.target.value)
+                    setApproverID(e.target.value)
+                  }
+                }>
                   {approverList.map(approver => {
                     console.log(approver)
                   return <option key={approver.id} value={approver.id}>

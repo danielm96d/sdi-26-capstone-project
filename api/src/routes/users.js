@@ -45,8 +45,8 @@ router.get("/", async (req, res) => {
         res.status(301).send(`Error retrieving single user: ${err}`);
       })
 
-    let eventData = await knex('approvers')
-      .join('events', 'events.id', 'approvers.events_id')
+    let eventData = await knex('positions')
+      .join('events', 'events.id', 'positions.events_id')
       .distinct(
         'events.id',
         'events.name',
@@ -59,7 +59,7 @@ router.get("/", async (req, res) => {
         'events.POCinfo',
         'events.location',
       )
-      .where({ 'approvers.users_id': id })
+      .where({ 'positions.users_id': id })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single user: ${err}`);
@@ -79,6 +79,7 @@ router.get("/", async (req, res) => {
   }  else if (approver) {
         await knex('users')
           .select(
+            'id',
             'name',
             'rank',
             'isApprover',
