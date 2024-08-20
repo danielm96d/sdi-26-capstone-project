@@ -12,7 +12,8 @@ import {
   Heading,
   Center,
   Divider,
-  Stack
+  Stack,
+  useColorModeValue
 
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
@@ -41,6 +42,7 @@ function EventEntry() {
       "Content-Type": "application/json",
     },
   }
+  const borderColor = useColorModeValue('black', 'white')
   const [type, setType] = useState("Retirement");
   const [title, setTitle] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -183,7 +185,7 @@ function EventEntry() {
         <GridItem
           colSpan={4}
           borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'
           p="4"
           justifyContent="end"
@@ -243,7 +245,7 @@ function EventEntry() {
         </GridItem>
 
         <GridItem textAlign="center" colSpan={2} borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'
           p="4">
           <Heading size="lg">Available</Heading>
@@ -259,7 +261,7 @@ function EventEntry() {
           </Stack>
         </GridItem>
         <GridItem textAlign="center" colSpan={2} borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'
           p="4">
           <Heading size="lg">Selected</Heading>

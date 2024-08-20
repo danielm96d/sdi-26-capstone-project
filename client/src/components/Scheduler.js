@@ -8,7 +8,8 @@ import {
   Spacer,
   List,
   Box,
-  Stack
+  Stack,
+  useColorModeValue
 } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/'
@@ -44,6 +45,7 @@ export default function Scheduler () {
   const [eventBodiesTotal, setEventBodiesTotal] = useState([]);
   const[users, setUsers] =useState([])
   const[positionId, setPositionId] =useState([])
+  const borderColor = useColorModeValue('black', 'white')
 
   const eventInfoFetch = async () => {
     try{
@@ -165,7 +167,7 @@ export default function Scheduler () {
             padding='5px'
           >
             <GridItem  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md'
               display='flex' colSpan={8} rowSpan={1} p="5px">
                 <Heading as='h2' size='2xl'>{eventInfo[0].name}</Heading>
@@ -176,13 +178,13 @@ export default function Scheduler () {
             </GridItem>
 
             <GridItem colSpan={8} rowSpan={1}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" h="30px" p="5px">
               <Heading as='h4' size='l'>{`POC: ${eventInfo[0].POCinfo}  Location: ${eventInfo[0].location}`}</Heading>
             </GridItem>
 
             <GridItem colSpan={8} rowSpan={1}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" h="50px" p="5px">
                 {positionsInfo.length > 0 ? (
                 <>
@@ -196,7 +198,7 @@ export default function Scheduler () {
             </GridItem>
 
             <GridItem colSpan={5}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" height='400px' p="2" >
               <List>
                   <Heading size='md'>Required Bodies </Heading><br/>
@@ -217,7 +219,7 @@ export default function Scheduler () {
             </GridItem>
 
             <GridItem colSpan={3}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" p="2" >
               <List>
                 <Heading size='md'>Available Bodies </Heading>
