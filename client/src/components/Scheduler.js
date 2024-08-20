@@ -25,9 +25,6 @@ const colors = {
   'clear user': 'Red'
 }
 
-const userColors = {
-  'clear user': 'red'
-}
 
 export default function Scheduler () {
   const fetchHeader = {
@@ -107,6 +104,7 @@ export default function Scheduler () {
     try{
       const response = await fetch(`${requestServer}positions/${id}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json',
@@ -123,13 +121,14 @@ export default function Scheduler () {
   const showRequiredBodies = async (posName) => {
     let filteredBodies = eventBodiesTotal.filter((position) => position.position_name === posName)
     setBodies(filteredBodies)
-    const userResponse = await fetch(`${requestServer}users/`);
+    const userResponse = await fetch(`${requestServer}users/`, fetchHeader);
         const userData = await userResponse.json();
         setUsers(userData);
         setUsers(users => [...users, {name: "clear user"}])
   }
 
   const handleBodyClicked = (newValue, newName) => {
+    console.log(newValue, newName)
     const updatedItems = eventBodiesTotal.map((item) =>{
       if (newValue === "clear user"){
         return item.id === positionId ? { ...item, user_id: null, victim: null } : item
@@ -223,7 +222,9 @@ export default function Scheduler () {
                 {users.length > 0 ? (
                   <>
                     {users.map((user, index) => (
+                      
                       <div key={index}>
+                        {console.log(user)}
                         <Button mb='10px' bg ={colors[user.name]} size='lg' onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
                       </div>
                     ))}
