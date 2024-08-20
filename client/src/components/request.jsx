@@ -18,6 +18,13 @@ const requestServer = 'http://localhost:8080/events'
 const approverServer = 'http://localhost:8080/users?approver=true'
 
 function RequestModal() {
+  const fetchHeader = {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [title, setTitle] = useState("");
   const [startDate, setStartDate] = useState(null);
@@ -91,7 +98,7 @@ function RequestModal() {
   }
 
   const fetchApprovers = () => {
-    fetch(approverServer)
+    fetch(approverServer, fetchHeader)
       .then((res) => res.json())
       .then((data) => {
         setApproverList(data);

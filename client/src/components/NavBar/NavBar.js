@@ -7,6 +7,13 @@ import { useRef, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 
 export default function NavBar() {
+  const fetchHeader = {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
   const navigate = useNavigate()
@@ -15,13 +22,7 @@ export default function NavBar() {
   
   useAuth();
   useEffect(() => {
-    fetch(`http://localhost:8080/users/self`, {
-      method: "GET",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch(`http://localhost:8080/users/self`, fetchHeader)
       .then(res => res.json())
       .then(json => setUserInfo(json))
   }, [location, navigate, onOpen])
