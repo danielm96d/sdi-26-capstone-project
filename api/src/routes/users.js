@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
   if (!id && !approver) {
     knex("users")
       .select(
+        'id',
         'name',
         'rank',
         'isApprover',

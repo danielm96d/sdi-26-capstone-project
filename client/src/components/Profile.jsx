@@ -39,7 +39,7 @@ function Profile() {
   }
 
   useEffect(() => {
-    fetch(requestServer + `users/self`, {
+    fetch(`${requestServer}users/self`, {
       method: "GET",
       credentials: 'include',
       headers: {
