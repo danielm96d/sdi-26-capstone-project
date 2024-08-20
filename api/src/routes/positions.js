@@ -84,6 +84,7 @@ router.get("/", async ( req, res ) => {
 });
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const newPosition = req.body;
   console.log('request body log output:', req.body);
   knex('positions')

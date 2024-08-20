@@ -84,6 +84,7 @@ router.get('/self', async (req, res) => {
   let data = []
   let userData = await knex('users')
     .select(
+      'id',
       'name',
       'rank',
       'isApprover',

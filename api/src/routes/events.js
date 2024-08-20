@@ -107,13 +107,16 @@ router.get('/requests', (req,res) => {
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const newEvent = req.body;
 
   knex('events')
     .insert(newEvent)
     .returning('*')
     .then((insertedEvent) => {
+      console.log(insertedEvent)
       res.status(201).json(insertedEvent[0]);
+      
     })
     .catch((err) => {
       console.log(err);
