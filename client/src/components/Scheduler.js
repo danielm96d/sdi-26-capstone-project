@@ -9,7 +9,8 @@ import {
   List,
   Box,
   Stack,
-  useColorModeValue
+  useColorModeValue,
+  Divider
 } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/'
@@ -45,7 +46,7 @@ export default function Scheduler () {
   const [eventBodiesTotal, setEventBodiesTotal] = useState([]);
   const[users, setUsers] =useState([])
   const[positionId, setPositionId] =useState([])
-  const borderColor = useColorModeValue('black', 'white')
+  const borderColor = useColorModeValue('black', 'gray')
 
   const eventInfoFetch = async () => {
     try{
@@ -169,8 +170,8 @@ export default function Scheduler () {
             <GridItem  borderWidth='1px'
               borderColor={borderColor}
               rounded='md'
-              display='flex' colSpan={8} rowSpan={1} p="5px">
-                <Heading as='h2' size='2xl'>{eventInfo[0].name}</Heading>
+              display='flex' colSpan={8} rowSpan={1} p="5px" paddingY="1em">
+                <Heading as='h2' size='xl'>{eventInfo[0].name}</Heading>
                 <Spacer />
                 <Button bg='darkolivegreen' onClick={() => positionsInfoPatch()}>Save</Button>
                 <Button onClick={() => navigate(-1)}>Back</Button>
@@ -223,6 +224,7 @@ export default function Scheduler () {
               rounded='md' display="flex" p="2" >
               <List>
                 <Heading size='md'>Available Bodies </Heading>
+                <Divider marginY="1em"/>
                 {users.length > 0 ? (
                   <>
                   <Stack direction="row" flexWrap="wrap">
@@ -230,7 +232,7 @@ export default function Scheduler () {
                       
                       <>
                         {console.log(user)}
-                        <Button mb='10px' bg ={colors[user.name]} size='lg' onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
+                        <Button size="md" mb='10px' bg ={colors[user.name]} onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
                       </>
                     ))}
                     </Stack>

@@ -15,7 +15,7 @@ import { Helmet } from 'react-helmet';
 const requestServer = 'http://localhost:8080/'
 
 export default function Calendar() {
-  const borderColor = useColorModeValue('black', 'white')
+  const borderColor = useColorModeValue('black', 'gray')
   const fetchHeader = {
     method: "GET",
     credentials: 'include',

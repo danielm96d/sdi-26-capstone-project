@@ -42,7 +42,7 @@ function EventEntry() {
       "Content-Type": "application/json",
     },
   }
-  const borderColor = useColorModeValue('black', 'white')
+  const borderColor = useColorModeValue('black', 'gray')
   const [type, setType] = useState("Retirement");
   const [title, setTitle] = useState(null);
   const [startDate, setStartDate] = useState(null);
