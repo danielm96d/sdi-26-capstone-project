@@ -30,6 +30,13 @@ const userColors = {
 }
 
 export default function Scheduler () {
+  const fetchHeader = {
+    method: "GET",
+    credentials: 'include',
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
   const { id } = useParams();
   const [eventInfo, setEventInfo] = useState(null);
   const [positionsInfo, setPositionsInfo] = useState([]);
@@ -41,7 +48,7 @@ export default function Scheduler () {
 
   const eventInfoFetch = async () => {
     try{
-      const response = await fetch(`${requestServer}events/?id=${id}`);
+      const response = await fetch(`${requestServer}events?id=${id}`, fetchHeader);
       const data = await response.json();
       if (data.length > 0){
         setEventInfo(data);
@@ -67,6 +74,7 @@ export default function Scheduler () {
     eventBodiesTotal.map((position) => {
         fetch(`${requestServer}positions/${position.id}`, {
           method: 'PATCH',
+          credentials: 'include',
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'Content-Type': 'application/json',
@@ -86,6 +94,7 @@ export default function Scheduler () {
     try{
       const response = await fetch(`${requestServer}events/${id}`, {
         method: 'DELETE',
+        credentials: 'include',
         headers: {
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json',

@@ -9,10 +9,10 @@ router.use(express.json());
 //------------------READ-------------------\\
 router.get("/", async (req, res) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
-  const { id } = req.query
+  const { id, approver } = req.query
 
   //get all users:
-  if (!id) {
+  if (!id && !approver) {
     knex("users")
       .select(
         'name',
