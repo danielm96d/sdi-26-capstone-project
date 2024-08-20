@@ -97,14 +97,6 @@ function RequestModal() {
     }
   }
 
-  const fetchHeader = {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-        "Content-Type": "application/json",
-    }
-  }
-
   const fetchApprovers = () => {
     fetch(approverServer, fetchHeader)
       .then((res) => res.json())
