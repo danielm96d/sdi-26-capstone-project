@@ -34,7 +34,7 @@ function Profile() {
         year: '2-digit',
       },
       dayHeaderFormat: {
-        weekday: 'narrow',
+        weekday: 'short',
         day: 'numeric',
       }
     }
