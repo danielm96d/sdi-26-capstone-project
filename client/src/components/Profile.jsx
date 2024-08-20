@@ -39,7 +39,7 @@ function Profile() {
   }
 
   useEffect(() => {
-    fetch(requestServer + `users/self`, {
+    fetch(`${requestServer}users/self`, {
       method: "GET",
       credentials: 'include',
       headers: {
@@ -48,7 +48,9 @@ function Profile() {
     })
       .then(res => res.json())
       .then(json => {
-        if (json[0].events !== undefined){
+        console.log(json)
+        if(json.message)console.log(json.message)
+        else if (json[0].events !== undefined){
           let arrEvents = [];
           json[0].events.map((event) => {
             let indexOfT = event.startDate.indexOf("T");
