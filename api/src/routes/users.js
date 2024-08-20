@@ -45,8 +45,8 @@ router.get("/", async (req, res) => {
         res.status(301).send(`Error retrieving single user: ${err}`);
       })
 
-    let eventData = await knex('events_users')
-      .join('events', 'events.id', 'events_users.events_id')
+    let eventData = await knex('positions')
+      .join('events', 'events.id', 'positions.events_id')
       .distinct(
         'events.id',
         'events.name',
@@ -59,7 +59,7 @@ router.get("/", async (req, res) => {
         'events.POCinfo',
         'events.location',
       )
-      .where({ 'events_users.users_id': id })
+      .where({ 'positions.users_id': id })
       .catch((err) => {
         console.log(err);
         res.status(301).send(`Error retrieving single user: ${err}`);
@@ -76,14 +76,33 @@ router.get("/", async (req, res) => {
 
       data.push({...userData[0], events: eventData, positions: positionData})
       res.status(200).send(data);
+  }  else if (approver) {
+        await knex('users')
+          .select(
+            'id',
+            'name',
+            'rank',
+            'isApprover',
+          )
+          .where({ 'isApprover': true })
+          .then((data) => {
+            res.status(201).json(data);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(301).send(`Error retrieving single user: ${err}`);
+          });
   }
 });
 
 router.get('/self', async (req, res) => {
-  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  try {
+    res.header('Access-Control-Allow-Origin', req.header('origin'));
   let data = []
+  // console.log(req)
   let userData = await knex('users')
     .select(
+      'id',
       'name',
       'rank',
       'isApprover',
@@ -94,8 +113,8 @@ router.get('/self', async (req, res) => {
       res.status(301).send(`Error retrieving single user: ${err}`);
     })
 
-  let eventData = await knex('events_users')
-    .join('events', 'events.id', 'events_users.events_id')
+  let eventData = await knex('approvers')
+    .join('events', 'events.id', 'approvers.events_id')
     .select(
       'events.id',
       'events.name',
@@ -108,7 +127,7 @@ router.get('/self', async (req, res) => {
       'events.POCinfo',
       'events.location',
     )
-    .where({ 'events_users.users_id': req.user.id })
+    .where({ 'approvers.users_id': req.user.id })
     .catch((err) => {
       console.log(err);
       res.status(301).send(`Error retrieving single user: ${err}`);
@@ -116,6 +135,9 @@ router.get('/self', async (req, res) => {
 
   data.push({ ...userData[0], events: eventData })
   res.status(200).send(data);
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 //------------------CREATE-------------------\\

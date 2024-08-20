@@ -9,6 +9,7 @@ router.use(express.json());
 
 //======================================positions_skills CRUD===========================================\\
 router.get("/", async (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const { positions, approver, skill } = req.query;
 
   console.log('Approver: ', approver)

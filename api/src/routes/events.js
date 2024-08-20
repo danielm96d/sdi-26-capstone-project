@@ -37,11 +37,11 @@ router.get("/", async ( req, res ) => {
       })
 
     responseData.push(...eventData) // needs update, approver is currently showing users id from positions?
-    let approverData = await knex("events_users")
-      .join('users', 'events_users.approver_id', '=', 'users.id')
-      .distinct('approver_id as id', 'name', 'rank')
+    let approverData = await knex("approvers")
+      .join('users', 'approvers.users_id', '=', 'users.id')
+      .distinct('users_id as id', 'name', 'rank')
       .where({
-        'events_users.events_id': id,
+        'approvers.events_id': id,
         'users.isApprover': true
       })
 
@@ -70,6 +70,7 @@ router.get("/", async ( req, res ) => {
 });
 
 router.get('/requests', (req,res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const {id} = req.query;
   // console.log('event request ID: ', id)
 
@@ -107,13 +108,36 @@ router.get('/requests', (req,res) => {
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
-  const newEvent = req.body;
-
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  const body = req.body;
+  const eventData = {
+    name: body.name,
+    startTime: body.startTime,
+    endTime: body.endTime,
+    startDate: body.startDate,
+    endDate: body.endDate,
+    description: body.description,
+    type: body.type,
+    approved: body.approved,
+    POCinfo: body.POCinfo,
+    location: body.location
+  }
   knex('events')
-    .insert(newEvent)
+    .insert(eventData)
     .returning('*')
     .then((insertedEvent) => {
-      res.status(201).json(insertedEvent[0]);
+      let approverObj = {events_id: insertedEvent[0].id, users_id: body.approver}
+      // res.status(201).json(insertedEvent[0]);
+      knex('approvers')
+      .insert(approverObj)
+      .returning('*')
+      .then(data=>{
+        res.status(201).json({eventDetails: {...insertedEvent[0]}, approverDetails: {...data[0]}});
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send(`Error creating new event: ${err}`);
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -143,7 +167,8 @@ router.patch('/:id', (req, res) => {
 });
 //------------------DELETE (by id)-------------------\\
 router.delete('/:id', (req, res) => {
-console.log(req.params.id)
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  console.log(req.params.id)
   knex('events')
     .where({ id: req.params.id })
     .del()
