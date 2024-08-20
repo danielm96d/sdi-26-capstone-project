@@ -9,10 +9,10 @@ router.use(express.json());
 //------------------READ-------------------\\
 router.get("/", async (req, res) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
-  const { id } = req.query
+  const { id, approver } = req.query
 
   //get all users:
-  if (!id) {
+  if (!id && !approver) {
     knex("users")
       .select(
         'name',
@@ -75,7 +75,22 @@ router.get("/", async (req, res) => {
 
       data.push({...userData[0], events: eventData, positions: positionData})
       res.status(200).send(data);
-  }
+  } else if (approver) {
+        let userData = await knex('users')
+          .select(
+            'name',
+            'rank',
+            'isApprover',
+          )
+          .where({ 'isApprover': true })
+          .then((data) => {
+            res.status(201).json(data);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(301).send(`Error retrieving single user: ${err}`);
+          })
+      }
 });
 
 router.get('/self', async (req, res) => {
