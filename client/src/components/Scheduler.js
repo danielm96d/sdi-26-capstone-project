@@ -10,7 +10,8 @@ import {
   Box,
   Stack,
   useColorModeValue,
-  Divider
+  Divider,
+  useToast
 } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/'
@@ -21,13 +22,14 @@ const colors = {
   'OIC': 'LightSkyBlue',
   'NCOIC':'LightGreen',
   'Firing Party': 'Gray',
-  'Drill': 'Tomato',
+  'Drill': 'HotPink',
   'Color Guard': 'Lavender',
   'Flag Holder': 'Silver',
   'Escort': 'Fuchsia',
   'Bugler': 'Gold',
-  'clear user': 'Red'
+  'true': 'tomato'
 }
+
 
 
 export default function Scheduler () {
@@ -47,6 +49,11 @@ export default function Scheduler () {
   const[users, setUsers] =useState([])
   const[positionId, setPositionId] =useState([])
   const borderColor = useColorModeValue('black', 'gray')
+  const toast = useToast();
+
+  const dateTimeString = (date, time) => {
+    return `${date.slice(0, date.indexOf('T'))}T${time.slice(0, 5)}`
+  }
 
   const eventInfoFetch = async () => {
     try{
@@ -124,13 +131,42 @@ export default function Scheduler () {
   }
 
   const showRequiredBodies = async (posName) => {
-    let filteredBodies = eventBodiesTotal.filter((position) => position.position_name === posName)
-    setBodies(filteredBodies)
-    const userResponse = await fetch(`${requestServer}users/`, fetchHeader);
+    let filteredBodies = eventBodiesTotal.filter((position) => position.position_name === posName);
+    setBodies(filteredBodies);
+
+    try {
+        const userResponse = await fetch(`${requestServer}users/`, fetchHeader);
         const userData = await userResponse.json();
-        setUsers(userData);
-        setUsers(users => [...users, {name: "clear user"}])
-  }
+
+        // Process user availability
+        const processedUsers = await Promise.all(userData.map(async (user) => {
+            let busy = false;
+            const userEventsResponse = await fetch(`${requestServer}users/?id=${user.id}`, fetchHeader);
+            const userEventsData = await userEventsResponse.json();
+            let oStart = dateTimeString(eventInfo[0].startDate, eventInfo[0].startTime);
+            let oEnd = dateTimeString(eventInfo[0].endDate, eventInfo[0].endTime);
+
+            userEventsData[0].events.forEach((event) => {
+                if (event.id !== eventInfo[0].id) {
+                    let start = dateTimeString(event.startDate, event.startTime);
+                    let end = dateTimeString(event.endDate, event.endTime);
+                    if ((oStart <= start && oEnd <= end && start <= oEnd) ||
+                        (oStart >= start && oEnd >= end && end >= oStart) ||
+                        (oStart <= start && oEnd >= end) ||
+                        (oStart >= start && oEnd <= end)) {
+                        busy = true;
+                    }
+                }
+            });
+
+            return { ...user, busy };
+        }));
+
+        setUsers([...processedUsers, { name: "clear user", busy: true }]);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
   const handleBodyClicked = (newValue, newName) => {
     console.log(newValue, newName)
@@ -151,6 +187,30 @@ export default function Scheduler () {
     });
       setBodies(updatedItemsForBodies);
       setEventBodiesTotal(updatedItems);
+  }
+
+  const setApprove = async () => {
+    const response = await fetch(`${requestServer}events/${id}`,{
+      method: "PATCH",
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        approved: true
+      })
+    });
+    toast({
+      title: 'info',
+      description: "Event Approved",
+      status: 'success',
+      duration: 4000,
+      isClosable: true,
+    })
+    setTimeout(() => {
+      console.log("Delayed for 1 second.");
+      navigate(-2);
+    }, 1000);
   }
 
   useEffect(() => {
@@ -176,6 +236,7 @@ export default function Scheduler () {
                 <Button bg='darkolivegreen' onClick={() => positionsInfoPatch()}>Save</Button>
                 <Button onClick={() => navigate(-2)}>Back</Button>
                 <Button bg='tomato' onClick={() => eventInfoDelete()}>Delete</Button>
+                <Button bg='lightgreen' onClick={() => setApprove()}>Approve</Button>
             </GridItem>
 
             <GridItem colSpan={8} rowSpan={1}  borderWidth='1px'
@@ -206,7 +267,7 @@ export default function Scheduler () {
                     {bodies.length > 0 ? (
               <>
                 {bodies.map((pos, index) => (
-                  <Box key={index}>
+                  <Box key={pos.id}>
                     <Button mb='10px' bg={colors[pos.position_name]} size='lg' onClick={() => {
                       setPositionId(pos.id)
                       }} >
@@ -227,12 +288,10 @@ export default function Scheduler () {
                 <Divider marginY="1em"/>
                 {users.length > 0 ? (
                   <>
-                  <Stack direction="row" flexWrap="wrap">
+                  <Stack direction="row" flexWrap="wrap" key={1}>
                     {users.map((user, index) => (
-                      
                       <>
-                        {console.log(user)}
-                        <Button size="md" mb='10px' bg ={colors[user.name]} onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
+                        <Button size="md" mb='10px' bg={colors[user.busy]} onClick={()=>handleBodyClicked(user.id, user.name)} key={user.id}>{user.name}</Button>
                       </>
                     ))}
                     </Stack>
