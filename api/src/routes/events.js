@@ -14,7 +14,6 @@ router.get("/", async ( req, res ) => {
   const {id} = req.query
   console.log('id: ', id);
 
-
   if (!id) {
    knex('events')
     .select('*')
