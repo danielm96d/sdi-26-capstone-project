@@ -120,7 +120,7 @@ export default function Scheduler () {
     } catch (error){
       console.log(error)
     }
-    navigate(-1)
+    navigate(-2)
   }
 
   const showRequiredBodies = async (posName) => {
@@ -174,7 +174,7 @@ export default function Scheduler () {
                 <Heading as='h2' size='xl'>{eventInfo[0].name}</Heading>
                 <Spacer />
                 <Button bg='darkolivegreen' onClick={() => positionsInfoPatch()}>Save</Button>
-                <Button onClick={() => navigate(-1)}>Back</Button>
+                <Button onClick={() => navigate(-2)}>Back</Button>
                 <Button bg='tomato' onClick={() => eventInfoDelete()}>Delete</Button>
             </GridItem>
 
