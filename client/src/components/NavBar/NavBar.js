@@ -41,7 +41,7 @@ export default function NavBar() {
   //       method: "GET",
   //       credentials: 'include',
   //       headers: {
-  //         "Content-Type": "application/json",
+  //         "Content-Type": "application/json"
   //     },
   //     })
   //     .then(res => res.json())

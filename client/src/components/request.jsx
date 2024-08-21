@@ -136,6 +136,7 @@ function RequestModal() {
           <ModalBody>
             <FormControl>
               <Card>
+                <FormLabel>Unavailabity Request Form</FormLabel>
                 <FormLabel>Title</FormLabel>
                 <Input type="title" onChange={(e)=> setTitle(e.target.value)}/><br />
               </Card>
@@ -152,7 +153,8 @@ function RequestModal() {
                 <Input type="time" onChange={(e)=> setEndTime(e.target.value)}/><br />
               </Card>
               <Card>
-                <Select placeholder='Select Approver' onChange={(e) => 
+                <FormLabel>Select Approver</FormLabel>
+                <Select placeholder='Select Approver' onChange={(e) =>
                   {
                     console.log('value: ',e.target.value)
                     setApproverID(e.target.value)
@@ -165,7 +167,7 @@ function RequestModal() {
                   </option>
                   })}
                 </Select>
-              </Card>
+              </Card><br />
               <Card>
                 <FormLabel>Description</FormLabel>
                 <Input type='text' onChange={(e)=> setDesc(e.target.value)}/>
