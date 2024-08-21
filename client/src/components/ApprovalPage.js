@@ -25,8 +25,8 @@ function ApprovalPage() {
       })
   }
 
-  const viewEventHandler = (id) => {
-    navigate(`/approval-details/${id}`)
+  const viewEventHandler = (id, obj) => {
+    navigate(`/middleware/${id}`, obj)
   }
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function ApprovalPage() {
         <TabList>
           <Tab>Show All</Tab>
           <Tab>Scheduled</Tab>
-          <Tab>Needs Scheduling</Tab>
+          <Tab>Needs Approval</Tab>
         </TabList>
 
         <TabPanels>
@@ -63,14 +63,14 @@ function ApprovalPage() {
                     {event.approved ? (
                       <Badge colorScheme="green">Scheduled</Badge>
                     ) : (
-                      <Badge colorScheme="red">Needs Scheduling</Badge>
+                      <Badge colorScheme="red">Needs Approval</Badge>
                     )}
                   </CardHeader>
                   <CardBody>
                     <Text>Event: {event.type}</Text>
                   </CardBody>
                   <CardFooter>
-                    <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                    <Button onClick={()=> viewEventHandler(event.id, {state:{isRequest: event.type === 'Request'}})}>View Event</Button>
                   </CardFooter>
                 </Card>
                 </SimpleGrid>
