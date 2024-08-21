@@ -147,6 +147,7 @@ router.post("/", (req, res) => {
 
 //------------------UPDATE(by id)-------------------\\
 router.patch('/:id', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const updatedEvent = req.body;
   console.log('updatedEvent: ', updatedEvent)
 
