@@ -29,6 +29,45 @@
           - endpoint accepts query `id`, `approver`
           - id is formatted for integers
           - approver is formatted as a boolean
+        - **RETURNS:**
+        ```
+        [
+          {
+            "id": 1,
+            "name": "John Johnson",
+            "rank": "E1",
+            "isApprover": true,
+            "events": [
+              {
+                "id": 2,
+                "name": "Jones Retirement",
+                "startTime": "09:00:00",
+                "endTime": "10:00:00",
+                "startDate": "2024-08-28T00:00:00.000Z",
+                "endDate": "2024-08-28T00:00:00.000Z",
+                "description": "About time",
+                "type": "Retirement",
+                "POCinfo": "Jake",
+                "location": "DC"
+              }
+            ],
+            "positions": [
+              {
+                "id": 2,
+                "name": "Drill",
+                "users_id": 1,
+                "events_id": 2
+              },
+              {
+                "id": 5,
+                "name": "Drill",
+                "users_id": 1,
+                "events_id": 2
+              }
+            ]
+          }
+        ]
+        ```
       - **PATCH:** `htpp://localhost:8080/users/:id`
       - **DELETE:** `htpp://localhost:8080/users/:id`
       - standard return without a query will return all events that are classified as requests under the type property
@@ -41,6 +80,59 @@
         - Endpoint uses query functionality the format for which is: `?id=x` *replace x with the id you are searching for*
           - endpoint accepts query `id`
         - standard request without a query will return all events
+        - **RETURNS:**
+        ```
+        [
+          {
+            "id": 1,
+            "name": "Smith Funeral",
+            "startTime": "12:00:00",
+            "endTime": "12:00:00",
+            "startDate": "2024-08-26T00:00:00.000Z",
+            "endDate": "2024-08-26T00:00:00.000Z",
+            "description": "RIP in Peace",
+            "type": "Funeral",
+            "approved": true,
+            "POCinfo": "John",
+            "location": "Denver",
+            "created_at": "2024-08-21T20:12:34.127Z",
+            "updated_at": "2024-08-21T20:12:34.127Z",
+            "approver": [
+              {
+                "id": 1,
+                "name": "John Johnson",
+                "rank": "E1"
+              }
+            ],
+            "position": [
+              {
+                "id": 3,
+                "position_name": "Firing Party",
+                "events_id": 1,
+                "user_id": 2,
+                "victim": "Frank Sinatra",
+                "rank": "E2"
+              },
+              {
+                "id": 6,
+                "position_name": "Firing Party",
+                "events_id": 1,
+                "user_id": 2,
+                "victim": "Frank Sinatra",
+                "rank": "E2"
+              },
+              {
+                "id": 8,
+                "position_name": "Bugler",
+                "events_id": 1,
+                "user_id": 3,
+                "victim": "Frank Ocean",
+                "rank": "E2"
+              }
+            ]
+          }
+        ]
+        ```
       - **PATCH:** `htpp://localhost:8080/events/:id`
       - **DELETE:** `htpp://localhost:8080/events/:id`
 

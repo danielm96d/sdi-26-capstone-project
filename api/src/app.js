@@ -239,6 +239,3 @@ app.use('/skills', verifyToken, skillsRouter)
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 })
-
-
-returnObj[0].position = [{}]

@@ -97,17 +97,17 @@ function Profile() {
         <GridItem colSpan={2} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
           borderColor={borderColor}
           rounded='md'>
+          <h1 margin="20px">User Info</h1>
           <br />
           <Avatar name={userInfo[0].name} size='2xl' />
           <Box
+            align="center"
             width='90%'
             height='60%'
             mt='50px'
             borderWidth='3px'
             borderColor={borderColor}
             rounded='md'>
-
-            User Info
             <Box>
               <Text>Name: {userInfo[0].name}</Text>
               <Text>Rank: {userInfo[0].rank}</Text>
@@ -149,6 +149,7 @@ function Profile() {
         <GridItem colSpan={3} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
           borderColor={borderColor}
           rounded='md'>
+          <h2>Notifications</h2>
           <Box
             width='90%'
             height='60%'
@@ -156,13 +157,10 @@ function Profile() {
             borderWidth='3px'
             borderColor={borderColor}
             rounded='md'>
-            Notifications
             {notifications}
           </Box>
-
+          <br />
           <RequestModal />
-
-
         </GridItem>
       </Grid>
     </>

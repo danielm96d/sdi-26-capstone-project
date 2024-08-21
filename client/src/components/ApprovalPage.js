@@ -14,28 +14,17 @@ function ApprovalPage() {
   }
 
   const [eventInfo, setEventInfo] = useState([]);
-  const [currentUser, setCurrentUser] = useState([]);
   const navigate = useNavigate()
   const eventsServer = "http://localhost:8080/events"
 
   const fetchEvents = () => {
     fetch('http://localhost:8080/users/self', fetchHeader)
-      .then(res=>res.json())
-      .then(data=>{
-        setCurrentUser(data)
-        return data
-      })
-      .then(userinfo=>{
-        fetch(eventsServer, fetchHeader)
-          .then((res) => res.json())
-          .then((data)=> {
-            data.filter(event=>{
-              console.log('event: ', event, '\nuser: ', userinfo.id)
-              return event.approver.id === userinfo.id
-            })
-            setEventInfo(data)
-          })
-      })
+    .then(res=>res.json())
+    .then(data=>{
+      console.log('eventInfo: ', data[0].overseenEvents)
+      console.log('userData: ', data)
+      setEventInfo(data[0].overseenEvents)
+    })
   }
 
   const viewEventHandler = (id, obj) => {
@@ -58,6 +47,7 @@ function ApprovalPage() {
           <Tab>Request Approval</Tab>
         </TabList>
 
+        {/* Show all Tab */}
         <TabPanels>
           <TabPanel>
           <div className='approvalContainer'>
@@ -92,6 +82,8 @@ function ApprovalPage() {
             ))}
           </div>
           </TabPanel>
+          
+          {/* Show all Approved */}
           <TabPanel>
             <div className='approvalContainer'>
               {eventInfo.filter((event) => {
@@ -127,6 +119,8 @@ function ApprovalPage() {
               ))}
             </div>
           </TabPanel>
+
+          {/* Show all unapproved Events */}
           <TabPanel>
             <div className='approvalContainer'>
               {eventInfo.filter((event) => {
@@ -162,8 +156,44 @@ function ApprovalPage() {
               ))}
             </div>
           </TabPanel>
+          
+          {/* Show all unapproved Requests */}
           <TabPanel>
-
+          <div className='approvalContainer'>
+              {eventInfo.filter((event) => {
+                
+                return (!event.approved && event.type === "Request")
+                // return ? (!event.approved && event.type === "Request") : "No approval requests"
+              }).map((event) => (
+                <div key={event.id}>
+                  <SimpleGrid
+                    spacing={4}
+                  >
+                    <Card style={{
+                      margin: '10px',
+                      width: '300px',
+                      height: '300px'
+                    }}>
+                      <CardHeader>
+                        <Heading size='md'> {event.name}</Heading>
+                        <Text>Time: {event.startTime} - {event.endTime}</Text>
+                        {event.approved ? (
+                          <Badge colorScheme="green">Scheduled</Badge>
+                        ) : (
+                          <Badge colorScheme="red">Needs Scheduling</Badge>
+                        )}
+                      </CardHeader>
+                      <CardBody>
+                        <Text>Event: {event.type}</Text>
+                      </CardBody>
+                      <CardFooter>
+                        <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                      </CardFooter>
+                    </Card>
+                    </SimpleGrid>
+                </div>
+              ))}
+            </div>
           </TabPanel>
         </TabPanels>
     </Tabs>
