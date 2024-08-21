@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {
   Button,
   FormControl,
@@ -9,7 +9,11 @@ import {
   GridItem,
   InputGroup,
   Textarea,
-  Heading
+  Heading,
+  Center,
+  Divider,
+  Stack,
+  useColorModeValue
 
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
@@ -21,7 +25,7 @@ const colors = {
   'Pallbearer': 'Salmon',
   'Bearer': 'Olive',
   'OIC': 'LightSkyBlue',
-  'NCOIC':'LightGreen',
+  'NCOIC': 'LightGreen',
   'Firing Party': 'Gray',
   'Drill': 'Tomato',
   'Color Guard': 'Lavender',
@@ -38,6 +42,7 @@ function EventEntry() {
       "Content-Type": "application/json",
     },
   }
+  const borderColor = useColorModeValue('black', 'gray')
   const [type, setType] = useState("Retirement");
   const [title, setTitle] = useState(null);
   const [startDate, setStartDate] = useState(null);
@@ -51,7 +56,7 @@ function EventEntry() {
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
   const navigate = useNavigate();
-  const positions =["Bearer", "Firing Party", "Drill", "Color Guard", 'Bugler', 'Escort', 'Pallbearer', 'Flag Holder', 'OIC', 'NCOIC'];
+  const positions = ["Bearer", "Firing Party", "Drill", "Color Guard", 'Bugler', 'Escort', 'Pallbearer', 'Flag Holder', 'OIC', 'NCOIC'];
 
 
 
@@ -60,10 +65,10 @@ function EventEntry() {
     e.preventDefault();
 
     console.log("Type: " + type + "\n")
-    console.log("Start Date/Time: " + `${startDate}T${startTime}` +"\n")
-    console.log("End Date/Time: " + `${endDate}T${endTime}` +"\n")
+    console.log("Start Date/Time: " + `${startDate}T${startTime}` + "\n")
+    console.log("End Date/Time: " + `${endDate}T${endTime}` + "\n")
     console.log("desc: " + desc + "\n")
-    if (!startDate || !startTime || !endDate || !endTime){
+    if (!startDate || !startTime || !endDate || !endTime) {
       toast({
         title: 'info.',
         description: "invalid entry",
@@ -72,7 +77,7 @@ function EventEntry() {
         isClosable: true,
       })
     } else {
-      if (startDate > endDate){
+      if (startDate > endDate) {
         toast({
           title: 'info.',
           description: "start date is after end date",
@@ -81,7 +86,7 @@ function EventEntry() {
           isClosable: true,
         })
       } else {
-        try{
+        try {
           let response = await fetch(`${requestServer}events`, {
             method: 'POST',
 
@@ -114,9 +119,10 @@ function EventEntry() {
                   body: JSON.stringify({
                     name: pos,
                     events_id: res.id
-                  })})
+                  })
+                })
                   .then(res => res.json())
-                  .then(res=>console.log(res))
+                  .then(res => console.log(res))
               })
             })
 
@@ -131,7 +137,7 @@ function EventEntry() {
             navigate(-1)
           }, "1000");
         }
-        catch(error){
+        catch (error) {
           console.log(error)
         }
         setSubmitted(submitted => submitted + 1);
@@ -139,129 +145,142 @@ function EventEntry() {
     }
   }
 
-const handleClick = (pos) => {
-setSelectedPositions(selectedPositions => [...selectedPositions, pos])
-}
+  const handleClick = (pos) => {
+    setSelectedPositions(selectedPositions => [...selectedPositions, pos])
+  }
 
-const handleDelete = (pos) => {
-  setSelectedPositions((prevPositions) => {
-    const index = prevPositions.indexOf(pos);
-    if (index > -1) {
-      // Create a new array with the item removed
-      return [...prevPositions.slice(0, index), ...prevPositions.slice(index + 1)];
-    }
-    return prevPositions; // Return the original array if item is not found
-  });
+  const handleDelete = (pos) => {
+    setSelectedPositions((prevPositions) => {
+      const index = prevPositions.indexOf(pos);
+      if (index > -1) {
+        // Create a new array with the item removed
+        return [...prevPositions.slice(0, index), ...prevPositions.slice(index + 1)];
+      }
+      return prevPositions; // Return the original array if item is not found
+    });
 
-}
+  }
 
   useEffect(() => {
-      setType("Retirement")
-      setDesc(null)
-      setEndTime(null)
-      setStartTime(null)
-      setEndDate(null)
-      setStartDate(null)
+    setType("Retirement")
+    setDesc(null)
+    setEndTime(null)
+    setStartTime(null)
+    setEndDate(null)
+    setStartDate(null)
   }, [submitted])
 
 
   return (
     <>
-    <Helmet>
-      <title>OpSync | New Event</title>
-    </Helmet>
-    <Heading size='md'>Event Entry</Heading>
-    <Grid
-      h='800px'
-      templateColumns='repeat(8, 120px)'
-      gap={4}
-    >
-      <GridItem
-        colSpan={4}
-        borderWidth='1px'
-        borderColor='black'
-        rounded='md'
-        p="4"
-        justifyContent="end"
-        display="flex">
-        <FormControl variant="floating" >
-          <InputGroup justifyContent="end"
+      <Helmet>
+        <title>OpSync | New Event</title>
+      </Helmet>
+      <Heading size='md'>Event Entry</Heading>
+      <Grid
+        h='800px'
+        templateColumns='repeat(8, 120px)'
+        gap={4}
+      >
+        <GridItem
+          colSpan={4}
+          borderWidth='1px'
+          borderColor={borderColor}
+          rounded='md'
+          p="4"
+          justifyContent="end"
           display="flex">
-            <FormLabel fontSize="25px">Title</FormLabel>
-            <Input type="text" onChange={(e)=> setTitle(e.target.value)} width="50%"/>
-          </InputGroup>
-          <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">Start Date</FormLabel>
-                <Input type="date" onChange={(e)=> setStartDate(e.target.value)} width="50%"/><br />
-          </InputGroup >
-          <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">Start Time</FormLabel>
-                <Input type="time" onChange={(e)=> setStartTime(e.target.value)} width="50%"/><br />
-          </InputGroup>
-                <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">End Date</FormLabel>
-                <Input type="date" onChange={(e)=> setEndDate(e.target.value)} width="50%"/><br />
-                </InputGroup>
-          <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">End time</FormLabel>
-                <Input type="time" onChange={(e)=> setEndTime(e.target.value)} width="50%"/><br />
-          </InputGroup>
-          <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">Description</FormLabel>
-                <Textarea onChange={(e)=> setDesc(e.target.value)} width="50%"/><br />
-          </InputGroup>
-          <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">POC Information</FormLabel>
-                <Input type='text' onChange={(e)=> setPoc(e.target.value)} width="50%"/><br />
-          </InputGroup>
-          <InputGroup justifyContent="end"
-            display="flex">
-                <FormLabel fontSize="25px">Location</FormLabel>
-                <Input type='text' onChange={(e)=> setLocation(e.target.value)} width="50%"/>
-          </InputGroup><br/>
+          <FormControl variant="floating" >
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">Title</FormLabel>
+              <Input type="text" onChange={(e) => setTitle(e.target.value)} width="50%" />
+            </InputGroup>
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">Start Date</FormLabel>
+              <Input type="date" onChange={(e) => setStartDate(e.target.value)} width="50%" /><br />
+            </InputGroup >
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">Start Time</FormLabel>
+              <Input type="time" onChange={(e) => setStartTime(e.target.value)} width="50%" /><br />
+            </InputGroup>
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">End Date</FormLabel>
+              <Input type="date" onChange={(e) => setEndDate(e.target.value)} width="50%" /><br />
+            </InputGroup>
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">End time</FormLabel>
+              <Input type="time" onChange={(e) => setEndTime(e.target.value)} width="50%" /><br />
+            </InputGroup>
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">Description</FormLabel>
+              <Textarea onChange={(e) => setDesc(e.target.value)} width="50%" /><br />
+            </InputGroup>
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">POC Information</FormLabel>
+              <Input type='text' onChange={(e) => setPoc(e.target.value)} width="50%" /><br />
+            </InputGroup>
+            <InputGroup justifyContent="end"
+              display="flex">
+              <FormLabel fontSize="25px">Location</FormLabel>
+              <Input type='text' onChange={(e) => setLocation(e.target.value)} width="50%" />
+            </InputGroup><br />
 
-          <InputGroup justifyContent="center"
-            display="flex">
-          <Button bg='tomato' mr={3} onClick={() => navigate(-1)} type='submit'>
-              Cancel
-            </Button>
-          <Button colorScheme='blue' mr={3} onClick={(e)=>submitFunction(e)} type='submit'>
-            Submit
-          </Button>
-          </InputGroup>
-        </FormControl>
-          </GridItem>
+            <InputGroup justifyContent="center"
+              display="flex">
+              <Button bg='tomato' mr={3} onClick={() => navigate(-1)} type='submit'>
+                Cancel
+              </Button>
+              <Button colorScheme='blue' mr={3} onClick={(e) => submitFunction(e)} type='submit'>
+                Submit
+              </Button>
+            </InputGroup>
+          </FormControl>
+        </GridItem>
 
-          <GridItem colSpan={2}   borderWidth='1px'
-            borderColor='black'
-            rounded='md'
-            p="4">
+        <GridItem textAlign="center" colSpan={2} borderWidth='1px'
+          borderColor={borderColor}
+          rounded='md'
+          p="4">
+          <Heading size="lg">Available</Heading>
+          <Divider marginY="1em" />
+          <Stack direction="row" flexWrap="wrap">
             {positions.map((pos) =>
               <>
-              <Button bg={colors[pos]} onClick={() => handleClick(pos)}>{pos}</Button><br/>
+                <Center>
+                  <Button bg={colors[pos]} onClick={() => handleClick(pos)}>{pos}</Button><br />
+                </Center>
               </>
             )}
-            </GridItem>
-            <GridItem colSpan={2}   borderWidth='1px'
-            borderColor='black'
-            rounded='md'
-            p="4">
-              {selectedPositions.map((pos, index) =>
+          </Stack>
+        </GridItem>
+        <GridItem textAlign="center" colSpan={2} borderWidth='1px'
+          borderColor={borderColor}
+          rounded='md'
+          p="4">
+          <Heading size="lg">Selected</Heading>
+          <Divider marginY="1em" />
+          <Stack direction="row" flexWrap="wrap">
+            {selectedPositions.map((pos, index) =>
               <>
-              <Button key={index} bg={colors[pos]} onClick={() => handleDelete(pos)}>{pos}</Button><br/>
+                <Center>
+                  <Button key={index} bg={colors[pos]} onClick={() => handleDelete(pos)}>{pos}</Button>
+                </Center>
               </>
             )}
 
-            </GridItem>
+          </Stack>
+
+        </GridItem>
 
 
-    </Grid>
+      </Grid>
     </>
   )
 }
