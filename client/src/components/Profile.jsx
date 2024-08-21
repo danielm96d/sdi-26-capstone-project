@@ -6,7 +6,8 @@ import {
   Avatar,
   Heading,
   Text,
-  useColorModeValue
+  useColorModeValue,
+  Badge
 } from '@chakra-ui/react'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -28,7 +29,7 @@ function Profile() {
   const views = {
     dayGridFourWeek: {
       type: 'dayGrid',
-      duration: { weeks: 1 },
+      duration: { weeks: 2 },
       titleFormat: {
         month: 'short',
         year: '2-digit',
@@ -108,7 +109,9 @@ function Profile() {
 
             User Info
             <Box>
-              <Text>Hello {userInfo[0].name},</Text>
+              <Text>Name: {userInfo[0].name}</Text>
+              <Text>Rank: {userInfo[0].rank}</Text>
+              <Text>Approver: {userInfo[0].isApprover ? (<Badge colorScheme="green">Yes</Badge>) : (<Badge colorScheme="red">No</Badge>)}</Text>
             </Box>
           </Box>
 
@@ -123,7 +126,7 @@ function Profile() {
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView='dayGridFourWeek'
               views={views}
-              height='200px'
+              height='400px'
               selectable={true}
               selectMirror={true}
               select={(selectInfo) => handleDateSelect(selectInfo)}

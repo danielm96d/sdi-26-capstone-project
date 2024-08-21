@@ -127,6 +127,30 @@ app.post('/logout', (req, res) => {
   res.status(200).json({ message: 'Logged out successfully' });
 });
 
+app.put('/positions/:id/assign', verifyToken, async (req, res) => {
+  if (!req.user.isApprover) {
+    return res.status(403).json({ message: 'Not authorized to assign roles' });
+  }
+
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+
+    // Check if the position exists
+    const position = await knex('positions').where({ id }).first();
+    if (!position) {
+      return res.status(404).json({ message: 'Position not found' });
+    }
+
+    // Update the position with the new user assignment
+    await knex('positions').where({ id }).update({ users_id: userId });
+
+    res.json({ message: 'Role assigned successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error assigning role' });
+  }
+});
 
 // Get all events
 // app.get('/events', verifyToken, async (req, res) => {

@@ -6,7 +6,8 @@ import {
     AutoCompleteItem,
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast } from '@chakra-ui/react';
+import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast, InputGroup, InputRightElement, IconButton } from '@chakra-ui/react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import {useNavigate} from 'react-router-dom';
@@ -16,6 +17,8 @@ export default function Register() {
     const [invalid, setInvalid] = useState(false);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState({});
+    const [show, setShow] = useState(false)
+    const handleClick = () => setShow(!show)
     const toast = useToast();
     const navigate = useNavigate();
     const ranks = {
@@ -119,13 +122,31 @@ export default function Register() {
                     </FormControl>
                     <FormControl id="password" onChange={handleChange} isInvalid={invalid && register.password.length < 8} isRequired={true}>
                         <FormLabel>Password</FormLabel>
-                        <Input type="password" placeholder="password" />
+                        <InputGroup size='md'>
+                            <Input
+                                pr='4.5rem'
+                                type={show ? 'text' : 'password'}
+                                placeholder='Enter a password'
+                            />
+                            <InputRightElement width='4.5rem'>
+                                <IconButton h='1.75rem' size='sm' isRound={true} icon={show ? <ViewOffIcon/> : <ViewIcon/>} onClick={handleClick}/>
+                            </InputRightElement>
+                        </InputGroup>
                         <FormHelperText>Enter a password!</FormHelperText>
                         <FormErrorMessage>A password greater than 8 characters is required to register!</FormErrorMessage>
                     </FormControl>
-                    <FormControl id="passwordConfirm" onChange={handleChange} isInvalid={(invalid && confrimPass.length < 8) || ((register.password.length > 6 && confrimPass.length > 1) && register.password !== confrimPass)} isRequired={true}>
+                        <FormControl id="passwordConfirm" onChange={handleChange} isInvalid={(invalid && confrimPass.length < 8) || ((register.password.length > 6 && confrimPass.length > 1) && register.password !== confrimPass)} isRequired={true}>
                         <FormLabel>Confirm Password</FormLabel>
-                        <Input type="password" placeholder="password" />
+                        <InputGroup size='md'>
+                            <Input
+                                pr='4.5rem'
+                                type={show ? 'text' : 'password'}
+                                placeholder='Enter a password'
+                            />
+                            <InputRightElement width='4.5rem'>
+                                <IconButton h='1.75rem' size='sm' isRound={true} icon={show ? <ViewOffIcon/> : <ViewIcon/>} onClick={handleClick}/>
+                            </InputRightElement>
+                        </InputGroup>
                         <FormHelperText>Enter a password!</FormHelperText>
                         <FormErrorMessage>Passwords do not match!</FormErrorMessage>
                     </FormControl>

@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure, Select, Input } from '@chakra-ui/react'
 
-const requestServer = 'http://localhost:8080/events'
+const requestServer = 'http://localhost:8080/'
 const approverServer = 'http://localhost:8080/users?approver=true'
 
 function RequestModal() {
@@ -34,6 +34,7 @@ function RequestModal() {
   const [desc, setDesc] = useState(null);
   const [approverList, setApproverList] = useState([]);
   const [approverID, setApproverID] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
 
@@ -64,7 +65,8 @@ function RequestModal() {
         })
       } else {
         try{
-          let response = await fetch(requestServer, {
+          console.log("inpost")
+          let response = await fetch(`${requestServer}events`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -79,10 +81,32 @@ function RequestModal() {
               startDate: startDate,
               endDate: endDate,
               description: desc,
-              approver: approverID
+              approver: approverID,
+              POCinfo: userInfo.name
             })
           })
           console.log(response.statusText)
+          
+          response.json()
+            .then(json => {
+              console.log(json)
+              console.log("events_id" + json.eventDetails.id+"    " + userInfo.id)
+              fetch(`${requestServer}positions`, {
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name: "Request",
+                users_id: userInfo.id,
+                events_id: json.eventDetails.id,
+              })}).then(res => res.json()).then(json => console.log(json))}
+            )
+
+          
+          
           toast({
             title: 'info.',
             description: response.statusText,
@@ -109,9 +133,22 @@ function RequestModal() {
       })
   }
 
+  const fetchUserInfo = async () => {
+    let response = await fetch(`${requestServer}users/self`, {
+      method: 'GET',
+      credentials: "include",
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      }
+    })
+    response.json().then(json=>setUserInfo(json[0]))
+    
+  }
+
   useEffect(() => {
     fetchApprovers();
-    console.log(fetchApprovers)
+    fetchUserInfo();
   }, []);
 
   useEffect(() => {
@@ -136,6 +173,7 @@ function RequestModal() {
           <ModalBody>
             <FormControl>
               <Card>
+                <FormLabel>Unavailabity Request Form</FormLabel>
                 <FormLabel>Title</FormLabel>
                 <Input type="title" onChange={(e)=> setTitle(e.target.value)}/><br />
               </Card>
@@ -152,7 +190,8 @@ function RequestModal() {
                 <Input type="time" onChange={(e)=> setEndTime(e.target.value)}/><br />
               </Card>
               <Card>
-                <Select placeholder='Select Approver' onChange={(e) => 
+                <FormLabel>Select Approver</FormLabel>
+                <Select placeholder='Select Approver' onChange={(e) =>
                   {
                     console.log('value: ',e.target.value)
                     setApproverID(e.target.value)
@@ -165,7 +204,7 @@ function RequestModal() {
                   </option>
                   })}
                 </Select>
-              </Card>
+              </Card><br />
               <Card>
                 <FormLabel>Description</FormLabel>
                 <Input type='text' onChange={(e)=> setDesc(e.target.value)}/>
