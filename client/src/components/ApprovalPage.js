@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { Button, Card, CardBody, Heading, Text, CardFooter, SimpleGrid, CardHeader } from '@chakra-ui/react'
 
 function ApprovalPage() {
   const fetchHeader = {
@@ -9,30 +10,47 @@ function ApprovalPage() {
     },
   }
 
-  // const [approverDetails, setApproverDetails] = useState([]);
-  const [eventInfo, setEventInfo] = useState(null);
+  const [eventInfo, setEventInfo] = useState([]);
 
   const eventsServer = "http://localhost:8080/events"
 
-  useEffect(() => {
+  const fetchEvents = () => {
       fetch(eventsServer, fetchHeader)
       .then((res) => res.json())
       .then((data)=> {
         setEventInfo(data)
-        console.log('data: ', data)
       })
-  }, []);
+  }
 
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   if(!eventInfo){
     return "Loading"
-  } 
+  }
   return (
-    <>
-        <h1>Approval Page</h1>
-        <div>{eventInfo[0]}</div>
-    </>
-  )
+    <div>
+    {eventInfo.map((event) => (
+      <div key={event.id}>
+        <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
+          <Card>
+            <CardHeader>
+              <Heading size='md'> {event.name}</Heading>
+            </CardHeader>
+            <CardBody>
+              <Text>{event.description}</Text>
+            </CardBody>
+            <CardFooter>
+              <Button>View Event</Button>
+            </CardFooter>
+          </Card>
+          </SimpleGrid>
+      </div>
+      ))}
+    </div>
+    );
 }
 
 export default ApprovalPage;
+
