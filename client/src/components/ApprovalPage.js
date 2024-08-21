@@ -14,14 +14,27 @@ function ApprovalPage() {
   }
 
   const [eventInfo, setEventInfo] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
   const navigate = useNavigate()
   const eventsServer = "http://localhost:8080/events"
 
   const fetchEvents = () => {
-      fetch(eventsServer, fetchHeader)
-      .then((res) => res.json())
-      .then((data)=> {
-        setEventInfo(data)
+    fetch('http://localhost:8080/users/self', fetchHeader)
+      .then(res=>res.json())
+      .then(data=>{
+        setCurrentUser(data)
+        return data
+      })
+      .then(userinfo=>{
+        fetch(eventsServer, fetchHeader)
+          .then((res) => res.json())
+          .then((data)=> {
+            data.filter(event=>{
+              console.log('event: ', event, '\nuser: ', userinfo.id)
+              return event.approver.id === userinfo.id
+            })
+            setEventInfo(data)
+          })
       })
   }
 
@@ -40,8 +53,9 @@ function ApprovalPage() {
     <Tabs isFitted varient='soft-rounded' colorScheme='green'>
         <TabList>
           <Tab>Show All</Tab>
-          <Tab>Scheduled</Tab>
-          <Tab>Needs Approval</Tab>
+          <Tab>Approved</Tab>
+          <Tab>Event Approval</Tab>
+          <Tab>Request Approval</Tab>
         </TabList>
 
         <TabPanels>
@@ -147,6 +161,9 @@ function ApprovalPage() {
                 </div>
               ))}
             </div>
+          </TabPanel>
+          <TabPanel>
+
           </TabPanel>
         </TabPanels>
     </Tabs>
