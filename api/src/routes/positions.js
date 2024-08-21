@@ -7,6 +7,7 @@ router.use(cors());
 router.use(express.json());
 
 router.get("/", async ( req, res ) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const {id, list} = req.query
   console.log('id: ', id);
   console.log('list: ', list);
@@ -100,9 +101,10 @@ router.post("/", (req, res) => {
 });
 //------------------UPDATE(by id)-------------------\\
 router.patch("/:id", (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   const { id } = req.params;
   const updates = req.body;
-console.log(updates)
+  console.log(updates)
 
   knex('positions')
     .where({ id: id })
@@ -123,6 +125,7 @@ console.log(updates)
 
 //------------------DELETE (by id)-------------------\\
 router.delete('/:id', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   knex('positions')
     .where({ id: req.params.id })
     .del()

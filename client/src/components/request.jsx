@@ -32,10 +32,11 @@ function RequestModal() {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [desc, setDesc] = useState(null);
+  const [approverList, setApproverList] = useState([]);
+  const [approverID, setApproverID] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [submitted, setSubmitted] = useState(0);
   const toast = useToast();
-  const [approverList, setApproverList] = useState([]);
 
   let types = ['Funeral', 'Retirement', 'Inauguration', 'Other']
 
@@ -67,7 +68,7 @@ function RequestModal() {
           console.log("inpost")
           let response = await fetch(`${requestServer}events`, {
             method: 'POST',
-            credentials: "include",
+            credentials: 'include',
             headers: {
               'Accept': 'application/json, text/plain, */*',
               'Content-Type': 'application/json',
@@ -80,6 +81,7 @@ function RequestModal() {
               startDate: startDate,
               endDate: endDate,
               description: desc,
+              approver: approverID,
               POCinfo: userInfo.name
             })
           })
@@ -125,8 +127,8 @@ function RequestModal() {
     fetch(approverServer, fetchHeader)
       .then((res) => res.json())
       .then((data) => {
-        setApproverList(data);
         console.log('fetchApprover data: ', data)
+        setApproverList(data);
       })
   }
 
@@ -154,7 +156,10 @@ function RequestModal() {
       setStartTime(null)
       setEndDate(null)
       setStartDate(null)
+      setApproverID(null)
   }, [submitted])
+
+  if(approverList.length === 0) return <h1>loading</h1>
 
   return (
     <>
@@ -183,8 +188,18 @@ function RequestModal() {
                 <Input type="time" onChange={(e)=> setEndTime(e.target.value)}/><br />
               </Card>
               <Card>
-                <Select placeholder='Select Approver'>
-                  {/* <option value={approverList.map(name => approver.name)}></option> */}
+                <Select placeholder='Select Approver' onChange={(e) => 
+                  {
+                    console.log('value: ',e.target.value)
+                    setApproverID(e.target.value)
+                  }
+                }>
+                  {approverList.map(approver => {
+                    console.log(approver)
+                  return <option key={approver.id} value={approver.id}>
+                    {approver.name}
+                  </option>
+                  })}
                 </Select>
               </Card>
               <Card>
