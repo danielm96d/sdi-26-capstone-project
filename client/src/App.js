@@ -8,6 +8,7 @@ import Scheduler from './components/Scheduler.js'
 import NotFound from './components/NotFound/NotFound.js';
 import EventEntry from './components/EventEntry.js'
 import EventsDetailsPage from './components/EventDetails';
+import ApprovalPage from './components/ApprovalPage.js';
 import ApprovalDetailsPage from './components/ApprovalDetails.js';
 
 
@@ -24,6 +25,7 @@ function App() {
                         <Route path='/scheduler/:id' element={<Scheduler />} />
                         <Route path='/event-entry' element={<EventEntry />} />
                         <Route path='/event-details/:id' element={<EventsDetailsPage />} />
+                        <Route path='/approval' element={<ApprovalPage />} />
                         <Route path='/approval-details/:id' element={<ApprovalDetailsPage />} />
                         <Route path='*' element={<NotFound/>}/>
                   </Routes>
