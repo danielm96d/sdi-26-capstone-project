@@ -5,7 +5,8 @@ import {
   Box,
   Avatar,
   Heading,
-  Text
+  Text,
+  useColorModeValue
 } from '@chakra-ui/react'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -18,6 +19,7 @@ import {Helmet} from 'react-helmet'
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
+  const borderColor = useColorModeValue('black', 'gray')
   const [userInfo, setUserInfo] = useState({})
   const [notifications, setNotifications] = useState()
   const [ events, setEvents ] = useState([]);
@@ -32,7 +34,7 @@ function Profile() {
         year: '2-digit',
       },
       dayHeaderFormat: {
-        weekday: 'narrow',
+        weekday: 'short',
         day: 'numeric',
       }
     }
@@ -92,7 +94,7 @@ function Profile() {
         gap={4}
       >
         <GridItem colSpan={2} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'>
           <br />
           <Avatar name={userInfo[0].name} size='2xl' />
@@ -101,7 +103,7 @@ function Profile() {
             height='60%'
             mt='50px'
             borderWidth='3px'
-            borderColor='black'
+            borderColor={borderColor}
             rounded='md'>
 
             User Info
@@ -112,7 +114,7 @@ function Profile() {
 
         </GridItem>
         <GridItem colSpan={3} borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'
           p="5px">
 
@@ -142,14 +144,14 @@ function Profile() {
           </div>
         </GridItem>
         <GridItem colSpan={3} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'>
           <Box
             width='90%'
             height='60%'
             mt='50px'
             borderWidth='3px'
-            borderColor='black'
+            borderColor={borderColor}
             rounded='md'>
             Notifications
             {notifications}

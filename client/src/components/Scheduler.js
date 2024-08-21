@@ -6,7 +6,11 @@ import {
   Button,
   Heading,
   Spacer,
-  List
+  List,
+  Box,
+  Stack,
+  useColorModeValue,
+  Divider
 } from '@chakra-ui/react'
 
 const requestServer = 'http://localhost:8080/'
@@ -42,6 +46,7 @@ export default function Scheduler () {
   const [eventBodiesTotal, setEventBodiesTotal] = useState([]);
   const[users, setUsers] =useState([])
   const[positionId, setPositionId] =useState([])
+  const borderColor = useColorModeValue('black', 'gray')
 
   const eventInfoFetch = async () => {
     try{
@@ -153,7 +158,7 @@ export default function Scheduler () {
   }, [])
 
   return (
-    <div>
+    <Box>
       {eventInfo ? (
         <>
           <Grid
@@ -163,10 +168,10 @@ export default function Scheduler () {
             padding='5px'
           >
             <GridItem  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md'
-              display='flex' colSpan={8} rowSpan={1} p="5px">
-                <Heading as='h2' size='2xl'>{eventInfo[0].name}</Heading>
+              display='flex' colSpan={8} rowSpan={1} p="5px" paddingY="1em">
+                <Heading as='h2' size='xl'>{eventInfo[0].name}</Heading>
                 <Spacer />
                 <Button bg='darkolivegreen' onClick={() => positionsInfoPatch()}>Save</Button>
                 <Button onClick={() => navigate(-1)}>Back</Button>
@@ -174,40 +179,40 @@ export default function Scheduler () {
             </GridItem>
 
             <GridItem colSpan={8} rowSpan={1}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" h="30px" p="5px">
               <Heading as='h4' size='l'>{`POC: ${eventInfo[0].POCinfo}  Location: ${eventInfo[0].location}`}</Heading>
             </GridItem>
 
             <GridItem colSpan={8} rowSpan={1}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" h="50px" p="5px">
                 {positionsInfo.length > 0 ? (
                 <>
                   {positionsInfo.map((pos, index) => (
-                    <div key={index}>
+                    <Box key={index}>
                     <Button mr='10px' bg={colors[pos.name]} onClick={() => showRequiredBodies(pos.name)} >{pos.name}</Button>
-                    </div>
+                    </Box>
                   ))}
                 </>
                   ) : null}
             </GridItem>
 
             <GridItem colSpan={5}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" height='400px' p="2" >
               <List>
                   <Heading size='md'>Required Bodies </Heading><br/>
                     {bodies.length > 0 ? (
               <>
                 {bodies.map((pos, index) => (
-                  <div key={index}>
+                  <Box key={index}>
                     <Button mb='10px' bg={colors[pos.position_name]} size='lg' onClick={() => {
                       setPositionId(pos.id)
                       }} >
                         {pos.position_name}  {pos.user_id ? pos.victim : "empty"}
                     </Button>
-                  </div>
+                  </Box>
                 ))}
               </>
                 ) : null}
@@ -215,25 +220,28 @@ export default function Scheduler () {
             </GridItem>
 
             <GridItem colSpan={3}  borderWidth='1px'
-              borderColor='black'
+              borderColor={borderColor}
               rounded='md' display="flex" p="2" >
               <List>
                 <Heading size='md'>Available Bodies </Heading>
+                <Divider marginY="1em"/>
                 {users.length > 0 ? (
                   <>
+                  <Stack direction="row" flexWrap="wrap">
                     {users.map((user, index) => (
                       
-                      <div key={index}>
+                      <>
                         {console.log(user)}
-                        <Button mb='10px' bg ={colors[user.name]} size='lg' onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
-                      </div>
+                        <Button size="md" mb='10px' bg ={colors[user.name]} onClick={()=>handleBodyClicked(user.id, user.name)} >{user.name}</Button>
+                      </>
                     ))}
+                    </Stack>
                   </>
                 ) : null}
               </List>
             </GridItem>
           </Grid>
     </> ): null}
-  </div>
+  </Box>
   );
 }
