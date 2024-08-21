@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, CardBody, Heading, Text, CardFooter, SimpleGrid, CardHeader } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { Button, Card, CardBody, Heading, Text, CardFooter, SimpleGrid, CardHeader, Badge } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import './Approval.css'
+import {useNavigate} from 'react-router-dom';
 
 function ApprovalPage() {
-
   const fetchHeader = {
     method: "GET",
     credentials: 'include',
@@ -13,7 +14,7 @@ function ApprovalPage() {
   }
 
   const [eventInfo, setEventInfo] = useState([]);
-
+  const navigate = useNavigate()
   const eventsServer = "http://localhost:8080/events"
 
   const fetchEvents = () => {
@@ -24,10 +25,8 @@ function ApprovalPage() {
       })
   }
 
-  const navigate = useNavigate();
-
-  const viewEventHandler = (id) => {
-    navigate(`/approval-details/${id}`)
+  const viewEventHandler = (id, obj) => {
+    navigate(`/middleware/${id}`, obj)
   }
 
   useEffect(() => {
@@ -38,25 +37,119 @@ function ApprovalPage() {
     return "Loading"
   }
   return (
-    <div>
-    {eventInfo.map((event) => (
-      <div key={event.id}>
-        <SimpleGrid spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
-          <Card>
-            <CardHeader>
-              <Heading size='md'> {event.name}</Heading>
-            </CardHeader>
-            <CardBody>
-              <Text>{event.description}</Text>
-            </CardBody>
-            <CardFooter>
-              <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
-            </CardFooter>
-          </Card>
-          </SimpleGrid>
-      </div>
-      ))}
-    </div>
+    <Tabs isFitted varient='soft-rounded' colorScheme='green'>
+        <TabList>
+          <Tab>Show All</Tab>
+          <Tab>Scheduled</Tab>
+          <Tab>Needs Approval</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+          <div className='approvalContainer'>
+            {eventInfo.map((event) => (
+            <div key={event.id}>
+              <SimpleGrid
+                spacing={4}
+              >
+                <Card style={{
+                  margin: '10px',
+                  width: '300px',
+                  height: '300px'
+                }}>
+                  <CardHeader>
+                    <Heading size='md'> {event.name}</Heading>
+                    <Text>Time: {event.startTime} - {event.endTime}</Text>
+                    {event.approved ? (
+                      <Badge colorScheme="green">Scheduled</Badge>
+                    ) : (
+                      <Badge colorScheme="red">Needs Approval</Badge>
+                    )}
+                  </CardHeader>
+                  <CardBody>
+                    <Text>Event: {event.type}</Text>
+                  </CardBody>
+                  <CardFooter>
+                    <Button onClick={()=> viewEventHandler(event.id, {state:{isRequest: event.type === 'Request'}})}>View Event</Button>
+                  </CardFooter>
+                </Card>
+                </SimpleGrid>
+            </div>
+            ))}
+          </div>
+          </TabPanel>
+          <TabPanel>
+            <div className='approvalContainer'>
+              {eventInfo.filter((event) => {
+                return event.approved
+              }).map((event) => (
+              <div key={event.id}>
+                <SimpleGrid
+                  spacing={4}
+                >
+                  <Card style={{
+                    margin: '10px',
+                    width: '300px',
+                    height: '300px'
+                  }}>
+                    <CardHeader>
+                      <Heading size='md'> {event.name}</Heading>
+                      <Text>Time: {event.startTime} - {event.endTime}</Text>
+                      {event.approved ? (
+                        <Badge colorScheme="green">Scheduled</Badge>
+                      ) : (
+                        <Badge colorScheme="red">Needs Scheduling</Badge>
+                      )}
+                    </CardHeader>
+                    <CardBody>
+                      <Text>Event: {event.type}</Text>
+                    </CardBody>
+                    <CardFooter>
+                      <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                    </CardFooter>
+                  </Card>
+                  </SimpleGrid>
+              </div>
+              ))}
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className='approvalContainer'>
+              {eventInfo.filter((event) => {
+                return !event.approved
+              }).map((event) => (
+                <div key={event.id}>
+                  <SimpleGrid
+                    spacing={4}
+                  >
+                    <Card style={{
+                      margin: '10px',
+                      width: '300px',
+                      height: '300px'
+                    }}>
+                      <CardHeader>
+                        <Heading size='md'> {event.name}</Heading>
+                        <Text>Time: {event.startTime} - {event.endTime}</Text>
+                        {event.approved ? (
+                          <Badge colorScheme="green">Scheduled</Badge>
+                        ) : (
+                          <Badge colorScheme="red">Needs Scheduling</Badge>
+                        )}
+                      </CardHeader>
+                      <CardBody>
+                        <Text>Event: {event.type}</Text>
+                      </CardBody>
+                      <CardFooter>
+                        <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                      </CardFooter>
+                    </Card>
+                    </SimpleGrid>
+                </div>
+              ))}
+            </div>
+          </TabPanel>
+        </TabPanels>
+    </Tabs>
     );
 }
 

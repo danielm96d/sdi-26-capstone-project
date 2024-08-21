@@ -10,6 +10,7 @@ import EventEntry from './components/EventEntry.js'
 import EventsDetailsPage from './components/EventDetails';
 import ApprovalPage from './components/ApprovalPage.js';
 import ApprovalDetailsPage from './components/ApprovalDetails.js';
+import MiddleWare from './components/MiddleWare.js';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                         <Route path='/event-entry' element={<EventEntry />} />
                         <Route path='/event-details/:id' element={<EventsDetailsPage />} />
                         <Route path='/approval' element={<ApprovalPage />} />
+                        <Route path='/middleware/:id' element={<MiddleWare />} />
                         <Route path='/approval-details/:id' element={<ApprovalDetailsPage />} />
                         <Route path='*' element={<NotFound/>}/>
                   </Routes>

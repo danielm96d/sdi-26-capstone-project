@@ -108,7 +108,9 @@ function Profile() {
 
             User Info
             <Box>
-              <Text>Hello {userInfo[0].name},</Text>
+              <Text>Hello {userInfo[0].name}</Text>
+              <Text>Rank: {userInfo[0].rank}</Text>
+              <Text>Approver: {userInfo[0].isApprover}</Text>
             </Box>
           </Box>
 
