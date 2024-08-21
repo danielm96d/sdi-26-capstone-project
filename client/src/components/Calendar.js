@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Grid,
   GridItem,
+  useColorModeValue
 } from '@chakra-ui/react'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -14,6 +15,7 @@ import { Helmet } from 'react-helmet';
 const requestServer = 'http://localhost:8080/'
 
 export default function Calendar() {
+  const borderColor = useColorModeValue('black', 'gray')
   const fetchHeader = {
     method: "GET",
     credentials: 'include',
@@ -68,7 +70,7 @@ export default function Calendar() {
       console.log(error)
     }
   }
-  
+
 
   function handleDateSelect(selectInfo) {
     let selectedDate = selectInfo.startStr;
@@ -88,7 +90,7 @@ export default function Calendar() {
         gap={4}
       >
         <GridItem colSpan={5} borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'>
           <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
@@ -104,7 +106,7 @@ export default function Calendar() {
           />
         </GridItem>
         <GridItem colSpan={3} display="flex" alignItems="center" flexDirection="column" borderWidth='1px'
-          borderColor='black'
+          borderColor={borderColor}
           rounded='md'>
           <FullCalendar
             ref={calenderRef}
