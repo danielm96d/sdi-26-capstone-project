@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, CardBody, Heading, Text, CardFooter, SimpleGrid, CardHeader } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
 
 function ApprovalPage() {
+
   const fetchHeader = {
     method: "GET",
     credentials: 'include',
@@ -20,6 +22,12 @@ function ApprovalPage() {
       .then((data)=> {
         setEventInfo(data)
       })
+  }
+
+  const navigate = useNavigate();
+
+  const viewEventHandler = (id) => {
+    navigate(`/approval-details/${id}`)
   }
 
   useEffect(() => {
@@ -42,7 +50,7 @@ function ApprovalPage() {
               <Text>{event.description}</Text>
             </CardBody>
             <CardFooter>
-              <Button>View Event</Button>
+              <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
             </CardFooter>
           </Card>
           </SimpleGrid>
