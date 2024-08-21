@@ -89,7 +89,8 @@ function RequestModal() {
           
           response.json()
             .then(json => {
-              console.log(json.id+"    " + userInfo.id)
+              console.log(json)
+              console.log("events_id" + json.eventDetails.id+"    " + userInfo.id)
               fetch(`${requestServer}positions`, {
               method: 'POST',
               credentials: 'include',
@@ -100,7 +101,7 @@ function RequestModal() {
               body: JSON.stringify({
                 name: "Request",
                 users_id: userInfo.id,
-                events_id: json.id,
+                events_id: json.eventDetails.id,
               })}).then(res => res.json()).then(json => console.log(json))}
             )
 
