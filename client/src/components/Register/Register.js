@@ -6,7 +6,7 @@ import {
     AutoCompleteItem,
     AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast, InputGroup, InputRightElement, IconButton } from '@chakra-ui/react';
+import { Box, Stack, FormControl, FormLabel, Input, FormHelperText, FormErrorMessage, Center, Button, Select, Text, Link, useToast, InputGroup, InputRightElement, IconButton, useColorModeValue } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
@@ -21,6 +21,7 @@ export default function Register() {
     const handleClick = () => setShow(!show)
     const toast = useToast();
     const navigate = useNavigate();
+    const contentColor = useColorModeValue("white", "gray.700");
     const ranks = {
         enlisted: Array.from({ length: 9 }, (v, i) => `E-${i + 1}`),
         warrant: Array.from({ length: 5 }, (v, i) => `W-${i + 1}`),
@@ -112,7 +113,7 @@ export default function Register() {
         <Helmet>
             <title>OpSync | Sign Up</title>
         </Helmet>
-            <Box margin="0 auto" maxW="30%">
+            <Box margin="0 auto" maxW="30%" bgColor={contentColor} boxShadow="xl" p="6" marginY="-.5em">
                 <Stack spacing={1}>
                     <FormControl id="username" onChange={handleChange} isInvalid={invalid && register.username.length < 1} isRequired={true}>
                         <FormLabel>Username</FormLabel>

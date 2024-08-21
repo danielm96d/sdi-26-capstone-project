@@ -1,4 +1,4 @@
-import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link, InputGroup, InputRightElement, IconButton } from "@chakra-ui/react";
+import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input, Stack, Box, Button, Center, useToast, Text, Link, InputGroup, InputRightElement, IconButton, useColorModeValue } from "@chakra-ui/react";
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from "react";
 import { Helmet } from 'react-helmet';
@@ -14,6 +14,7 @@ export default function Login() {
     const toast = useToast();
     const navigate = useNavigate();
     const location = useLocation();
+    const contentColor = useColorModeValue("white", "gray.700");
 
     useEffect(() => {
         if (Object.keys(response).length > 1) {
@@ -80,7 +81,7 @@ export default function Login() {
             <Helmet>
                 <title>OpSync | Login</title>
             </Helmet>
-            <Box margin="0 auto" maxW="30%">
+            <Box bgColor={contentColor} margin="0 auto" maxW="30%" boxShadow="xl" p="6" marginY="-.5em">
                 <Stack spacing={5}>
                     <FormControl id="username" onChange={handleChange} isInvalid={invalid && login.username.length < 1} isRequired={true}>
                         <FormLabel>Username</FormLabel>
