@@ -5,8 +5,6 @@ import './Approval.css'
 import {useNavigate} from 'react-router-dom';
 
 function ApprovalPage() {
-  const routingPath = '/'
-
   const fetchHeader = {
     method: "GET",
     credentials: 'include',
@@ -27,13 +25,13 @@ function ApprovalPage() {
       })
   }
 
+  const viewEventHandler = (id) => {
+    navigate(`/approval-details/${id}`)
+  }
+
   useEffect(() => {
     fetchEvents();
   }, []);
-
-  const handleClick = () =>{
-    navigate(routingPath)
-  }
 
   if(!eventInfo){
     return "Loading"
@@ -72,7 +70,7 @@ function ApprovalPage() {
                     <Text>Event: {event.type}</Text>
                   </CardBody>
                   <CardFooter>
-                    <Button onClick={handleClick}>View Event</Button>
+                    <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
                   </CardFooter>
                 </Card>
                 </SimpleGrid>
@@ -107,7 +105,7 @@ function ApprovalPage() {
                       <Text>Event: {event.type}</Text>
                     </CardBody>
                     <CardFooter>
-                      <Button onClick={handleClick}>View Event</Button>
+                      <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
                     </CardFooter>
                   </Card>
                   </SimpleGrid>
@@ -142,7 +140,7 @@ function ApprovalPage() {
                         <Text>Event: {event.type}</Text>
                       </CardBody>
                       <CardFooter>
-                        <Button onClick={handleClick}>View Event</Button>
+                        <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
                       </CardFooter>
                     </Card>
                     </SimpleGrid>
@@ -156,3 +154,4 @@ function ApprovalPage() {
 }
 
 export default ApprovalPage;
+
