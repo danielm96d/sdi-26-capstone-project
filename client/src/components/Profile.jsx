@@ -17,6 +17,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
 import RequestModal from './request'
 import {Helmet} from 'react-helmet'
+import {useNavigate} from 'react-router-dom'
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
@@ -25,20 +26,25 @@ function Profile() {
   const [notifications, setNotifications] = useState()
   const [ events, setEvents ] = useState([]);
   const calenderRef = useRef(null);
+  const navigate = useNavigate();
 
   const views = {
     dayGridFourWeek: {
       type: 'dayGrid',
-      duration: { weeks: 2 },
+      duration: { weeks: 1 },
       titleFormat: {
         month: 'short',
-        year: '2-digit',
+        year: 'numeric',
       },
       dayHeaderFormat: {
-        weekday: 'short',
+        weekday: 'narrow',
         day: 'numeric',
       }
     }
+  }
+
+  const viewEventHandler = (id, obj) => {
+    navigate(`/middleware/${id}`, obj)
   }
 
   useEffect(() => {
@@ -49,11 +55,14 @@ function Profile() {
         "Content-Type": "application/json",
       },
     })
-      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        return res.json()
+      })
       .then(json => {
         console.log(json)
-        if(json.message)console.log(json.message)
-        else if (json[0].events !== undefined){
+        // if(json.message)console.log(json.message)
+        if (json[0].events !== undefined){
           let arrEvents = [];
           json[0].events.map((event) => {
             let indexOfT = event.startDate.indexOf("T");
@@ -126,7 +135,7 @@ function Profile() {
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView='dayGridFourWeek'
               views={views}
-              height='400px'
+              height='200px'
               selectable={true}
               selectMirror={true}
               select={(selectInfo) => handleDateSelect(selectInfo)}
@@ -143,6 +152,11 @@ function Profile() {
               selectable={true}
               selectMirror={true}
               events={events}
+              eventClick={(info) => {
+                console.log(info.event.id)
+                viewEventHandler(info.event.id, {state:{state:{isRequest: info.event.type === 'Request'}}})
+                // navigate(`/scheduler/${info.event.id}`)
+              }}
             />
           </div>
         </GridItem>
