@@ -7,7 +7,9 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Badge
+  Badge,
+  Card,
+  CardBody
 } from '@chakra-ui/react'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -77,8 +79,22 @@ function Profile() {
           console.log(arrEvents)
         }
         setUserInfo(json)
+        console.log("JSONNNNN");
+        console.log(json)
+        if (json && json[0].overseenEvents && json[0].overseenEvents.length >0 ){
+          setNotifications(json[0].overseenEvents.filter((event) => {
+            console.log(event.approved)
+            return event.approved!== true
+          }
+          ))
+        }
+       
       })
   }, [])
+
+  const dateTimeString = (date, time) => {
+    return `${date.slice(6, date.indexOf('T'))} ${time.slice(0, 5)}`
+  }
 
   function handleDateSelect(selectInfo) {
     let selectedDate = selectInfo.startStr;
@@ -154,7 +170,7 @@ function Profile() {
               events={events}
               eventClick={(info) => {
                 console.log(info.event.id)
-                viewEventHandler(info.event.id, {state:{state:{isRequest: info.event.type === 'Request'}}})
+                viewEventHandler(info.event.id, {state:{isRequest: info.event.type == 'Request'}})
                 // navigate(`/scheduler/${info.event.id}`)
               }}
             />
@@ -170,8 +186,16 @@ function Profile() {
             mt='50px'
             borderWidth='3px'
             borderColor={borderColor}
-            rounded='md'>
-            {notifications}
+            rounded='md' m={1}>Events needing approval: 
+            {notifications && notifications.length > 0 ? (notifications.map((event) => (
+                <Card onClick={()=> viewEventHandler(event.id, {state:{isRequest: event.type === 'Request'}})}>
+                <CardBody>
+                  <Heading size='md'>{event.name}</Heading>
+                  <Text>{dateTimeString(event.startDate, event.startTime)} - {dateTimeString(event.endDate, event.endTime)} </Text>
+                  <Text></Text>
+                </CardBody>
+              </Card>
+              ))):null}
           </Box>
           <br />
           <RequestModal />

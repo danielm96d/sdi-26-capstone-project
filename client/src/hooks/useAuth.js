@@ -45,21 +45,28 @@ export default function useAuth() {
             }
             
         }
-        if(Object.keys(userInfo).length !== 0){
-            console.log('userInfo in auth: ', userInfo)
-            console.log('userInfo in auth: ', userInfo)
-            isAllowed = userInfo.permissions.filter(item=>{
-                console.log('pathname split [2]: ',location.pathname.split("/")[2] )
-                console.log('item: ', item)
-                return item == location.pathname.split("/")[2]
-            }).length > 0
-            console.log('isallowed: ', isAllowed)
+        if(userInfo){
+            if(Object.keys(userInfo).length !== 0){
+                console.log('userInfo in auth: ', userInfo)
+                console.log('userInfo in auth: ', userInfo)
+                isAllowed = userInfo.permissions.filter(item=>{
+                    console.log('pathname split [2]: ',location.pathname.split("/")[2] )
+                    console.log('item: ', item)
+                    return item == location.pathname.split("/")[2]
+                }).length > 0
+                console.log('isallowed: ', isAllowed)
+                console.log(userInfo)
+            }
         }
         
-        if(location.pathname.split("/")[1] === "scheduler" && (!userInfo.isApprover || !isAllowed))  {
+        if(location.pathname.split("/")[1] === "scheduler" && userInfo.isApprover === false && isAllowed === false)  {
+            console.log( "in redirect for approver scheduler"
+            )
             navigate('/event-details/'+location.pathname.split("/")[2])
         } 
-        if(location.pathname.split("/")[1] === "approval-details" && (!userInfo.isApprover || !isAllowed))  {
+        if(location.pathname.split("/")[1] === "approval-details" && userInfo.isApprover === false && isAllowed === false)  {
+            console.log( "in redirect for approver details"
+            )
             navigate('/event-details/'+location.pathname.split("/")[2])
         } 
         if(location.pathname === "/approval" && (!userInfo.isApprover)) {
