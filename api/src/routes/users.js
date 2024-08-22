@@ -99,7 +99,7 @@ router.get('/self', async (req, res) => {
   try {
     res.header('Access-Control-Allow-Origin', req.header('origin'));
   let data = []
-  // console.log(req)
+  // console.log('self id: ',req.user.id)
   let userData = await knex('users')
     .select(
       'id',
@@ -112,8 +112,28 @@ router.get('/self', async (req, res) => {
       console.log(err);
       res.status(301).send(`Error retrieving single user: ${err}`);
     })
-
-  let eventData = await knex('approvers')
+    //returns the events they are an user for
+  let eventData = await knex('positions')
+    .join('events', 'events.id', 'positions.events_id')
+    .distinct(
+      'events.id',
+      'events.name',
+      'events.startTime',
+      'events.endTime',
+      'events.startDate',
+      'events.endDate',
+      'events.description',
+      'events.type',
+      'events.POCinfo',
+      'events.location',
+    )
+    .where({ 'positions.users_id': req.user.id })
+    .catch((err) => {
+      console.log(err);
+      res.status(301).send(`Error retrieving single user: ${err}`);
+    })
+        //returns the events they are an approver for
+  let approverData = await knex('approvers')
     .join('events', 'events.id', 'approvers.events_id')
     .select(
       'events.id',
@@ -133,7 +153,8 @@ router.get('/self', async (req, res) => {
       res.status(301).send(`Error retrieving single user: ${err}`);
     })
 
-  data.push({ ...userData[0], events: eventData })
+  data.push({ ...userData[0], overseenEvents: approverData, events: eventData })
+  // console.log('working')
   res.status(200).send(data);
   } catch (error) {
     console.log(error)
