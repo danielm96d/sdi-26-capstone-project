@@ -58,7 +58,14 @@ function EventEntry() {
   const navigate = useNavigate();
   const positions = ["Bearer", "Firing Party", "Drill", "Color Guard", 'Bugler', 'Escort', 'Pallbearer', 'Flag Holder', 'OIC', 'NCOIC'];
 
-
+  const fetchApprovers = () => {
+    fetch(approverServer, fetchHeader)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('fetchApprover data: ', data)
+        setApproverList(data);
+      })
+  }
 
 
   const submitFunction = async (e) => {
@@ -102,7 +109,8 @@ function EventEntry() {
               endDate: endDate,
               description: desc,
               POCinfo: poc,
-              location: location
+              location: location,
+              creatorId: userInfo.id
             })
           })
           response.json()
@@ -231,7 +239,22 @@ function EventEntry() {
               <FormLabel fontSize="25px">Location</FormLabel>
               <Input type='text' onChange={(e) => setLocation(e.target.value)} width="50%" />
             </InputGroup><br />
-
+            <Card>
+                <FormLabel>Select Approver</FormLabel>
+                <Select placeholder='Select Approver' onChange={(e) =>
+                  {
+                    console.log('value: ',e.target.value)
+                    setApproverID(e.target.value)
+                  }
+                }>
+                  {approverList.map(approver => {
+                    console.log(approver)
+                  return <option key={approver.id} value={approver.id}>
+                    {approver.name}
+                  </option>
+                  })}
+                </Select>
+              </Card>
             <InputGroup justifyContent="center"
               display="flex">
               <Button bg='tomato' mr={3} onClick={() => navigate(-1)} type='submit'>

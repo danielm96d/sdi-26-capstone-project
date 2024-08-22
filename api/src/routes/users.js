@@ -133,8 +133,9 @@ router.get('/self', async (req, res) => {
       console.log(err);
       res.status(301).send(`Error retrieving single user: ${err}`);
     })
+
         //returns the events they are an approver for
-  let approverData = await knex('approvers')
+    let approverData = await knex('approvers')
     .join('events', 'events.id', 'approvers.events_id')
     .select(
       'events.id',
@@ -155,7 +156,23 @@ router.get('/self', async (req, res) => {
       res.status(301).send(`Error retrieving single user: ${err}`);
     })
 
-  data.push({ ...userData[0], overseenEvents: approverData, events: eventData })
+  //Need to check the userID with the Creator ID
+  //Need to check the positions/events join to see if they are a participant
+  let tempPermissionsIdList = await knex('positions')
+  .join('events', 'events.id', 'positions.events_id' )
+  .distinct(
+    'events.id'
+  )
+  .where({'positions.users_id': req.user.id})
+  .orWhere({'events.creatorID': req.user.id})
+  let permissionsIdList = []
+  tempPermissionsIdList.map((item)=>{
+    permissionsIdList.push(item.id)
+  })
+  console.log('permissions ID LIST: ', permissionsIdList)
+
+
+  data.push({ ...userData[0], permissions: permissionsIdList , overseenEvents: approverData, events: eventData })
   // console.log('working')
   res.status(200).send(data);
   } catch (error) {
