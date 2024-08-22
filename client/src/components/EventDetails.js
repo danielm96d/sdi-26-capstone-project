@@ -19,6 +19,7 @@ import {
   Avatar,
 } from '@chakra-ui/react';
 import { CalendarIcon, InfoIcon } from '@chakra-ui/icons';
+import { Helmet } from 'react-helmet';
 
 const requestServer = 'http://localhost:8080/';
 
@@ -187,6 +188,9 @@ function EventsDetailsPage() {
 
   return (
     <Container maxW="container.xl" p={4}>
+      <Helmet>
+        <title>OpSync | {eventInfo.name}</title>
+      </Helmet>
       <VStack spacing={8} align="stretch">
         {eventInfo && (
           <Box bg={cardBgColor} p={6} borderRadius="lg" boxShadow="md">
