@@ -53,9 +53,12 @@ export default function NavBar() {
   return (
     <>
       <Flex padding="1rem" justifyContent="space-between">
-        <Heading><Link to="/">OpSync</Link></Heading>
+        <Flex gap="2" justifyContent="center" alignItems="center">
+          <Avatar size="sm" src={process.env.PUBLIC_URL + '/OpSync.png'} />
+          <Heading bgGradient='linear(to-l, #7928CA, #FF0080)' bgClip="text"><Link to="/">OpSync</Link></Heading>
+        </Flex>
         <Flex>
-          {localStorage.getItem('id') ? <IconButton onClick={onOpen} ref={btnRef} isRound={true} icon={<HamburgerIcon />} /> : <ToggleTheme/>}
+          {localStorage.getItem('id') ? <IconButton onClick={onOpen} ref={btnRef} isRound={true} icon={<HamburgerIcon />} /> : <ToggleTheme />}
         </Flex>
       </Flex>
       <Divider marginBottom="2em" />
@@ -69,8 +72,8 @@ export default function NavBar() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            <Avatar name={Object.keys(userInfo).length > 0  && !userInfo.invalid ? userInfo[0].name : ""} />
-            <Heading marginTop="1em" size="xs">{Object.keys(userInfo).length > 0 && !userInfo.invalid ? `${userInfo[0].rank}  ${userInfo[0].name}` : <Skeleton/>}</Heading>
+            <Avatar name={Object.keys(userInfo).length > 0 && !userInfo.invalid ? userInfo[0].name : ""} />
+            <Heading marginTop="1em" size="xs">{Object.keys(userInfo).length > 0 && !userInfo.invalid ? `${userInfo[0].rank}  ${userInfo[0].name}` : <Skeleton />}</Heading>
           </DrawerHeader>
 
           <DrawerBody>
@@ -78,29 +81,33 @@ export default function NavBar() {
             <Center>
               <ButtonGroup variant="ghost">
                 <Stack spacing={10}>
-                  <Button onClick={()=>{
+                  <Button onClick={() => {
                     onClose();
-                    navigate("/profile")}}>Home</Button>
-                  <Button onClick={()=>{
+                    navigate("/profile")
+                  }}>Home</Button>
+                  <Button onClick={() => {
                     onClose();
-                    navigate("/calendar")}}>Calendar</Button>
-                  {Object.keys(userInfo).length > 0 && !userInfo.invalid && userInfo[0].isApprover ? <Button onClick={()=>{
+                    navigate("/calendar")
+                  }}>Calendar</Button>
+                  {Object.keys(userInfo).length > 0 && !userInfo.invalid && userInfo[0].isApprover ? <Button onClick={() => {
                     onClose();
-                    navigate("/approval")}}>Approval</Button> : <></>}
-                  <Button onClick={()=>{
+                    navigate("/approval")
+                  }}>Approval</Button> : <></>}
+                  <Button onClick={() => {
                     onClose();
-                    navigate("/event-entry")}}>Create Event</Button>
+                    navigate("/event-entry")
+                  }}>Create Event</Button>
                   <Button onClick={() => {
                     fetch('http://localhost:8080/logout', {
                       method: 'POST',
                       credentials: 'include'
                     })
-                    .then(res => res.json())
-                    .then(json => {
-                      onClose();
-                      localStorage.removeItem('id')
-                      navigate('/login')
-                    })
+                      .then(res => res.json())
+                      .then(json => {
+                        onClose();
+                        localStorage.removeItem('id')
+                        navigate('/login')
+                      })
                   }}>Logout</Button>
                   <ToggleTheme />
                 </Stack>
