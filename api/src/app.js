@@ -32,6 +32,9 @@ app.use(express.json());
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token; // Changed this line
   if (!token) {
+    console.log(
+      "no token"
+    )
     return res.status(401).json({ message: 'Access denied. No token provided.', status: "error", title: "Unauthorized", invalid: true });
   }
 
