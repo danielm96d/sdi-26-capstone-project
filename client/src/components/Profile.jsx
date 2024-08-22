@@ -17,6 +17,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import './Profile.css';
 import RequestModal from './request'
 import {Helmet} from 'react-helmet'
+import {useNavigate} from 'react-router-dom'
 const requestServer = 'http://localhost:8080/'
 
 function Profile() {
@@ -25,6 +26,7 @@ function Profile() {
   const [notifications, setNotifications] = useState()
   const [ events, setEvents ] = useState([]);
   const calenderRef = useRef(null);
+  const navigate = useNavigate();
 
   const views = {
     dayGridFourWeek: {
@@ -39,6 +41,10 @@ function Profile() {
         day: 'numeric',
       }
     }
+  }
+
+  const viewEventHandler = (id, obj) => {
+    navigate(`/middleware/${id}`, obj)
   }
 
   useEffect(() => {
@@ -143,6 +149,11 @@ function Profile() {
               selectable={true}
               selectMirror={true}
               events={events}
+              eventClick={(info) => {
+                console.log(info.event.id)
+                viewEventHandler(info.event.id, {state:{state:{isRequest: info.event.type === 'Request'}}})
+                // navigate(`/scheduler/${info.event.id}`)
+              }}
             />
           </div>
         </GridItem>
