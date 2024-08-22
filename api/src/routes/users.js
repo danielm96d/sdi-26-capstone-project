@@ -163,8 +163,8 @@ router.get('/self', async (req, res) => {
   .distinct(
     'events.id'
   )
-  .where({'positions.users_id': req.user.id})
-  .orWhere({'events.creatorID': req.user.id})
+  // .where({'positions.users_id': req.user.id})
+  .where({'events.creatorID': req.user.id})
   let permissionsIdList = []
   tempPermissionsIdList.map((item)=>{
     permissionsIdList.push(item.id)

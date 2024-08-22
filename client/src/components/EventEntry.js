@@ -95,7 +95,7 @@ function EventEntry() {
         try {
           let response = await fetch(`${requestServer}events`, {
             method: 'POST',
-
+            credentials: 'include',
             headers: {
               'Accept': 'application/json, text/plain, */*',
               'Content-Type': 'application/json',
@@ -191,7 +191,6 @@ function EventEntry() {
     setEndDate(null)
     setStartDate(null)
     setApproverID(null)
-    fetchApprovers();
   }, [submitted])
 
   if(approverList.length === 0) return <h1>loading</h1>
@@ -256,8 +255,8 @@ function EventEntry() {
               <FormLabel fontSize="25px">Location</FormLabel>
               <Input type='text' onChange={(e) => setLocation(e.target.value)} width="50%" />
             </InputGroup><br />
-            <Card>
-                <FormLabel>Select Approver</FormLabel>
+            <InputGroup>
+                <FormLabel fontSize="25px">Approver</FormLabel>
                 <Select placeholder='Select Approver' onChange={(e) =>
                   {
                     console.log('value: ',e.target.value)
@@ -271,7 +270,7 @@ function EventEntry() {
                   </option>
                   })}
                 </Select>
-              </Card>
+              </InputGroup><br />
             <InputGroup justifyContent="center"
               display="flex">
               <Button bg='tomato' mr={3} onClick={() => navigate(-1)} type='submit'>
