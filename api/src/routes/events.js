@@ -107,6 +107,7 @@ router.get('/requests', (req,res) => {
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
+  console.log("in post")
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   const body = req.body;
   const eventData = {

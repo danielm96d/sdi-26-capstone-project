@@ -13,13 +13,16 @@ import {
   Center,
   Divider,
   Stack,
-  useColorModeValue
+  useColorModeValue,
+  Card,
+  Select
 
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet';
 
 const requestServer = 'http://localhost:8080/'
+const approverServer = 'http://localhost:8080/users?approver=true'
 
 const colors = {
   'Pallbearer': 'Salmon',
@@ -57,15 +60,10 @@ function EventEntry() {
   const toast = useToast();
   const navigate = useNavigate();
   const positions = ["Bearer", "Firing Party", "Drill", "Color Guard", 'Bugler', 'Escort', 'Pallbearer', 'Flag Holder', 'OIC', 'NCOIC'];
+  const [approverList, setApproverList] = useState([]);
+  const [approverID, setApproverID] = useState(null);
 
-  const fetchApprovers = () => {
-    fetch(approverServer, fetchHeader)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('fetchApprover data: ', data)
-        setApproverList(data);
-      })
-  }
+
 
 
   const submitFunction = async (e) => {
@@ -110,7 +108,7 @@ function EventEntry() {
               description: desc,
               POCinfo: poc,
               location: location,
-              creatorId: userInfo.id
+              approver: approverID
             })
           })
           response.json()
@@ -153,6 +151,15 @@ function EventEntry() {
     }
   }
 
+  const fetchApprovers = () => {
+    fetch(approverServer, fetchHeader)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('fetchApprover data: ', data)
+        setApproverList(data);
+      })
+  }
+
   const handleClick = (pos) => {
     setSelectedPositions(selectedPositions => [...selectedPositions, pos])
   }
@@ -176,8 +183,10 @@ function EventEntry() {
     setStartTime(null)
     setEndDate(null)
     setStartDate(null)
+    fetchApprovers();
   }, [submitted])
 
+  if(approverList.length === 0) return <h1>loading</h1>
 
   return (
     <>
