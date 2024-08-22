@@ -143,6 +143,10 @@ function Profile() {
               selectable={true}
               selectMirror={true}
               events={events}
+              eventClick={(info) => {
+                console.log(info.event.id)
+                // navigate(`/scheduler/${info.event.id}`)
+              }}
             />
           </div>
         </GridItem>
