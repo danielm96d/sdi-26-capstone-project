@@ -90,6 +90,30 @@ function ApprovalDetailsPage () {
       }, 1000);
     }
 
+    const setDisapprove = async () => {
+      const response = await fetch(`${requestServer}events/${id}`,{
+        method: "PATCH",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          approved: false
+        })
+      });
+      toast({
+        title: 'info',
+        description: "Event Disapproved",
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+      })
+      setTimeout(() => {
+        console.log("Delayed for 1 second.");
+        navigate(-2);
+      }, 1000);
+    }
+
 
   useEffect(()=>{
     //compare times and place conflicts on table
@@ -132,7 +156,7 @@ function ApprovalDetailsPage () {
               <Heading>{eventInfo.name}</Heading> 
               <Spacer />
               <Button bg='lightgreen' onClick={() => setApprove()}>Approve</Button>
-            <Button bg='tomato' onClick={() => navigate(-2)}>Dis-Approve</Button>
+            <Button bg='tomato' onClick={() => setDisapprove()}>Dis-Approve</Button>
             <Button onClick={() => navigate(-2)}>Back</Button>
           </GridItem>
           <GridItem  borderWidth='1px'

@@ -87,7 +87,8 @@ function ApprovalPage() {
           <TabPanel>
             <div className='approvalContainer'>
               {eventInfo.filter((event) => {
-                return event.approved
+                console.log(event)
+                return event.approved === true;
               }).map((event) => (
               <div key={event.id}>
                 <SimpleGrid
@@ -111,7 +112,7 @@ function ApprovalPage() {
                       <Text>Event: {event.type}</Text>
                     </CardBody>
                     <CardFooter>
-                      <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                      <Button onClick={()=> viewEventHandler(event.id, {state:{isRequest: event.type === 'Request'}})}>View Event</Button>
                     </CardFooter>
                   </Card>
                   </SimpleGrid>
@@ -123,8 +124,8 @@ function ApprovalPage() {
           {/* Show all unapproved Events */}
           <TabPanel>
             <div className='approvalContainer'>
-              {eventInfo.filter((event) => {
-                return !event.approved
+                {eventInfo.filter((event) => {
+                  return (!event.approved && event.type !== "Request")
               }).map((event) => (
                 <div key={event.id}>
                   <SimpleGrid
@@ -148,7 +149,7 @@ function ApprovalPage() {
                         <Text>Event: {event.type}</Text>
                       </CardBody>
                       <CardFooter>
-                        <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                        <Button onClick={()=> viewEventHandler(event.id, {state:{isRequest: event.type === 'Request'}})}>View Event</Button>
                       </CardFooter>
                     </Card>
                     </SimpleGrid>
@@ -161,9 +162,7 @@ function ApprovalPage() {
           <TabPanel>
           <div className='approvalContainer'>
               {eventInfo.filter((event) => {
-                
-                return (!event.approved && event.type === "Request")
-                // return ? (!event.approved && event.type === "Request") : "No approval requests"
+                return (!event.approved && event.type === "Request") ?  true : false
               }).map((event) => (
                 <div key={event.id}>
                   <SimpleGrid
@@ -187,7 +186,7 @@ function ApprovalPage() {
                         <Text>Event: {event.type}</Text>
                       </CardBody>
                       <CardFooter>
-                        <Button onClick={()=> viewEventHandler(event.id)}>View Event</Button>
+                        <Button onClick={()=> viewEventHandler(event.id, {state:{isRequest: event.type === 'Request'}})}>View Event</Button>
                       </CardFooter>
                     </Card>
                     </SimpleGrid>
