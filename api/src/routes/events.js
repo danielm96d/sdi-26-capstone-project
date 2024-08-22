@@ -107,7 +107,7 @@ router.get('/requests', (req,res) => {
 
 //------------------CREATE-------------------\\
 router.post("/", (req, res) => {
-  console.log("in post")
+  console.log("in post") 
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   const body = req.body;
   const eventData = {
@@ -120,8 +120,9 @@ router.post("/", (req, res) => {
     type: body.type,
     approved: body.approved,
     POCinfo: body.POCinfo,
-    location: body.location
-  }
+    location: body.location,
+    creatorID: req.user.id
+  } 
   knex('events')
     .insert(eventData)
     .returning('*')

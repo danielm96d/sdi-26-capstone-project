@@ -154,7 +154,7 @@ function Profile() {
               events={events}
               eventClick={(info) => {
                 console.log(info.event.id)
-                viewEventHandler(info.event.id, {state:{state:{isRequest: info.event.type === 'Request'}}})
+                viewEventHandler(info.event.id, {state:{isRequest: info.event.type == 'Request'}})
                 // navigate(`/scheduler/${info.event.id}`)
               }}
             />
@@ -172,6 +172,8 @@ function Profile() {
             borderColor={borderColor}
             rounded='md'>
             {notifications}
+            
+
           </Box>
           <br />
           <RequestModal />

@@ -6,7 +6,8 @@ export default function MiddleWare(){
   const navigate = useNavigate();
   const location = useLocation();
   const {isRequest} = location.state
-  // console.log(isRequest)
+  console.log("REuest info")
+  console.log(isRequest)
 
   useEffect(()=>{
     if(isRequest){
