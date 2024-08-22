@@ -55,6 +55,7 @@ export default function useAuth() {
             }).length > 0
             console.log('isallowed: ', isAllowed)
         }
+        
         if(location.pathname.split("/")[1] === "scheduler" && (!userInfo.isApprover || !isAllowed))  {
             navigate('/event-details/'+location.pathname.split("/")[2])
         } 
