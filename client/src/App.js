@@ -7,7 +7,7 @@ import Register from './components/Register/Register.js';
 import Scheduler from './components/Scheduler.js'
 import NotFound from './components/NotFound/NotFound.js';
 import EventEntry from './components/EventEntry.js'
-import EventsDetailsPage from './components/EventDetails';
+import EventsDetailsPage from './components/EventDetails/EventDetails';
 import ApprovalPage from './components/ApprovalPage.js';
 import ApprovalDetailsPage from './components/ApprovalDetails.js';
 import MiddleWare from './components/MiddleWare.js';
