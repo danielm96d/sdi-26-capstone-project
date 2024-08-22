@@ -189,7 +189,7 @@ function EventsDetailsPage() {
   return (
     <Container maxW="container.xl" p={4}>
       <Helmet>
-        <title>OpSync | {eventInfo.name}</title>
+        <title>OpSync | {eventInfo.name} Details</title>
       </Helmet>
       <VStack spacing={8} align="stretch">
         {eventInfo && (
