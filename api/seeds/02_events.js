@@ -16,7 +16,8 @@ exports.seed = async function (knex) {
       type: "Funeral",
       approved: "true",
       location: "Denver",
-      POCinfo: "John"
+      POCinfo: "John",
+      creatorID: 1
     },
     {
       name: "Jones Retirement",
@@ -28,7 +29,8 @@ exports.seed = async function (knex) {
       type: "Retirement",
       approved: "false",
       location: "DC",
-      POCinfo: "Jake"
+      POCinfo: "Jake",
+      creatorID: 1
     },
     {
       name: "Ralph Nader Inaguration",
@@ -40,7 +42,8 @@ exports.seed = async function (knex) {
       type: "Inaguration",
       approved: "true",
       location: "Dover",
-      POCinfo: "Ben"
+      POCinfo: "Ben",
+      creatorID: 1
     },
     {
       name: "Surgery Recovery",
@@ -52,7 +55,8 @@ exports.seed = async function (knex) {
       type: "Request",
       approved: "true",
       location: "DC",
-      POCinfo: "John"
+      POCinfo: "John",
+      creatorID: 1
     },
     {
       name: "Tech Conference 2024",
@@ -64,7 +68,8 @@ exports.seed = async function (knex) {
       type: "Conference",
       approved: "true",
       location: "San Francisco",
-      POCinfo: "Sarah Johnson"
+      POCinfo: "Sarah Johnson",
+      creatorID: 1
     },
     {
       name: "Community Garden Planting Day",
@@ -76,7 +81,8 @@ exports.seed = async function (knex) {
       type: "Community Event",
       approved: "true",
       location: "Central Park",
-      POCinfo: "Mike Chen"
+      POCinfo: "Mike Chen",
+      creatorID: 1
     },
     {
       name: "Annual Charity Gala",
@@ -88,7 +94,8 @@ exports.seed = async function (knex) {
       type: "Fundraiser",
       approved: "true",
       location: "Grand Ballroom, Hilton Hotel",
-      POCinfo: "Emily Wright"
+      POCinfo: "Emily Wright",
+      creatorID: 1
     },
     {
       name: "Summer Music Festival",
@@ -100,7 +107,8 @@ exports.seed = async function (knex) {
       type: "Concert",
       approved: "true",
       location: "Riverfront Park",
-      POCinfo: "David Lee"
+      POCinfo: "David Lee",
+      creatorID: 1
     },
     {
       name: "Virtual Book Club Meeting",
@@ -112,7 +120,8 @@ exports.seed = async function (knex) {
       type: "Club Meeting",
       approved: "true",
       location: "Zoom",
-      POCinfo: "Lisa Tran"
+      POCinfo: "Lisa Tran",
+      creatorID: 1
     }
   ]);
 };

@@ -82,7 +82,8 @@ function RequestModal() {
               endDate: endDate,
               description: desc,
               approver: approverID,
-              POCinfo: userInfo.name
+              POCinfo: userInfo.name,
+              creatorId: userInfo.id 
             })
           })
           console.log(response.statusText)

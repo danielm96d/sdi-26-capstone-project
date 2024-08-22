@@ -15,6 +15,7 @@ exports.up = function(knex) {
     table.boolean('approved');
     table.string('POCinfo');
     table.string('location');
+    table.integer('creatorID');
     table.timestamps(true, true);
   })
 };

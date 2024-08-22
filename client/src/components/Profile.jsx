@@ -31,13 +31,13 @@ function Profile() {
   const views = {
     dayGridFourWeek: {
       type: 'dayGrid',
-      duration: { weeks: 2 },
+      duration: { weeks: 1 },
       titleFormat: {
         month: 'short',
-        year: '2-digit',
+        year: 'numeric',
       },
       dayHeaderFormat: {
-        weekday: 'short',
+        weekday: 'narrow',
         day: 'numeric',
       }
     }
@@ -55,11 +55,14 @@ function Profile() {
         "Content-Type": "application/json",
       },
     })
-      .then(res => res.json())
+      .then(res => {
+        console.log(res)
+        return res.json()
+      })
       .then(json => {
         console.log(json)
-        if(json.message)console.log(json.message)
-        else if (json[0].events !== undefined){
+        // if(json.message)console.log(json.message)
+        if (json[0].events !== undefined){
           let arrEvents = [];
           json[0].events.map((event) => {
             let indexOfT = event.startDate.indexOf("T");
@@ -132,7 +135,7 @@ function Profile() {
               plugins={[dayGridPlugin, interactionPlugin]}
               initialView='dayGridFourWeek'
               views={views}
-              height='400px'
+              height='200px'
               selectable={true}
               selectMirror={true}
               select={(selectInfo) => handleDateSelect(selectInfo)}

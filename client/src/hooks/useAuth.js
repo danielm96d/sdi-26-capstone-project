@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function useAuth() {
     const [auth, setAuth] = useState(null);
     const [userInfo, setUserInfo] = useState({})
+    let isAllowed = false;
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -44,12 +45,26 @@ export default function useAuth() {
             }
             
         }
-        if(location.pathname.split("/")[1] === "scheduler" && !userInfo.isApprover)  {
-            navigate('/event-details/'+location.pathname.split("/")[2])
+        if(Object.keys(userInfo).length !== 0){
+            console.log('userInfo in auth: ', userInfo)
+            console.log('userInfo in auth: ', userInfo)
+            isAllowed = userInfo.permissions.filter(item=>{
+                console.log('pathname split [2]: ',location.pathname.split("/")[2] )
+                console.log('item: ', item)
+                return item == location.pathname.split("/")[2]
+            }).length > 0
+            console.log('isallowed: ', isAllowed)
         }
-        if(location.pathname === "/approval" && !userInfo.isApprover) {
+        if(location.pathname.split("/")[1] === "scheduler" && (!userInfo.isApprover || !isAllowed))  {
+            navigate('/event-details/'+location.pathname.split("/")[2])
+        } 
+        if(location.pathname.split("/")[1] === "approval-details" && (!userInfo.isApprover || !isAllowed))  {
+            navigate('/event-details/'+location.pathname.split("/")[2])
+        } 
+        if(location.pathname === "/approval" && (!userInfo.isApprover)) {
             navigate('/')
         }
+
     }, [auth, userInfo]);
 
 }
