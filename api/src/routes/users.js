@@ -126,6 +126,7 @@ router.get('/self', async (req, res) => {
       'events.type',
       'events.POCinfo',
       'events.location',
+      'events.approved'
     )
     .where({ 'positions.users_id': req.user.id })
     .catch((err) => {
@@ -146,6 +147,7 @@ router.get('/self', async (req, res) => {
       'events.type',
       'events.POCinfo',
       'events.location',
+      'events.approved'
     )
     .where({ 'approvers.users_id': req.user.id })
     .catch((err) => {
