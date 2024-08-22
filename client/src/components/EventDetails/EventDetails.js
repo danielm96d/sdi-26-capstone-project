@@ -22,19 +22,6 @@ import PositionCard from './PositionCard';
 
 const requestServer = 'http://localhost:8080/';
 
-const stringToColor = (str) => {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  let color = '#';
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xFF;
-    color += ('00' + value.toString(16)).substr(-2);
-  }
-  return color;
-};
-
 function EventDetails() {
   const { id } = useParams();
   const [eventInfo, setEventInfo] = useState(null);
@@ -42,9 +29,33 @@ function EventDetails() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedPositions, setSelectedPositions] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [uniquePositions, setUniqePositions] = useState(null)
+  const [positionColors, setPositionColors] = useState(null)
+  const [eventUsers, setEventUsers] = useState(null)
   const toast = useToast();
 
   const cardBgColor = useColorModeValue('white', 'gray.600');
+  const togglePosition = (name) => {
+    setSelectedPositions(prev => 
+      prev.includes(name)
+        ? prev.filter(p => p !== name)
+        : [...prev, name]
+    );
+  };
+
+  const stringToColor = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = '#';
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xFF;
+      color += ('00' + value.toString(16)).substr(-2);
+    }
+    return color;
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,10 +75,33 @@ function EventDetails() {
           });
         const eventData = await eventResponse.json();
         const userData = await userResponse.json();
+
+        //console.log('fetch event Data: ', eventData)
         setEventInfo(eventData[0]);
         setIsApprover(userData[0].isApprover);
         setCurrentUser(userData[0]);
         setIsLoading(false);
+        let eUsers = eventData[0].position.map(pos=>{
+          return {
+            name: pos.victim,
+            id: pos['user_id']
+          }
+        })
+        setEventUsers(eUsers)
+        let upos =eventData[0].position.map(pos => pos.name)
+        //console.log(upos)
+        setUniqePositions(upos)
+
+        setPositionColors(() => {
+          const colors = {};
+          // //console.log('positionColor: ', upos)
+          upos.forEach(pos => {
+            colors[pos] = stringToColor(pos);
+          });
+          return colors;
+        })
+        
+
       } catch (error) {
         console.error('Error fetching data:', error);
         toast({
@@ -83,29 +117,6 @@ function EventDetails() {
     fetchData();
   }, [id, toast]);
 
-  const togglePosition = (name) => {
-    setSelectedPositions(prev => 
-      prev.includes(name)
-        ? prev.filter(p => p !== name)
-        : [...prev, name]
-    );
-  };
-
-  const uniquePositions = useMemo(() => {
-    console.log(eventInfo.position[0], "eventinfo positions")
-    if (!eventInfo || !eventInfo.position) return [];
-    return [...new Set(eventInfo.position.map(pos => pos.name))];
-  }, [eventInfo]);
-console.log(uniquePositions, "UP123")
-  const positionColors = useMemo(() => {
-    const colors = {};
-    uniquePositions.forEach(pos => {
-      console.log(pos, 'pos=positionhere')
-      colors[pos] = stringToColor(pos);
-    });
-    return colors;
-  }, [uniquePositions]);
-
   if (isLoading) {
     return (
       <Container maxW="container.xl" p={4}>
@@ -118,7 +129,8 @@ console.log(uniquePositions, "UP123")
       </Container>
     );
   }
-
+  
+    
   return (
     <Container maxW="container.xl" p={4}>
       <VStack spacing={8} align="stretch">
@@ -173,7 +185,7 @@ console.log(uniquePositions, "UP123")
         )}
 
         <Heading size="md">position</Heading>
-        {console.log(eventInfo)}
+        {/* {console.log('event user info: ', eventInfo.position[0])} */}
         <Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6}>
           {
           eventInfo.position.filter(pos => selectedPositions.length === 0 || selectedPositions.includes(pos.name))
@@ -183,7 +195,7 @@ console.log(uniquePositions, "UP123")
                 position={pos}
                 currentUser={currentUser}
                 isApprover={isApprover}
-                eventUsers={eventInfo.users}
+                eventUsers={eventUsers}
                 positionColors={positionColors}
                 eventId={id}
                 eventStartDate={eventInfo.startDate}

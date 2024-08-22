@@ -68,111 +68,111 @@ function PositionCard({
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   };
 
-  useEffect(() => {
-    if (isApprover) {
-      fetchEditRequests();
-    }
-  }, [isApprover, position.id, eventId]);
+  // useEffect(() => {
+  //   if (isApprover) {
+  //     fetchEditRequests();
+  //   }
+  // }, [isApprover, position.id, eventId]);
 
-  const fetchEditRequests = async () => {
-    try {
-      const response = await fetch(`${requestServer}events?id=${eventId}`, {
-        method: "GET",
-        credentials: 'include',
-        headers: { "Content-Type": "application/json" },
-      });
-      if (response.ok) {
-        const eventData = await response.json();
-        const positionEditRequests = eventData[0].position.find(pos => pos.id === position.id)?.editRequests || [];
-        setEditRequests(positionEditRequests);
-      }
-    } catch (error) {
-      console.error('Error fetching edit requests:', error);
-    }
-  };
+  // const fetchEditRequests = async () => {
+  //   try {
+  //     const response = await fetch(`${requestServer}events?id=${eventId}`, {
+  //       method: "GET",
+  //       credentials: 'include',
+  //       headers: { "Content-Type": "application/json" },
+  //     });
 
-  const handleApproveEditRequest = async (requestId) => {
-    try {
-      const response = await fetch(`${requestServer}events/${eventId}`, {
-        method: 'PATCH',
-        credentials: 'include',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          position: [{
-            id: position.id,
-            editRequests: [{
-              id: requestId,
-              status: 'approved'
-            }]
-          }]
-        }),
-      });
-      if (response.ok) {
-        toast({
-          title: "Edit Request Approved",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-        fetchEditRequests();
-        const updatedEventData = await response.json();
-        onUpdateEvent(updatedEventData);
-      }
-    } catch (error) {
-      console.error('Error approving edit request:', error);
-      toast({
-        title: "Error",
-        description: "Failed to approve edit request",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+  //     if (response.ok) {
+  //       const eventData = await response.json();
+  //       const positionEditRequests = eventData[0].position.find(pos => pos.id === position.id)?.editRequests || [];
+  //       setEditRequests(positionEditRequests);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching edit requests:', error);
+  //   }
+  // };
 
-  const handleDenyEditRequest = async (requestId) => {
-    try {
-      const response = await fetch(`${requestServer}events/${eventId}`, {
-        method: 'PATCH',
-        credentials: 'include',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          position: [{
-            id: position.id,
-            editRequests: [{
-              id: requestId,
-              status: 'denied'
-            }]
-          }]
-        }),
-      });
-      if (response.ok) {
-        toast({
-          title: "Edit Request Denied",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-        fetchEditRequests();
-        const updatedEventData = await response.json();
-        onUpdateEvent(updatedEventData);
-      }
-    } catch (error) {
-      console.error('Error denying edit request:', error);
-      toast({
-        title: "Error",
-        description: "Failed to deny edit request",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+  // const handleApproveEditRequest = async (requestId) => {
+  //   try {
+  //     const response = await fetch(`${requestServer}events/${eventId}`, {
+  //       method: 'PATCH',
+  //       credentials: 'include',
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         position: [{
+  //           id: position.id,
+  //           editRequests: [{
+  //             id: requestId,
+  //             status: 'approved'
+  //           }]
+  //         }]
+  //       }),
+  //     });
+  //     if (response.ok) {
+  //       toast({
+  //         title: "Edit Request Approved",
+  //         status: "success",
+  //         duration: 3000,
+  //         isClosable: true,
+  //       });
+  //       fetchEditRequests();
+  //       const updatedEventData = await response.json();
+  //       onUpdateEvent(updatedEventData);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error approving edit request:', error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to approve edit request",
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
+
+  // const handleDenyEditRequest = async (requestId) => {
+  //   try {
+  //     const response = await fetch(`${requestServer}events/${eventId}`, {
+  //       method: 'PATCH',
+  //       credentials: 'include',
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         position: [{
+  //           id: position.id,
+  //           editRequests: [{
+  //             id: requestId,
+  //             status: 'denied'
+  //           }]
+  //         }]
+  //       }),
+  //     });
+  //     if (response.ok) {
+  //       toast({
+  //         title: "Edit Request Denied",
+  //         status: "success",
+  //         duration: 3000,
+  //         isClosable: true,
+  //       });
+  //       fetchEditRequests();
+  //       const updatedEventData = await response.json();
+  //       onUpdateEvent(updatedEventData);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error denying edit request:', error);
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to deny edit request",
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
 
   const handleEditSubmit = async () => {
     try {
       const updatedPosition = {
-        id: position.id,
         startTime: editedTimes.startTime,
         endTime: editedTimes.endTime,
         startDate: editedTimes.startDate,
@@ -183,10 +183,7 @@ function PositionCard({
         method: 'PATCH',
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([{
-          startTime: updatedPosition,
-          approved: false,
-        }]),
+        body: JSON.stringify({...updatedPosition}),
       });
   
       if (response.ok) {
@@ -291,16 +288,16 @@ function PositionCard({
             placeholder="Assign user" 
             onChange={(e) => handleAssignRole(e.target.value)}
           >
-            {eventUsers && eventUsers.map((user) => (
+            {
+              eventUsers.map((user) => (
               <option key={user.id} value={user.id}>{user.name}</option>
-            ))}
+              ))
+            }
           </Select>
         )}
-        {position.victim && (
-          <Tag size="sm" colorScheme={positionColors[position.positionName]}>
-            <TagLabel>{position.rank}</TagLabel>
-          </Tag>
-        )}
+        <Tag size="sm" colorScheme={positionColors[position.positionName]}>
+          <TagLabel>{position.rank}</TagLabel>
+        </Tag>
         <Text fontSize="sm">Date: {formatDate(startDate)}{startDate !== endDate ? ` - ${formatDate(endDate)}` : ''}</Text>
         <Text fontSize="sm">Time: {startTime} - {endTime}</Text>
         {canEditPosition() && (
@@ -326,12 +323,12 @@ function PositionCard({
                     <Text fontSize="sm">New Date: {formatDate(request.newStartDate)}{request.newStartDate !== request.newEndDate ? ` - ${formatDate(request.newEndDate)}` : ''}</Text>
                     <Text fontSize="sm">New Time: {request.newStartTime} - {request.newEndTime}</Text>
                     <HStack mt={2}>
-                      <Button size="xs" colorScheme="green" onClick={() => handleApproveEditRequest(request.id)}>
+                      {/* <Button size="xs" colorScheme="green" onClick={() => handleApproveEditRequest(request.id)}>
                         Approve
                       </Button>
                       <Button size="xs" colorScheme="red" onClick={() => handleDenyEditRequest(request.id)}>
                         Deny
-                      </Button>
+                      </Button> */}
                     </HStack>
                   </Box>
                 ))}

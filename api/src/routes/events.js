@@ -51,7 +51,7 @@ router.get("/", async ( req, res ) => {
       .join('events', 'positions.events_id', '=', 'events.id')
       .select(
         'positions.id',
-        'positions.name as position_name',
+        'positions.name',
         'positions.events_id',
         'positions.users_id as user_id',
         'users.name as victim',
