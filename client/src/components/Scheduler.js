@@ -13,6 +13,7 @@ import {
   Divider,
   useToast
 } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet';
 
 const requestServer = 'http://localhost:8080/'
 
@@ -219,6 +220,9 @@ export default function Scheduler () {
 
   return (
     <Box>
+      <Helmet>
+        <title>OpSync | Event View</title>
+      </Helmet>
       {eventInfo ? (
         <>
           <Grid
