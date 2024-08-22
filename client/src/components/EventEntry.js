@@ -73,6 +73,7 @@ function EventEntry() {
     console.log("Start Date/Time: " + `${startDate}T${startTime}` + "\n")
     console.log("End Date/Time: " + `${endDate}T${endTime}` + "\n")
     console.log("desc: " + desc + "\n")
+    console.log('approver id ' + approverID )
     if (!startDate || !startTime || !endDate || !endTime) {
       toast({
         title: 'info.',
@@ -176,6 +177,12 @@ function EventEntry() {
 
   }
 
+
+  useEffect(() => {
+    fetchApprovers();
+  }, []);
+
+
   useEffect(() => {
     setType("Retirement")
     setDesc(null)
@@ -183,6 +190,7 @@ function EventEntry() {
     setStartTime(null)
     setEndDate(null)
     setStartDate(null)
+    setApproverID(null)
     fetchApprovers();
   }, [submitted])
 
@@ -257,7 +265,7 @@ function EventEntry() {
                   }
                 }>
                   {approverList.map(approver => {
-                    console.log(approver)
+                    // console.log(approver)
                   return <option key={approver.id} value={approver.id}>
                     {approver.name}
                   </option>
