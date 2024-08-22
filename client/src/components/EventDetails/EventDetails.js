@@ -50,25 +50,24 @@ function EventDetails() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const [eventResponse, userResponse] = await Promise.all([
-          fetch(`${requestServer}events/?id=${id}`, {
-            method: "GET",
-            credentials: 'include',
-            headers: { "Content-Type": "application/json" },
-          }),
-          fetch(`${requestServer}users/self`, {
+        const eventResponse = await fetch
+        (`${requestServer}events/?id=${id}`, {
             method: "GET",
             credentials: 'include',
             headers: { "Content-Type": "application/json" },
           })
-        ]);
-
+        const userResponse = await fetch
+        (`${requestServer}users/self`, {
+            method: "GET",
+            credentials: 'include',
+            headers: { "Content-Type": "application/json" },
+          });
         const eventData = await eventResponse.json();
         const userData = await userResponse.json();
-
         setEventInfo(eventData[0]);
         setIsApprover(userData[0].isApprover);
         setCurrentUser(userData[0]);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
         toast({
@@ -78,30 +77,30 @@ function EventDetails() {
           duration: 3000,
           isClosable: true,
         });
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchData();
   }, [id, toast]);
 
-  const togglePosition = (positionName) => {
+  const togglePosition = (name) => {
     setSelectedPositions(prev => 
-      prev.includes(positionName)
-        ? prev.filter(p => p !== positionName)
-        : [...prev, positionName]
+      prev.includes(name)
+        ? prev.filter(p => p !== name)
+        : [...prev, name]
     );
   };
 
   const uniquePositions = useMemo(() => {
-    if (!eventInfo || !eventInfo.positions) return [];
-    return [...new Set(eventInfo.positions.map(pos => pos.positionName))];
+    console.log(eventInfo.position[0], "eventinfo positions")
+    if (!eventInfo || !eventInfo.position) return [];
+    return [...new Set(eventInfo.position.map(pos => pos.name))];
   }, [eventInfo]);
-
+console.log(uniquePositions, "UP123")
   const positionColors = useMemo(() => {
     const colors = {};
     uniquePositions.forEach(pos => {
+      console.log(pos, 'pos=positionhere')
       colors[pos] = stringToColor(pos);
     });
     return colors;
@@ -154,7 +153,7 @@ function EventDetails() {
 
         {uniquePositions.length > 0 && (
           <Box>
-            <Text fontWeight="bold" mb={2}>Filter by Position:</Text>
+            <Text fontWeight="bold" mb={2}>Filter by position:</Text>
             <Flex wrap="wrap" gap={2}>
               {uniquePositions.map((pos) => (
                 <Tag
@@ -173,14 +172,15 @@ function EventDetails() {
           </Box>
         )}
 
-        <Heading size="md">Positions</Heading>
+        <Heading size="md">position</Heading>
+        {console.log(eventInfo)}
         <Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6}>
-          {eventInfo && eventInfo.positions && eventInfo.positions
-            .filter(pos => selectedPositions.length === 0 || selectedPositions.includes(pos.positionName))
+          {
+          eventInfo.position.filter(pos => selectedPositions.length === 0 || selectedPositions.includes(pos.name))
             .map(pos => (
               <PositionCard
                 key={pos.id}
-                positions={pos}
+                position={pos}
                 currentUser={currentUser}
                 isApprover={isApprover}
                 eventUsers={eventInfo.users}

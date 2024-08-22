@@ -31,7 +31,7 @@ import { EditIcon, ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
 const requestServer = 'http://localhost:8080/';
 
 function PositionCard({ 
-  positions, 
+  position, 
   currentUser, 
   isApprover, 
   eventUsers, 
@@ -43,7 +43,7 @@ function PositionCard({
   eventEndTime,
   onUpdateEvent
 }) {
-  console.log('PositionCard props:', { positions, currentUser, isApprover, eventUsers, positionColors, eventId, eventStartDate, eventEndDate, eventStartTime, eventEndTime });
+  console.log('PositionCard props:', { position, currentUser, isApprover, eventUsers, positionColors, eventId, eventStartDate, eventEndDate, eventStartTime, eventEndTime });
 
   const cardBgColor = useColorModeValue('white', 'gray.600');
   const [editRequests, setEditRequests] = useState([]);
@@ -57,10 +57,10 @@ function PositionCard({
     endDate: '',
   });
   
-  const startDate = positions.startDate || eventStartDate;
-  const endDate = positions.endDate || eventEndDate;
-  const startTime = positions.startTime || eventStartTime;
-  const endTime = positions.endTime || eventEndTime;
+  const startDate = position.startDate || eventStartDate;
+  const endDate = position.endDate || eventEndDate;
+  const startTime = position.startTime || eventStartTime;
+  const endTime = position.endTime || eventEndTime;
 
   // Function to format date string
   const formatDate = (dateString) => {
@@ -72,18 +72,18 @@ function PositionCard({
     if (isApprover) {
       fetchEditRequests();
     }
-  }, [isApprover, positions.id, eventId]);
+  }, [isApprover, position.id, eventId]);
 
   const fetchEditRequests = async () => {
     try {
-      const response = await fetch(`${requestServer}events/?id=${eventId}`, {
+      const response = await fetch(`${requestServer}events?id=${eventId}`, {
         method: "GET",
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
       });
       if (response.ok) {
         const eventData = await response.json();
-        const positionEditRequests = eventData[0].positions.find(pos => pos.id === positions.id)?.editRequests || [];
+        const positionEditRequests = eventData[0].position.find(pos => pos.id === position.id)?.editRequests || [];
         setEditRequests(positionEditRequests);
       }
     } catch (error) {
@@ -98,8 +98,8 @@ function PositionCard({
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          positions: [{
-            id: positions.id,
+          position: [{
+            id: position.id,
             editRequests: [{
               id: requestId,
               status: 'approved'
@@ -137,8 +137,8 @@ function PositionCard({
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          positions: [{
-            id: positions.id,
+          position: [{
+            id: position.id,
             editRequests: [{
               id: requestId,
               status: 'denied'
@@ -172,7 +172,7 @@ function PositionCard({
   const handleEditSubmit = async () => {
     try {
       const updatedPosition = {
-        id: positions.id,
+        id: position.id,
         startTime: editedTimes.startTime,
         endTime: editedTimes.endTime,
         startDate: editedTimes.startDate,
@@ -183,10 +183,10 @@ function PositionCard({
         method: 'PATCH',
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          positions: [updatedPosition],
+        body: JSON.stringify([{
+          startTime: updatedPosition,
           approved: false,
-        }),
+        }]),
       });
   
       if (response.ok) {
@@ -224,15 +224,15 @@ function PositionCard({
 
   const openEditModal = () => {
     setEditedTimes({
-      startTime: positions.startTime || eventStartTime,
-      endTime: positions.endTime || eventEndTime,
-      startDate: positions.startDate || eventStartDate,
-      endDate: positions.endDate || eventEndDate,
+      startTime: position.startTime || eventStartTime,
+      endTime: position.endTime || eventEndTime,
+      startDate: position.startDate || eventStartDate,
+      endDate: position.endDate || eventEndDate,
     });
     onEditModalOpen();
   };
   const canEditPosition = () => {
-    return currentUser && currentUser.id === positions.user_id;
+    return currentUser && currentUser.id === position.user_id;
   };
 
   const handleAssignRole = async (userId) => {
@@ -242,8 +242,8 @@ function PositionCard({
         credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          positions: [{
-            id: positions.id,
+          position: [{
+            id: position.id,
             users_id: userId
           }]
         }),
@@ -277,15 +277,15 @@ function PositionCard({
       borderRadius="md"
       boxShadow="md"
       borderLeft="4px solid"
-      borderLeftColor={positionColors[positions.positionName]}
+      borderLeftColor={positionColors[position.positionName]}
     >
       <VStack align="stretch" spacing={3}>
         <Flex justify="space-between" align="center">
-          <Heading size="sm">{positions.positionName}</Heading>
-          <Avatar size="sm" name={positions.victim} />
+          <Heading size="sm">{position.positionName}</Heading>
+          <Avatar size="sm" name={position.victim} />
         </Flex>
-        {positions.victim ? (
-          <Text fontSize="sm">{positions.victim}</Text>
+        {position.victim ? (
+          <Text fontSize="sm">{position.victim}</Text>
         ) : (
           <Select 
             placeholder="Assign user" 
@@ -296,9 +296,9 @@ function PositionCard({
             ))}
           </Select>
         )}
-        {positions.victim && (
-          <Tag size="sm" colorScheme={positionColors[positions.positionName]}>
-            <TagLabel>{positions.rank}</TagLabel>
+        {position.victim && (
+          <Tag size="sm" colorScheme={positionColors[position.positionName]}>
+            <TagLabel>{position.rank}</TagLabel>
           </Tag>
         )}
         <Text fontSize="sm">Date: {formatDate(startDate)}{startDate !== endDate ? ` - ${formatDate(endDate)}` : ''}</Text>
@@ -315,7 +315,7 @@ function PositionCard({
               onClick={onToggle} 
               size="sm"
             >
-              {console.log('Rendering PositionCard:', positions)}
+              {console.log('Rendering PositionCard:', position)}
               View Edit Requests ({editRequests.length})
             </Button>
             <Collapse in={isOpen}>

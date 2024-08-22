@@ -45,7 +45,7 @@ export default function useAuth() {
             }
             
         }
-        if(Object.keys(userInfo).length !== 0){
+        if (userInfo) {if(Object.keys(userInfo).length !== 0){
             console.log('userInfo in auth: ', userInfo)
             console.log('userInfo in auth: ', userInfo)
             isAllowed = userInfo.permissions.filter(item=>{
@@ -54,7 +54,7 @@ export default function useAuth() {
                 return item == location.pathname.split("/")[2]
             }).length > 0
             console.log('isallowed: ', isAllowed)
-        }
+        }}
         
         if(location.pathname.split("/")[1] === "scheduler" && (!userInfo.isApprover || !isAllowed))  {
             navigate('/event-details/'+location.pathname.split("/")[2])
