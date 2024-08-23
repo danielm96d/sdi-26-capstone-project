@@ -134,6 +134,26 @@ function EventEntry() {
                 .then(res => console.log(res))
             })
           })
+            .then(res => {
+              console.log(res)
+              console.log(selectedPositions)
+              selectedPositions.map((pos) => {
+                fetch(`${requestServer}positions`, {
+                  method: 'POST',
+                  credentials: 'include',
+                  headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    name: pos,
+                    events_id: res.eventDetails.id
+                  })
+                })
+                  .then(res => res.json())
+                  .then(res => console.log(res))
+              })
+            })
 
           toast({
             title: 'info.',

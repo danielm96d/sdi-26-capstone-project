@@ -61,6 +61,7 @@ export default function Scheduler () {
       const response = await fetch(`${requestServer}events?id=${id}`, fetchHeader);
       const data = await response.json();
       if (data.length > 0){
+        console.log(data)
         setEventInfo(data);
         const posArr = [];
         setEventBodiesTotal(data[0].position)
