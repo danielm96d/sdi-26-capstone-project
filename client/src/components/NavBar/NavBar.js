@@ -5,8 +5,14 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Text } from "@chakra-ui/react";
 import { useRef, useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
+const importAll = (r) => r.keys().map(r);
+const images = importAll(require.context('../../profilePictures', false, /\.(png|jpe?g|svg)$/));
 
 export default function NavBar() {
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * images.length);
+    return images[randomIndex];
+  }
   const fetchHeader = {
     method: "GET",
     credentials: 'include',
@@ -72,7 +78,7 @@ export default function NavBar() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            <Avatar name={Object.keys(userInfo).length > 0 && !userInfo.invalid ? userInfo[0].name : ""} />
+            <Avatar name={Object.keys(userInfo).length > 0 && !userInfo.invalid ? userInfo[0].name : ""} src={getRandomImage()} />
             <Heading marginTop="1em" size="xs">{Object.keys(userInfo).length > 0 && !userInfo.invalid ? `${userInfo[0].rank}  ${userInfo[0].name}` : <Skeleton />}</Heading>
           </DrawerHeader>
 
@@ -116,7 +122,7 @@ export default function NavBar() {
           </DrawerBody>
 
           <DrawerFooter>
-            <Text>Extra information maybe unit name??</Text>
+            
             {/* <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>

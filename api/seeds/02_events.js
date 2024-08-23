@@ -122,6 +122,45 @@ exports.seed = async function (knex) {
       location: "Zoom",
       POCinfo: "Lisa Tran",
       creatorID: 1
-    }
+    },
+    {
+      name: "Virtual Book Club Meeting",
+      startTime: "19:30:00",
+      endTime: "21:00:00",
+      startDate: "2024-06-05",
+      endDate: "2024-06-05",
+      description: "Online discussion of this month's selected novel",
+      type: "Club Meeting",
+      approved: "true",
+      location: "Zoom",
+      POCinfo: "Lisa Tran",
+      creatorID: 1
+    },
+    {
+      name: "Virtual Book Club Meeting",
+      startTime: "19:30:00",
+      endTime: "21:00:00",
+      startDate: "2024-06-05",
+      endDate: "2024-06-05",
+      description: "Online discussion of this month's selected novel",
+      type: "Club Meeting",
+      approved: "true",
+      location: "Zoom",
+      POCinfo: "Lisa Tran",
+      creatorID: 1
+    },
+    {
+      name: "Mission Briefing",
+      startTime: "15:30:00",
+      endTime: "16:00:00",
+      startDate: "2024-06-05",
+      endDate: "2024-06-05",
+      description: "SCI Briefing on current mission",
+      type: "Official Briefing",
+      approved: "true",
+      location: "Zoom",
+      POCinfo: "Johnny Knox-ville",
+      creatorID: 1
+    },
   ]);
 };
