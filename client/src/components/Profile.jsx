@@ -21,8 +21,14 @@ import RequestModal from './request'
 import {Helmet} from 'react-helmet'
 import {useNavigate} from 'react-router-dom'
 const requestServer = 'http://localhost:8080/'
+const importAll = (r) => r.keys().map(r);
+const images = importAll(require.context('../profilePictures', false, /\.(png|jpe?g|svg)$/));
 
 function Profile() {
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * images.length);
+    return images[randomIndex];
+  }
   const borderColor = useColorModeValue('black', 'gray')
   const [userInfo, setUserInfo] = useState({})
   const [notifications, setNotifications] = useState()
@@ -124,7 +130,7 @@ function Profile() {
           rounded='md'>
           <h1 margin="20px">User Info</h1>
           <br />
-          <Avatar name={userInfo[0].name} size='2xl' />
+          <Avatar name={userInfo[0].name} src={getRandomImage()} size='2xl' />
           <Box
             align="center"
             width='90%'
