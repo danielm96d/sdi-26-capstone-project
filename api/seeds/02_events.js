@@ -356,6 +356,137 @@ exports.seed = async function (knex) {
       location: "Conference Room C",
       POCinfo: "Olivia Taylor",
       creatorID: 4
-    }
+    },
+    {
+      name: "Conference Meeting",
+      startTime: "09:00:00",
+      endTime: "11:00:00",
+      startDate: "2024-08-02",
+      endDate: "2024-08-02",
+      description: "Annual Business Conference",
+      type: "Request",
+      approved: "false",
+      location: "New York",
+      POCinfo: "Alice",
+      creatorID: 1
+},
+{
+      name: "Team Workshop",
+      startTime: "14:00:00",
+      endTime: "16:00:00",
+      startDate: "2024-08-05",
+      endDate: "2024-08-05",
+      description: "Skills Development",
+      type: "Request",
+      approved: "false",
+      location: "San Francisco",
+      POCinfo: "Bob",
+      creatorID: 1
+},
+{
+      name: "Product Launch",
+      startTime: "10:00:00",
+      endTime: "12:00:00",
+      startDate: "2024-08-08",
+      endDate: "2024-08-08",
+      description: "Introducing New Product",
+      type: "Request",
+      approved: "false",
+      location: "Chicago",
+      POCinfo: "Carol",
+      creatorID: 1
+},
+{
+      name: "Client Meeting",
+      startTime: "13:00:00",
+      endTime: "15:00:00",
+      startDate: "2024-08-10",
+      endDate: "2024-08-10",
+      description: "Discussing Project Scope",
+      type: "Request",
+      approved: "false",
+      location: "Boston",
+      POCinfo: "David",
+      creatorID: 1
+},
+{
+      name: "Training Session",
+      startTime: "09:30:00",
+      endTime: "11:30:00",
+      startDate: "2024-08-12",
+      endDate: "2024-08-12",
+      description: "Employee Training",
+      type: "Request",
+      approved: "false",
+      location: "Los Angeles",
+      POCinfo: "Eve",
+      creatorID: 1
+},
+{
+      name: "Board Meeting",
+      startTime: "11:00:00",
+      endTime: "13:00:00",
+      startDate: "2024-08-15",
+      endDate: "2024-08-15",
+      description: "Quarterly Board Review",
+      type: "Request",
+      approved: "false",
+      location: "Miami",
+      POCinfo: "Frank",
+      creatorID: 1
+},
+{
+      name: "Networking Event",
+      startTime: "17:00:00",
+      endTime: "19:00:00",
+      startDate: "2024-08-18",
+      endDate: "2024-08-18",
+      description: "Business Networking",
+      type: "Request",
+      approved: "false",
+      location: "Seattle",
+      POCinfo: "Grace",
+      creatorID: 1
+},
+{
+      name: "Strategy Meeting",
+      startTime: "08:00:00",
+      endTime: "10:00:00",
+      startDate: "2024-08-20",
+      endDate: "2024-08-20",
+      description: "Strategic Planning Session",
+      type: "Request",
+      approved: "false",
+      location: "Atlanta",
+      POCinfo: "Henry",
+      creatorID: 1
+},
+{
+      name: "Project Kickoff",
+      startTime: "15:00:00",
+      endTime: "17:00:00",
+      startDate: "2024-08-23",
+      endDate: "2024-08-23",
+      description: "Initiating New Project",
+      type: "Request",
+      approved: "false",
+      location: "Dallas",
+      POCinfo: "Irene",
+      creatorID: 1
+},
+{
+      name: "Team Building",
+      startTime: "12:00:00",
+      endTime: "14:00:00",
+      startDate: "2024-08-26",
+      endDate: "2024-08-26",
+      description: "Team Building Activities",
+      type: "Request",
+      approved: "false",
+      location: "Denver",
+      POCinfo: "Jack",
+      creatorID: 1
+}
+
   ]);
 };
