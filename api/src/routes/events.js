@@ -43,12 +43,14 @@ router.get("/", async ( req, res ) => {
         'approvers.events_id': id,
         'users.isApprover': true
       })
-
+    console.log('approver data: ', approverData)
+    
     responseData[0].approver = approverData;
 
     let positionData = await knex('positions')
-      .join('users', 'positions.users_id', '=', 'users.id')
+      .leftJoin('users', 'positions.users_id', '=', 'users.id')
       .join('events', 'positions.events_id', '=', 'events.id')
+      // .select('*')
       .select(
         'positions.id',
         'positions.name as position_name',
@@ -60,7 +62,8 @@ router.get("/", async ( req, res ) => {
       .where({
         'positions.events_id': id
       })
-
+    
+    console.log('position data: ', positionData)
     responseData[0].position = positionData;
     res.status(200).send(responseData)
 

@@ -93,6 +93,7 @@ function EventEntry() {
         })
       } else {
         try {
+          
           let response = await fetch(`${requestServer}events`, {
             method: 'POST',
             credentials: 'include',
@@ -112,26 +113,27 @@ function EventEntry() {
               approver: approverID
             })
           })
+          
           response.json()
-            .then(res => {
-              console.log(res)
-              selectedPositions.map((pos) => {
-                fetch(`${requestServer}positions`, {
-                  method: 'POST',
-                  credentials: 'include',
-                  headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    name: pos,
-                    events_id: res.id
-                  })
+          .then(res => {
+            console.log('event Creation Response: ', res)
+            selectedPositions.map((pos) => {
+              fetch(`${requestServer}positions`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                  'Accept': 'application/json, text/plain, */*',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  name: pos,
+                  events_id: res.eventDetails.id
                 })
-                  .then(res => res.json())
-                  .then(res => console.log(res))
               })
+                .then(res => res.json())
+                .then(res => console.log(res))
             })
+          })
 
           toast({
             title: 'info.',

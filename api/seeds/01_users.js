@@ -13,6 +13,7 @@ exports.seed = async function (knex) {
   // Deletes ALL existing entries
   await knex('users').del()
   const users = await knex('users').insert([
+    // { id: 0, name: 'DUMMY', rank: 'NULL', password: hashedPassword, username: 'a1', isApprover: true },
     { name: 'John Johnson', rank: 'E1', password: hashedPassword, username: 'a1', isApprover: true },
     { name: 'Frank Sinatra', rank: 'E2', password: hashedPassword, username: 'a2', isApprover: false },
     { name: 'Frank Ocean', rank: 'E2', password: hashedPassword, username: 'a3', isApprover: false },
