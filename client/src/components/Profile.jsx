@@ -63,8 +63,11 @@ function Profile() {
       })
       .then(json => {
         console.log(json)
-        // if(json.message)console.log(json.message)
-        if (json[0].events !== undefined){
+        if(json.message){
+          console.log(json.message)
+          return 
+        }
+        else if (json[0].events !== undefined){
           let arrEvents = [];
           json[0].events.map((event) => {
             let indexOfT = event.startDate.indexOf("T");
