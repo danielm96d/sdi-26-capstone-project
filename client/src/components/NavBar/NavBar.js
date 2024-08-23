@@ -122,7 +122,7 @@ export default function NavBar() {
           </DrawerBody>
 
           <DrawerFooter>
-            <Text>Extra information maybe unit name??</Text>
+            
             {/* <Button variant='outline' mr={3} onClick={onClose}>
               Cancel
             </Button>

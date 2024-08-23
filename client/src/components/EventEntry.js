@@ -115,6 +115,7 @@ function EventEntry() {
           response.json()
             .then(res => {
               console.log(res)
+              console.log(selectedPositions)
               selectedPositions.map((pos) => {
                 fetch(`${requestServer}positions`, {
                   method: 'POST',
@@ -125,7 +126,7 @@ function EventEntry() {
                   },
                   body: JSON.stringify({
                     name: pos,
-                    events_id: res.id
+                    events_id: res.eventDetails.id
                   })
                 })
                   .then(res => res.json())
