@@ -29,6 +29,7 @@ function Profile() {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
   }
+  
   const borderColor = useColorModeValue('black', 'gray')
   const [userInfo, setUserInfo] = useState({})
   const [notifications, setNotifications] = useState()
